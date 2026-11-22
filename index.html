@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D2R 飾品拍賣所</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Serif+TC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0908; --panel:#14110e; --panel2:#1b1713; --line:#3a2f22; --line2:#5a4630;
+  --gold:#c9a45c; --gold2:#e8c87e; --text:#ddd3c2; --muted:#8d8273; --red:#d9534f; --green:#5fbf6a;
+  --unique:#c7b377; --set:#1fd11f; --rare:#ecec5a; --magic:#8080ff; --crafted:#ffa800; --normal:#e6e6e6;
+  --stat:#8a8aff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Serif TC",serif;font-size:15px}
+body{background:radial-gradient(ellipse at top,#1c140c 0%,var(--bg) 60%) fixed}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--gold2)}
+.wrap{max-width:1380px;margin:0 auto;padding:0 18px}
+header{border-bottom:1px solid var(--line);background:linear-gradient(#17110b,#0d0b09)}
+.top{display:flex;align-items:center;gap:16px;padding:16px 0 10px;flex-wrap:wrap}
+.logo{font-family:Cinzel,serif;font-size:26px;color:var(--gold2);letter-spacing:2px;text-shadow:0 0 18px #b8862b55}
+.logo small{display:block;font-family:"Noto Serif TC",serif;font-size:13px;color:var(--muted);letter-spacing:4px}
+.top .sp{flex:1}
+.btn{background:var(--panel2);border:1px solid var(--line2);color:var(--text);padding:8px 14px;border-radius:3px;cursor:pointer;transition:.15s}
+.btn:hover{border-color:var(--gold);color:var(--gold2)}
+.btn.pri{background:linear-gradient(#6b4a1c,#3e2a0f);border-color:var(--gold);color:#f5e2b3}
+.btn.pri:hover{background:linear-gradient(#80591f,#4a3212)}
+.btn.danger{border-color:#7a2e2a;color:#f0a39d}
+.btn.sm{padding:4px 9px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.tabs{display:flex;gap:4px}
+.tab{padding:10px 20px;border:1px solid transparent;border-bottom:none;cursor:pointer;color:var(--muted);font-size:16px;border-radius:4px 4px 0 0;background:none;display:flex;gap:8px;align-items:center}
+.tab:hover{color:var(--gold2)}
+.tab.on{color:var(--gold2);border-color:var(--line);background:var(--bg);position:relative;top:1px}
+.tab .n{font-size:12px;color:var(--muted);background:#0006;padding:1px 7px;border-radius:9px}
+.tab svg{width:18px;height:18px}
+.banner{margin:12px 0 0;padding:8px 12px;border:1px solid #6b5420;background:#2a200e;color:#e8cf95;font-size:13px;border-radius:3px;display:none}
+.layout{display:grid;grid-template-columns:270px 1fr;gap:20px;padding:18px 0 60px}
+aside{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:14px;align-self:start;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
+aside h3{font-family:Cinzel,"Noto Serif TC",serif;color:var(--gold);font-size:14px;letter-spacing:1px;margin:16px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px}
+aside h3:first-child{margin-top:0}
+.fld{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.fld label{font-size:12px;color:var(--muted)}
+input[type=text],input[type=number],input[type=search],select,textarea{background:#0c0a08;border:1px solid var(--line2);border-radius:3px;padding:6px 8px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.row{display:flex;gap:6px;align-items:center}
+.row>*{flex:1;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{border:1px solid var(--line2);background:#0c0a08;padding:3px 9px;border-radius:12px;font-size:12.5px;cursor:pointer;user-select:none}
+.chip.on{border-color:var(--gold);color:var(--gold2);background:#2a1e0c}
+.chip.q-unique.on{color:var(--unique)} .chip.q-set.on{color:var(--set)} .chip.q-rare.on{color:var(--rare)} .chip.q-magic.on{color:var(--magic)} .chip.q-crafted.on{color:var(--crafted)}
+.statrow{display:grid;grid-template-columns:1fr 64px 24px;gap:4px;margin-bottom:4px}
+.x{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px}
+.x:hover{color:var(--red)}
+.toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.toolbar .search{flex:1;min-width:200px}
+.toolbar .count{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:#000c;border:1px solid #2c241b;border-radius:3px;cursor:pointer;display:flex;flex-direction:column;transition:.15s;position:relative}
+.card:hover{border-color:var(--gold);box-shadow:0 0 16px #c9a45c22}
+.card.dim{opacity:.55}
+.tt{padding:14px 12px 10px;text-align:center;line-height:1.55;flex:1;font-size:14px}
+.tt .name{font-size:16px;font-weight:600}
+.tt .req{color:#e6e6e6;font-size:13px}
+.tt .stat{color:var(--stat)}
+.tt .eth{color:#9a9a9a}
+.q-unique{color:var(--unique)} .q-set{color:var(--set)} .q-rare{color:var(--rare)} .q-magic{color:var(--magic)} .q-crafted{color:var(--crafted)} .q-normal{color:var(--normal)}
+.tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:0 10px 8px}
+.tag{font-size:11px;color:var(--muted);border:1px solid #33291e;padding:0 6px;border-radius:2px}
+.tag.l{color:#9fd3ff;border-color:#284860}
+.tag.hc{color:#ff9d9d;border-color:#5a2525}
+.cfoot{border-top:1px solid #2c241b;padding:8px 10px;display:flex;align-items:center;gap:8px;background:#0e0c0a}
+.price{font-family:Cinzel,serif;color:var(--gold2);font-size:15px}
+.price small{font-family:"Noto Serif TC",serif;color:var(--muted);font-size:11px;display:block}
+.cfoot .time{margin-left:auto;font-size:12px;color:var(--muted);text-align:right}
+.star{background:none;border:none;cursor:pointer;color:#5b5143;font-size:19px;padding:0 2px;line-height:1}
+.star.on{color:var(--gold2)}
+.badge{position:absolute;top:6px;left:6px;font-size:11px;padding:1px 6px;border-radius:2px;background:#3a1010;color:#ffb0a8;border:1px solid #6a2020}
+.badge.sold{background:#10301a;color:#9fe0a9;border-color:#2a6a3a}
+.badge.end{background:#2a2a2a;color:#bbb;border-color:#555}
+.badge.mine{left:auto;right:6px;background:#2a1e0c;color:var(--gold2);border-color:var(--line2)}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:60px 10px;border:1px dashed var(--line);border-radius:4px}
+/* modal */
+.ov{position:fixed;inset:0;background:#000b;display:none;align-items:flex-start;justify-content:center;z-index:50;overflow:auto;padding:30px 12px}
+.ov.on{display:flex}
+.modal{background:var(--panel);border:1px solid var(--line2);border-radius:4px;width:min(980px,100%);box-shadow:0 10px 60px #000}
+.modal.sm{width:min(520px,100%)}
+.mh{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
+.mh h2{margin:0;font-size:18px;color:var(--gold2);font-weight:600;flex:1}
+.mb{padding:16px}
+.mf{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;align-items:center}
+.cols{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.drop{border:2px dashed var(--line2);border-radius:6px;padding:34px 16px;text-align:center;cursor:pointer;background:#0c0a08;transition:.15s}
+.drop:hover,.drop.over{border-color:var(--gold);background:#1a130a}
+.drop b{color:var(--gold2);font-size:17px}
+.muted{color:var(--muted);font-size:13px}
+.prog{margin-top:12px;display:flex;flex-direction:column;gap:6px}
+.prog div{display:flex;gap:10px;align-items:center;font-size:13px;padding:6px 8px;background:#0c0a08;border:1px solid var(--line);border-radius:3px}
+.prog img{width:40px;height:40px;object-fit:cover;border:1px solid var(--line)}
+.spin{width:14px;height:14px;border:2px solid var(--line2);border-top-color:var(--gold2);border-radius:50%;animation:sp 0.8s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+.tooltip{background:#000;border:1px solid #333;padding:16px;text-align:center;line-height:1.6}
+.shot{max-width:100%;border:1px solid var(--line);margin-top:10px;display:block}
+.pchips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.pchip{font-size:11.5px;background:#151538;color:#b9b9ff;border:1px solid #2e2e70;padding:1px 6px;border-radius:2px}
+.info{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px;margin:12px 0}
+.info dt{color:var(--muted)}
+.info dd{margin:0}
+.sec{font-size:14px;color:var(--gold);margin:16px 0 6px;font-weight:600}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#2a1e0c;border:1px solid var(--gold);color:#f5e2b3;padding:10px 18px;border-radius:3px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw}
+.toast.on{opacity:1}
+.toast.err{background:#3a1010;border-color:#a33}
+.qbar{font-size:13px;color:var(--gold2);background:#2a1e0c;border:1px solid var(--line2);padding:4px 10px;border-radius:3px}
+.warn{color:#ffcc80;font-size:13px;margin:6px 0}
+.filterbtn{display:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.stat-box{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:12px 14px}
+.stat-box b{display:block;font-family:Cinzel,serif;font-size:22px;color:var(--gold2)}
+.stat-box span{font-size:12px;color:var(--muted)}
+.acols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.apanel{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:14px}
+.apanel h3{font-size:15px;color:var(--gold);margin:0 0 10px;font-weight:600}
+.atable{width:100%;border-collapse:collapse;font-size:13.5px}
+.atable th{text-align:left;color:var(--muted);font-weight:400;border-bottom:1px solid var(--line);padding:6px 8px;white-space:nowrap}
+.atable td{border-bottom:1px solid #241d15;padding:6px 8px;vertical-align:middle}
+.atable tr:hover td{background:#1a150f}
+.atable img{width:36px;height:36px;object-fit:cover;border:1px solid var(--line);display:block}
+.atable .acts{white-space:nowrap;text-align:right}
+.atable .acts .btn{margin-left:4px}
+.st{font-size:12px;padding:1px 7px;border-radius:2px;border:1px solid var(--line2);white-space:nowrap}
+.st.active{color:#9fd3ff;border-color:#284860}.st.sold{color:#9fe0a9;border-color:#2a6a3a}.st.ended,.st.cancelled{color:#aaa}
+@media (max-width:860px){.acols{grid-template-columns:1fr}}
+footer{color:var(--muted);font-size:12px;text-align:center;padding:20px;border-top:1px solid var(--line)}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr}
+  aside{position:fixed;inset:0 auto 0 0;width:300px;max-height:none;z-index:40;transform:translateX(-105%);transition:.2s;border-radius:0}
+  aside.open{transform:none}
+  .filterbtn{display:inline-block}
+  .cols{grid-template-columns:1fr}
+  .tab{padding:8px 10px;font-size:14px}
+  .logo{font-size:20px}
+}
+.setup{max-width:640px;margin:0 auto}
+.setup ol{padding-left:20px;line-height:1.8;font-size:14px}
+.setup code{background:#0c0a08;border:1px solid var(--line);padding:0 5px;border-radius:2px;color:var(--gold2)}
+.ok{color:var(--green)} .bad{color:var(--red)}
+.bar{height:4px;background:#0c0a08;border-radius:2px;overflow:hidden;flex:1}
+.bar i{display:block;height:100%;background:var(--gold);width:0;transition:.2s}
+.sync{font-size:12px;color:var(--muted)}
+details.cfg summary{cursor:pointer;color:var(--gold);font-size:14px;margin-bottom:8px}
+.moncols{display:grid;grid-template-columns:330px 1fr;gap:16px}
+#monPreview{width:100%;background:#000;border:1px solid var(--line);display:block}
+.tray{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;max-height:460px;overflow:auto}
+.tcard{background:#000;border:1px solid var(--line);border-radius:3px;display:flex;flex-direction:column}
+.tcard img{width:100%;max-height:200px;object-fit:contain;background:#000;display:block}
+.tcard .ti{padding:6px 8px;font-size:12.5px;flex:1}
+.tcard .ta{display:flex;gap:4px;padding:6px;border-top:1px solid #241d15}
+.tcard .ta>*{flex:1;text-align:center;text-decoration:none;font-size:12px;padding:3px 4px}
+.tcard.busy{opacity:.7}
+@media (max-width:860px){.moncols{grid-template-columns:1fr}}
+body.pip{margin:0;background:var(--panel);overflow:auto}
+.pip .modal{width:100%;border:none;box-shadow:none;border-radius:0}
+.pip .mh .x{display:none}
+.pip .mb.cols{grid-template-columns:1fr;gap:10px;padding:10px 12px}
+.pip .mb.cols>div:last-child{order:-1}
+.pip #rvImg{max-height:200px;width:auto;max-width:100%;margin:0 auto;filter:grayscale(1) brightness(1.5) contrast(1.1)}  /* desaturated so a full-screen capture never re-detects it as a tooltip */
+.pip #rvTip,.pip .rvTipLbl,.pip .rvImgLbl{display:none}
+.pip .mf{padding:8px 12px;position:sticky;bottom:0;background:var(--panel)}
+.pip .mf .muted{display:none}
+.pip textarea#rvLines{min-height:120px}
+.pip-idle{padding:18px}
+.pip-idle .pi-h{font-family:Cinzel,serif;color:var(--gold2);font-size:18px;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pip-idle .pi-dot{width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block}
+.pip-idle .pi-st{font-size:14px;line-height:1.6}
+.rvnav{display:flex;align-items:center;gap:6px}
+.rvnav .btn{padding:3px 10px}
+.rvThumbs{display:flex;gap:6px;overflow-x:auto;padding:0 16px}
+.rvThumbs:not(:empty){padding:8px 16px;border-bottom:1px solid var(--line)}
+.rvThumbs img{height:46px;width:auto;border:2px solid transparent;cursor:pointer;opacity:.6;background:#000}
+.rvThumbs img.on{border-color:var(--gold);opacity:1}
+.pip .rvThumbs{padding-left:12px;padding-right:12px}
+.pip .rvThumbs img{filter:grayscale(1) brightness(1.5)}
+.pip .mh h2{font-size:15px}
+.rvtabs{display:flex;gap:4px;margin-bottom:10px;border-bottom:1px solid var(--line)}
+.rvtabs button{background:none;border:1px solid transparent;border-bottom:none;color:var(--muted);padding:6px 14px;cursor:pointer;border-radius:3px 3px 0 0;font:inherit}
+.rvtabs button.on{color:var(--gold2);border-color:var(--line);background:var(--panel2);position:relative;top:1px}
+#rvPriceSum{font-size:11px}
+.pe-mode{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px;font-size:14px}
+.pe-mode label{display:flex;gap:5px;align-items:center;cursor:pointer}
+.pe-row{display:grid;grid-template-columns:1fr 70px 24px;gap:4px;margin-bottom:4px}
+.pe textarea{width:100%}
+.nav{display:flex;gap:6px}
+.tcard.listed{opacity:.75}
+.tcard .ta .btn.pri{color:#f5e2b3}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="top">
+      <div class="logo">D2R ACCESSORY MARKET<small>暗黑破壞神 II 獄火重生 · 飾品拍賣所</small></div>
+      <div class="sp"></div>
+      <span class="sync" id="sync"></span>
+      <span class="nav" id="navBtns"></span>
+    </div>
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+</header>
+<div class="wrap">
+  <div class="banner" id="banner"></div>
+
+  <!-- ===== Shop ===== -->
+  <div class="layout" id="viewShop">
+    <aside id="side">
+      <h3>快速條件</h3>
+      <div class="chips" id="presets"></div>
+
+      <h3>狀態</h3>
+      <div class="chips" id="statusChips"></div>
+      <div class="chips" style="margin-top:6px" id="ownChips"></div>
+
+      <h3>品質</h3>
+      <div class="chips" id="qualChips"></div>
+
+      <h3>屬性條件（最低值）</h3>
+      <div id="statRows"></div>
+      <div class="row" style="margin-top:4px"><button class="btn sm" id="addStat">＋ 新增條件</button></div>
+      <div class="fld" style="margin-top:8px"><label>職業（職業技能 / 技能樹）</label><select id="fCls"></select></div>
+      <div class="fld"><label>需要等級 ≤</label><input type="number" id="fReq" min="1" max="99" placeholder="例如 60"></div>
+
+      <h3>價格</h3>
+      <div class="fld"><label>幣別</label><select id="fRune"></select></div>
+      <div class="row"><input type="number" id="fPmin" placeholder="最少" min="0" step="0.5"><input type="number" id="fPmax" placeholder="最多" min="0" step="0.5"></div>
+      <div class="chips" style="margin-top:6px"><span class="chip" id="fNego">只看可議價</span></div>
+
+      <h3>伺服器</h3>
+      <div class="fld"><label>天梯</label><select id="fLadder"><option value="any">全部</option><option value="ladder">天梯</option><option value="nonladder">非天梯</option></select></div>
+      <div class="fld"><label>模式</label><select id="fHc"><option value="any">全部</option><option value="sc">普通 (SC)</option><option value="hc">專家 (HC)</option></select></div>
+      <div class="fld"><label>平台</label><select id="fPlat"></select></div>
+      <div class="fld"><label>區域</label><select id="fRegion"></select></div>
+
+      <div class="row" style="margin-top:14px">
+        <button class="btn sm" id="resetF">清除全部篩選</button>
+        <button class="btn sm filterbtn" id="closeSide">完成</button>
+      </div>
+    </aside>
+    <main>
+      <div class="toolbar">
+        <button class="btn filterbtn" id="openSide">篩選</button>
+        <input type="search" class="search" id="fQ" placeholder="搜尋名稱、屬性、備註…（例如：喬丹、施法、+2）">
+        <select id="fSort" style="width:auto"></select>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </main>
+  </div>
+
+  <!-- ===== Admin ===== -->
+  <section id="viewAdmin" style="display:none;padding:18px 0 60px">
+    <!-- setup (no token yet) -->
+    <div id="adminSetup" class="apanel setup" style="display:none">
+      <h3>管理後台登入</h3>
+      <p class="muted" style="margin-top:0">這個頁面只有持有 GitHub 存取權杖（token）的人能使用。權杖只會存在你這台裝置的瀏覽器中。</p>
+      <div class="row">
+        <div class="fld"><label>GitHub 帳號</label><input type="text" id="cOwner" placeholder="your-name"></div>
+        <div class="fld"><label>Repository 名稱</label><input type="text" id="cRepo" placeholder="d2r-market"></div>
+        <div class="fld" style="flex:0 0 110px"><label>分支</label><input type="text" id="cBranch" value="main"></div>
+      </div>
+      <div class="fld"><label>Fine-grained personal access token</label><input type="text" id="cToken" placeholder="github_pat_..." autocomplete="off"></div>
+      <div class="row" style="justify-content:flex-end;gap:8px">
+        <span class="muted" id="cMsg2" style="flex:1"></span>
+        <button class="btn pri" id="cLogin" style="flex:0 0 auto">連線並登入</button>
+      </div>
+    </div>
+
+    <div id="adminBody" style="display:none">
+      <div class="stats" id="aStats"></div>
+      <div class="acols">
+        <div class="apanel">
+          <h3>上傳截圖 · 自動上架</h3>
+          <div class="drop" id="drop">
+            <b>點此選擇、拖曳或 Ctrl+V 貼上截圖</b>
+            <div class="muted" style="margin-top:6px">建議只截物品說明框，辨識會比較準。支援多張。</div>
+          </div>
+          <input type="file" id="file" accept="image/*" multiple hidden>
+          <div class="prog" id="prog"></div>
+        </div>
+        <div class="apanel">
+          <h3>貼上文字 / 手動新增</h3>
+          <textarea id="pasteText" rows="7" placeholder="喬丹之石&#10;戒指&#10;需要等級: 29&#10;+1 所有技能&#10;+20 法力&#10;..."></textarea>
+          <div class="row" style="margin-top:8px;justify-content:flex-end;gap:8px">
+            <button class="btn" id="btnManual" style="flex:0 0 auto">空白表單新增</button>
+            <button class="btn pri" id="parseText" style="flex:0 0 auto">解析文字並新增</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="apanel" style="margin-top:16px">
+        <div class="row" style="margin-bottom:10px;flex-wrap:wrap">
+          <h3 style="flex:0 0 auto;margin:0 12px 0 0">刊登管理</h3>
+          <div class="chips" id="aStatus" style="flex:1"></div>
+          <input type="search" id="aQ" placeholder="搜尋名稱、屬性…" style="max-width:240px">
+        </div>
+        <div style="overflow:auto"><table class="atable" id="aTable"></table></div>
+      </div>
+
+      <div class="apanel" style="margin-top:16px">
+        <details class="cfg">
+          <summary>設定</summary>
+          <div class="fld"><label>文字辨識引擎</label>
+            <select id="sEngine">
+              <option value="tesseract">Tesseract（免費，在瀏覽器內執行，第一次要下載約 20MB 語言檔）</option>
+              <option value="claude">Claude API（較準，需自備 API key，按次計費）</option>
+            </select>
+          </div>
+          <div class="row" style="margin-bottom:8px"><span class="muted" id="learnInfo" style="flex:1"></span><button class="btn sm danger" id="learnClear" style="flex:0 0 auto">清除學到的修正</button></div>
+          <div id="sClaudeWrap" style="display:none">
+            <div class="row">
+              <div class="fld"><label>Anthropic API key（只存在此瀏覽器）</label><input type="text" id="sKey" placeholder="sk-ant-..." autocomplete="off"></div>
+              <div class="fld" style="flex:0 0 200px"><label>模型</label><input type="text" id="sModel" value="claude-sonnet-5-5"></div>
+            </div>
+          </div>
+          <div class="fld"><label>預設聯絡方式（新增物品時自動帶入）</label><input type="text" id="sContact" placeholder="例如 Player#1234"></div>
+          <div class="row" style="margin-top:6px;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <span class="muted" id="sRepo" style="flex:1"></span>
+            <button class="btn sm" id="sReload" style="flex:0 0 auto">重新讀取資料</button>
+            <button class="btn sm danger" id="sLogout" style="flex:0 0 auto">登出並清除此裝置的權杖</button>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="viewCapture" style="display:none;padding:18px 0 60px">
+    <div id="capLogin" class="empty" style="display:none">截圖上架需要先登入管理後台。<br><br><a class="btn pri" href="#admin" style="text-decoration:none">前往登入</a></div>
+    <div id="capBody">
+      <div class="apanel" style="margin-bottom:16px">
+        <div class="row" style="flex-wrap:wrap;gap:10px;align-items:flex-end">
+          <h3 style="flex:0 0 auto;margin:0 6px 6px 0">上架預設值</h3>
+          <div class="fld" style="flex:0 0 110px;margin:0"><label>天梯</label><select id="dLadder"><option value="ladder">天梯</option><option value="nonladder">非天梯</option></select></div>
+          <div class="fld" style="flex:0 0 110px;margin:0"><label>模式</label><select id="dHc"><option value="sc">普通 (SC)</option><option value="hc">專家 (HC)</option></select></div>
+          <div class="fld" style="flex:0 0 130px;margin:0"><label>平台</label><select id="dPlat"></select></div>
+          <div class="fld" style="flex:0 0 110px;margin:0"><label>區域</label><select id="dRegion"></select></div>
+          <div class="fld" style="flex:1;min-width:180px;margin:0"><label>聯絡方式（BattleTag / 角色名）</label><input type="text" id="dContact" maxlength="40" placeholder="例如 Player#1234"></div>
+        </div>
+        <div class="muted" style="margin-top:8px;font-size:12px">按「上架」或「儲存並上架」時，會用這裡的設定加上擷取時填的類別與價格，直接發佈到拍賣所。</div>
+      </div>
+    <div class="apanel" id="monPanel">
+      <div class="row" style="flex-wrap:wrap;gap:8px;margin-bottom:10px">
+        <h3 style="flex:0 0 auto;margin:0 8px 0 0">遊戲監控 · 自動擷取素質方塊</h3>
+        <span class="muted" id="monStatus" style="flex:1">尚未開始</span>
+        <label class="muted" style="flex:0 0 auto;display:flex;gap:4px;align-items:center"><input type="checkbox" id="monOnly"> 只保留戒指 / 護身符 / 頭環</label>
+        <button class="btn" id="shotBtn" style="flex:0 0 auto" title="不開遊戲也能用整張截圖測試">上傳整張截圖</button>
+        <input type="file" id="shot" accept="image/*" hidden multiple>
+        <button class="btn" id="pipBtn" style="flex:0 0 auto">開啟置頂視窗</button>
+        <button class="btn pri" id="monStart" style="flex:0 0 auto">選取遊戲視窗</button>
+        <button class="btn" id="monStop" style="flex:0 0 auto;display:none">停止監控</button>
+      </div>
+      <div class="moncols">
+        <div>
+          <canvas id="monPreview" width="320" height="180"></canvas>
+          <div class="muted" style="margin-top:6px;line-height:1.6">選取 D2R 視窗後，把滑鼠移到裝備上，等素質方塊出現約半秒就會自動擷取。遊戲請用「視窗化」或「無邊框視窗」；如果預覽是黑的，改選「整個螢幕」。</div>
+        </div>
+        <div>
+          <div class="row" style="margin-bottom:8px;flex-wrap:wrap;gap:6px">
+            <span class="muted" style="flex:1" id="trayCount"></span>
+            <div class="chips" id="trayFilter" style="flex:0 0 auto"></div>
+            <button class="btn sm pri" id="trayAll" style="flex:0 0 auto">全部上架</button>
+            <button class="btn sm pri" id="pendBtn" style="flex:0 0 auto;display:none"></button>
+            <button class="btn sm danger" id="trayClear" style="flex:0 0 auto">清空</button>
+          </div>
+          <div class="tray" id="tray" style="max-height:620px"></div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </section>
+</div>
+<footer>物品在遊戲內面交，請透過賣家的聯絡方式私訊。</footer>
+
+<!-- capture viewer -->
+<div class="ov" id="ovItem"><div class="modal">
+  <div class="mh"><h2 id="iTitle"></h2><button class="x" data-close>✕</button></div>
+  <div class="mb cols">
+    <div><img id="iImg" class="shot" alt="" style="margin-top:0"><div id="iListed" style="margin-top:8px"></div></div>
+    <div>
+      <div class="row"><div class="fld"><label>名稱</label><input type="text" id="iName"></div><div class="fld"><label>基底</label><input type="text" id="iBase"></div></div>
+      <div class="row">
+        <div class="fld"><label>品質</label><select id="iQual"><option value="unique">暗金</option><option value="set">套裝</option><option value="rare">稀有</option><option value="magic">魔法</option><option value="crafted">手工</option><option value="normal">普通</option></select></div>
+        <div class="fld"><label>類別</label><select id="iCat"></select></div>
+        <div class="fld" style="flex:0 0 90px"><label>需要等級</label><input type="number" id="iReq" min="1" max="99"></div>
+      </div>
+      <div class="fld"><label>屬性（一行一條，改過的錯字下次會自動套用）</label><textarea id="iLinesEd" rows="6"></textarea></div>
+      <div class="pchips" id="iChips"></div>
+      <div class="sec">價格</div>
+      <div id="iPrice"></div>
+      <details style="margin-top:10px"><summary class="muted" style="cursor:pointer">辨識原始文字</summary><pre id="iRaw" class="muted" style="white-space:pre-wrap;font-size:12px"></pre></details>
+    </div>
+  </div>
+  <div class="mf"><a class="btn" id="iDl" download style="text-decoration:none">下載圖片</a><span style="flex:1"></span><button class="btn" id="iSave">儲存</button><button class="btn pri" id="iSaveList">儲存並上架</button></div>
+</div></div>
+
+<!-- Editor -->
+<div class="ov" id="ovEdit"><div class="modal">
+  <div class="mh"><h2 id="edTitle">上架物品</h2><span class="qbar" id="edQueue" style="display:none"></span><button class="x" data-close style="margin-left:10px">✕</button></div>
+  <div class="mb cols">
+    <div>
+      <div id="edWarn"></div>
+      <div class="row">
+        <div class="fld"><label>類別</label><select id="eCat"></select></div>
+        <div class="fld"><label>品質</label><select id="eQual"></select></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label>名稱</label><input type="text" id="eName" maxlength="40" placeholder="例如：喬丹之石"></div>
+        <div class="fld"><label>基底</label><input type="text" id="eBase" maxlength="20" placeholder="戒指 / 護身符 / 頭環 / 寶冠…"></div>
+      </div>
+      <div class="fld"><label>屬性（一行一條，會自動解析數值）</label><textarea id="eLines" rows="7"></textarea></div>
+      <div class="row">
+        <div class="fld"><label>需要等級</label><input type="number" id="eReq" min="1" max="99"></div>
+        <div class="fld"><label>物品等級（可留空）</label><input type="number" id="eIlvl" min="1" max="99"></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label>天梯</label><select id="eLadder"><option value="ladder">天梯</option><option value="nonladder">非天梯</option></select></div>
+        <div class="fld"><label>模式</label><select id="eHc"><option value="sc">普通 (SC)</option><option value="hc">專家 (HC)</option></select></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label>平台</label><select id="ePlat"></select></div>
+        <div class="fld"><label>區域</label><select id="eRegion"></select></div>
+      </div>
+      <div class="fld"><label>價格</label><div id="ePrice"></div></div>
+      <div class="fld"><label>聯絡方式（BattleTag / 遊戲角色名）</label><input type="text" id="eContact" maxlength="40" placeholder="例如 Player#1234"></div>
+      <div class="fld"><label>備註</label><input type="text" id="eNote" maxlength="120" placeholder="例如：可換 Ber、晚上 9 點後在線"></div>
+    </div>
+    <div>
+      <div class="muted" style="margin-bottom:6px">預覽</div>
+      <div class="tooltip tt" id="ePreview"></div>
+      <div class="pchips" id="eChips"></div>
+      <img id="eImg" class="shot" alt="" style="display:none">
+      <div class="row" style="margin-top:8px"><button class="btn sm" id="eRmImg" style="flex:0 0 auto;white-space:nowrap;display:none">移除截圖</button></div>
+      <details style="margin-top:10px" id="eRawWrap"><summary class="muted" style="cursor:pointer">辨識原始文字</summary><pre id="eRaw" class="muted" style="white-space:pre-wrap;font-size:12px"></pre></details>
+    </div>
+  </div>
+  <div class="mf">
+    <span class="muted" id="edMsg" style="margin-right:auto"></span>
+    <button class="btn" id="edSkip" style="display:none">略過此件</button>
+    <button class="btn" data-close>取消</button>
+    <button class="btn pri" id="edSave">上架</button>
+  </div>
+</div></div>
+
+<!-- Detail -->
+<div class="ov" id="ovDetail"><div class="modal">
+  <div class="mh"><h2 id="dTitle"></h2><button class="x" data-close>✕</button></div>
+  <div class="mb cols" id="dBody"></div>
+  <div class="mf" id="dFoot"></div>
+</div></div>
+
+<!-- Sold -->
+<div class="ov" id="ovSold"><div class="modal sm">
+  <div class="mh"><h2>標記已售出</h2><button class="x" data-close>✕</button></div>
+  <div class="mb">
+    <div class="muted" id="sName" style="margin-bottom:8px"></div>
+    <div class="fld"><label>成交價</label><div id="sPrice"></div></div>
+  </div>
+  <div class="mf"><button class="btn" data-close>取消</button><button class="btn pri" id="sOk">確定售出</button></div>
+</div></div>
+
+<!-- capture review -->
+<div class="ov" id="ovReview"><div class="modal">
+  <div class="mh"><h2>確認辨識結果</h2>
+    <div class="rvnav"><button class="btn sm" id="rvPrev" title="上一件（Alt + ←）">◀</button><span class="qbar" id="rvPos"></span><button class="btn sm" id="rvNext" title="下一件（Alt + →）">▶</button></div>
+    <button class="x" data-close style="margin-left:10px" title="稍後再確認">✕</button></div>
+  <div class="rvThumbs" id="rvThumbs"></div>
+  <div class="mb cols">
+    <div>
+      <div id="rvWarn"></div>
+      <div class="rvtabs"><button type="button" class="on" data-rvtab="info">物品資訊</button><button type="button" data-rvtab="price">價格 <span class="muted" id="rvPriceSum"></span></button></div>
+      <div data-rvpane="info">
+      <div class="row">
+        <div class="fld"><label>名稱</label><input type="text" id="rvName"></div>
+        <div class="fld"><label>基底</label><input type="text" id="rvBase"></div>
+      </div>
+      <div class="row">
+        <div class="fld"><label>品質</label><select id="rvQual"><option value="unique">暗金</option><option value="set">套裝</option><option value="rare">稀有</option><option value="magic">魔法</option><option value="crafted">手工</option><option value="normal">普通</option></select></div>
+        <div class="fld"><label>類別</label><select id="rvCat"><option value="ring">戒指</option><option value="amulet">護身符</option><option value="circlet">頭環</option><option value="other">其他</option></select></div>
+        <div class="fld" style="flex:0 0 90px"><label>需要等級</label><input type="number" id="rvReq" min="1" max="99"></div>
+      </div>
+      <div class="fld"><label>屬性（一行一條，改錯字會被記住，下次自動修正）</label><textarea id="rvLines" rows="8"></textarea></div>
+      <div class="pchips" id="rvChips"></div>
+      <details style="margin-top:10px"><summary class="muted" style="cursor:pointer">辨識原始文字</summary><pre id="rvRaw" class="muted" style="white-space:pre-wrap;font-size:12px"></pre></details>
+      </div>
+      <div data-rvpane="price" style="display:none"><div id="rvPrice"></div></div>
+    </div>
+    <div>
+      <div class="muted rvImgLbl" style="margin-bottom:6px">擷取的圖片</div>
+      <img id="rvImg" class="shot" alt="" style="margin-top:0">
+      <div class="muted rvTipLbl" style="margin:10px 0 6px">預覽</div>
+      <div class="tooltip tt" id="rvTip"></div>
+    </div>
+  </div>
+  <div class="mf">
+    <span class="muted" style="margin-right:auto">Ctrl + Enter 可直接確認</span>
+    <button class="btn" id="rvSkip">略過</button>
+    <button class="btn" id="rvSaveAll" style="display:none"></button>
+    <button class="btn" id="rvSave">儲存</button>
+    <button class="btn pri" id="rvSaveList">儲存並上架</button>
+  </div>
+</div></div>
+
+<!-- Confirm -->
+<div class="ov" id="ovConfirm"><div class="modal sm">
+  <div class="mh"><h2>請確認</h2></div>
+  <div class="mb" id="cMsg"></div>
+  <div class="mf"><button class="btn" id="cNo">取消</button><button class="btn pri" id="cYes">確定</button></div>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ================= constants ================= */
+const CATS_BASE = [
+  {id:'all', hash:'all', label:'全部'},
+  {id:'ring', hash:'rings', label:'戒指', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="14" r="6.5"/><path d="M9 5l3-3 3 3-3 2.5z"/></svg>'},
+  {id:'amulet', hash:'amulets', label:'護身符', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 3c1 5 4 8 8 9 4-1 7-4 8-9"/><circle cx="12" cy="17" r="4"/></svg>'},
+  {id:'circlet', hash:'circlets', label:'頭環', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 16c3-2 15-2 18 0"/><path d="M3 16l2-7 4 4 3-6 3 6 4-4 2 7"/></svg>'},
+];
+const getCats = () => [...CATS_BASE, ...customCats.map(c=>({id:c.id, hash:'c-'+c.id, label:c.label}))];
+const QUALS = [['unique','暗金'],['set','套裝'],['rare','稀有'],['magic','魔法'],['crafted','手工'],['normal','普通']];
+const QUAL_LABEL = Object.fromEntries(QUALS);
+const PLATS = ['PC','PlayStation','Xbox','Switch'];
+const REGIONS = [['Asia','亞洲'],['Americas','美洲'],['Europe','歐洲']];
+const REGION_LABEL = Object.fromEntries(REGIONS);
+const CLASSES = ['亞馬遜','刺客','野蠻人','德魯伊','死靈法師','聖騎士','法師'];
+// rune tier (game rune number) – used only to order prices of different runes
+const PROPS = [
+  ['allSkills','所有技能'],['classSkills','職業技能'],['treeSkills','技能樹技能'],
+  ['fcr','施法速度 FCR'],['frw','跑速 FRW'],['ias','攻速 IAS'],['fhr','受擊恢復 FHR'],
+  ['mf','魔法尋獲 MF'],['gf','金幣尋獲 GF'],
+  ['str','力量'],['dex','敏捷'],['vit','體力'],['ene','精力'],
+  ['life','生命'],['mana','法力'],
+  ['allRes','全抗'],['fireRes','火抗'],['coldRes','冰抗'],['lightRes','電抗'],['poisRes','毒抗'],
+  ['ll','吸血 LL'],['ml','吸魔 ML'],['ar','命中率 AR'],['minDmg','最小傷害'],['maxDmg','最大傷害'],
+  ['sockets','鑲孔'],
+];
+const PROP_LABEL = Object.fromEntries(PROPS);
+const PRESETS = {
+  all:    [{l:'+2 職業技能', s:{classSkills:2}}, {l:'FCR ≥10', s:{fcr:10}}, {l:'全抗 ≥15', s:{allRes:15}}, {l:'MF ≥25', s:{mf:25}}],
+  ring:   [{l:'FCR 10', s:{fcr:10}}, {l:'吸血 ≥3', s:{ll:3}}, {l:'力+敏 雙屬', s:{str:10, dex:10}}, {l:'全抗 ≥10', s:{allRes:10}}, {l:'MF ≥15', s:{mf:15}}],
+  amulet: [{l:'+2 職業技能', s:{classSkills:2}}, {l:'+2 技能 +10 FCR', s:{classSkills:2, fcr:10}}, {l:'+2 所有技能', s:{allSkills:2}}, {l:'全抗 ≥20', s:{allRes:20}}, {l:'MF ≥30', s:{mf:30}}],
+  circlet:[{l:'+2 職業 +20 FRW', s:{classSkills:2, frw:20}}, {l:'+2 技能 +20 FCR', s:{classSkills:2, fcr:20}}, {l:'2 孔', s:{sockets:2}}, {l:'FRW ≥30', s:{frw:30}}],
+};
+const SORTS = [['new','最新上架'],['pasc','價格 低→高'],['pdesc','價格 高→低'],
+  ...PROPS.filter(p=>!['minDmg','maxDmg','ar'].includes(p[0])).map(p=>['stat:'+p[0],'依「'+p[1]+'」高→低'])];
+
+/* ================= helpers ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ls = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} },
+};
+let toastT;
+function toast(msg, err){ const t=$('#toast'); t.textContent=msg; t.className='toast on'+(err?' err':''); clearTimeout(toastT); toastT=setTimeout(()=>t.className='toast',3200); }
+function openOv(id){ $('#'+id).classList.add('on'); }
+function closeOv(id){ $('#'+id).classList.remove('on'); }
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click', ()=>b.closest('.ov').classList.remove('on')));
+document.querySelectorAll('.ov').forEach(o=>o.addEventListener('mousedown', e=>{ if(e.target===o && o.id!=='ovEdit' && o.id!=='ovReview') o.classList.remove('on'); }));
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ const open=[...document.querySelectorAll('.ov.on')].pop(); if(open) open.classList.remove('on'); }});
+function askConfirm(msg){
+  return new Promise(res=>{
+    $('#cMsg').textContent = msg; openOv('ovConfirm');
+    const done = v => { closeOv('ovConfirm'); $('#cYes').onclick=$('#cNo').onclick=null; res(v); };
+    $('#cYes').onclick = ()=>done(true); $('#cNo').onclick = ()=>done(false);
+  });
+}
+function fillSelect(sel, opts, anyLabel){
+  sel.innerHTML = (anyLabel?`<option value="any">${anyLabel}</option>`:'') + opts.map(o=>Array.isArray(o)?`<option value="${esc(o[0])}">${esc(o[1])}</option>`:`<option value="${esc(o)}">${esc(o)}</option>`).join('');
+}
+function fmtAgo(t){
+  const m=Math.floor((Date.now()-t)/60000);
+  if(m<1) return '剛剛'; if(m<60) return m+' 分鐘前';
+  const h=Math.floor(m/60); if(h<24) return h+' 小時前';
+  return Math.floor(h/24)+' 天前';
+}
+function b64encUtf8(str){ const bytes=new TextEncoder().encode(str); let bin=''; for(let i=0;i<bytes.length;i+=0x8000) bin+=String.fromCharCode.apply(null, bytes.subarray(i,i+0x8000)); return btoa(bin); }
+function b64decUtf8(b64){ const bin=atob(b64.replace(/\s/g,'')); const bytes=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i); return new TextDecoder().decode(bytes); }
+const newId = () => Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* ================= Chinese stat parser ================= */
+function norm(s){
+  return String(s||'').replace(/[０-９]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0))
+    .replace(/＋/g,'+').replace(/％/g,'%').replace(/[－—–]/g,'-').replace(/（/g,'(').replace(/）/g,')').replace(/：/g,':')
+    .replace(/[|｜]/g,' ').replace(/魔法師/g,'法師').replace(/巫師/g,'法師').replace(/\s+/g,' ').trim();
+}
+const CLS_RE = '(亞馬遜|刺客|野蠻人|德魯伊|死靈法師|聖騎士|法師)';
+const RULES = [
+  [/所有技能|全部技能|所有技能等級/, 'allSkills'],
+  [/所有抗性|全部抗性|全抗/, 'allRes'],
+  [new RegExp(CLS_RE+'(職業)?技能'), 'classSkills', 1],
+  [/\(限/, 'treeSkills'],
+  [/施法|施展速度|FCR/i, 'fcr'],
+  [/跑步|行走|奔跑|移動速度|FRW/i, 'frw'],
+  [/攻擊速度|IAS/i, 'ias'],
+  [/打擊恢復|受擊恢復|擊中恢復|被擊恢復|命中恢復|FHR/i, 'fhr'],
+  [/魔法(物品|裝備)|找到魔法|魔法尋獲|尋獲魔法|\(MF\)/i, 'mf'],
+  [/金幣|金錢/, 'gf'],
+  [/火焰抗性|火抗/, 'fireRes'],
+  [/冰(冷|寒|霜)?抗性|冰抗/, 'coldRes'],
+  [/閃電抗性|電抗/, 'lightRes'],
+  [/毒(素)?抗性|毒抗/, 'poisRes'],
+  [/(吸取|偷取|竊取).{0,2}生命|生命.{0,2}(吸取|偷取|竊取)|吸血/, 'll'],
+  [/(吸取|偷取|竊取).{0,2}法力|法力.{0,2}(吸取|偷取|竊取)|吸魔/, 'ml'],
+  [/最小傷害/, 'minDmg'],
+  [/最大傷害/, 'maxDmg'],
+  [/命中率|準確率|攻擊準確/, 'ar', 0, /%/],
+  [/力量/, 'str', 0, /每|%/],
+  [/敏捷/, 'dex', 0, /每|%/],
+  [/體力|活力/, 'vit', 0, /每|%/],
+  [/精力|能量/, 'ene', 0, /每|%|護盾/],
+  [/生命/, 'life', 0, /補充|再生|回復|恢復|每|擊中|殺死|%|上限/],
+  [/法力/, 'mana', 0, /補充|再生|回復|恢復|每|擊中|殺死|%|上限/],
+  [/鑲孔|插槽|孔數|凹槽/, 'sockets'],
+];
+function parseLine(raw){
+  const l = norm(raw);
+  if(!l) return null;
+  const nm = l.match(/(\d+)/); const num = nm ? parseInt(nm[1],10) : null;
+  if(/需要等級|需求等級|等級需求/.test(l)) return {key:'reqLevel', val:num};
+  if(/需要(力量|敏捷)/.test(l)) return null;
+  if(/物品等級/.test(l)) return {key:'ilvl', val:num};
+  if(/無形/.test(l)) return {key:'eth', val:1};
+  for(const [re,key,clsGroup,ex] of RULES){
+    const m = l.match(re);
+    if(!m) continue;
+    if(ex && ex.test(l)) continue;
+    if(num==null) return null;
+    const out = {key, val:num};
+    if(clsGroup) out.cls = m[1];
+    if(key==='treeSkills'){ const c = l.match(new RegExp('限\\s*'+CLS_RE)); if(c) out.cls=c[1]; }
+    return out;
+  }
+  return null;
+}
+function parseProps(lines){
+  const props = {}; let cls = null, reqLevel=null, ilvl=null, eth=false;
+  for(const ln of lines){
+    const r = parseLine(ln); if(!r) continue;
+    if(r.key==='reqLevel'){ reqLevel=r.val; continue; }
+    if(r.key==='ilvl'){ ilvl=r.val; continue; }
+    if(r.key==='eth'){ eth=true; continue; }
+    props[r.key] = (props[r.key]||0) + r.val;
+    if(r.cls && !cls) cls = r.cls;
+  }
+  return {props, cls, reqLevel, ilvl, eth};
+}
+function eff(item, key){
+  const p = item.props||{};
+  let v = p[key]||0;
+  if(['fireRes','coldRes','lightRes','poisRes'].includes(key)) v += p.allRes||0;
+  if(key==='allRes'){ const singles=['fireRes','coldRes','lightRes','poisRes'].map(k=>p[k]||0); v = Math.max(v, (p.allRes||0)+Math.min(...singles)); }
+  if(key==='classSkills') v += p.allSkills||0;
+  return v;
+}
+const STRIP_RE = /防禦|耐久|需要|需求|物品等級|按住|左鍵|右鍵|出售|價值|購買|可裝備|無法裝備|鑲嵌|SHIFT|Shift|^\s*$/;
+function detectCat(text){
+  if(/戒指/.test(text)) return 'ring';
+  if(/護身符|項鍊|項鏈|護符/.test(text)) return 'amulet';
+  if(/頭環|頭冠|寶冠|冠冕|頭飾|王冠/.test(text)) return 'circlet';
+  return null;
+}
+function draftFromText(text){
+  const lines = text.split(/\r?\n/).map(norm).filter(Boolean);
+  const name = lines[0]||'';
+  let base = '', i0 = 1;
+  if(lines[1] && detectCat(lines[1]) && !parseLine(lines[1])) { base = lines[1].replace(/^(戒指|護身符|頭環|頭冠|寶冠|冠冕)\s*[|｜丨lI]?\s*(.*)$/, (m,a,b)=>b?a+' '+b:a); i0=2; }
+  else if(detectCat(name)) { base = name; }
+  const parsed = parseProps(lines);
+  const stats = lines.slice(i0).filter(l=>!STRIP_RE.test(l) && !(detectCat(l) && !parseLine(l)));
+  return { category: detectCat(lines.slice(0,3).join(' ')) || null, quality: null, name, base,
+    reqLevel: parsed.reqLevel, ilvl: parsed.ilvl, eth: parsed.eth, lines: stats };
+}
+
+/* ================= runes, prices, categories (shared) ================= */
+// 33 runes; Chinese names are the common community names used by Chinese-speaking players
+const RUNES = [[1,'El','艾爾'],[2,'Eld','艾德'],[3,'Tir','特爾'],[4,'Nef','那夫'],[5,'Eth','愛斯'],[6,'Ith','伊司'],[7,'Tal','塔爾'],[8,'Ral','拉爾'],
+  [9,'Ort','歐特'],[10,'Thul','書爾'],[11,'Amn','安姆'],[12,'Sol','索爾'],[13,'Shael','夏'],[14,'Dol','多爾'],[15,'Hel','海爾'],[16,'Io','埃歐'],
+  [17,'Lum','盧姆'],[18,'Ko','科'],[19,'Fal','法爾'],[20,'Lem','藍姆'],[21,'Pul','普爾'],[22,'Um','烏姆'],[23,'Mal','馬爾'],[24,'Ist','伊司特'],
+  [25,'Gul','古爾'],[26,'Vex','伐克斯'],[27,'Ohm','歐姆'],[28,'Lo','羅'],[29,'Sur','瑟'],[30,'Ber','貝'],[31,'Jah','喬'],[32,'Cham','查姆'],[33,'Zod','薩德']]
+  .map(([n,en,zh])=>({n,en,zh}));
+const runeByN = n => RUNES[(+n)-1];
+const RUNE_NUM = Object.fromEntries(RUNES.map(r=>[r.en,r.n]));
+const runeOpt = r => `#${r.n} ${r.zh} ${r.en}`;
+// convert old {amount, rune:'Ber'} prices
+function normPrice(p){
+  if(!p) return null;
+  if(p.type) return p;
+  if(p.rune) return {type:'rune', runes:[{n:RUNE_NUM[p.rune]||24, qty:+p.amount||0}]};
+  return null;
+}
+function fmtP(p){
+  p=normPrice(p); if(!p) return '—';
+  if(p.type==='trade') return '以物易物' + (p.want ? '：'+p.want : '');
+  const rs=(p.runes||[]).filter(r=>r.qty>0); if(!rs.length) return '—';
+  return rs.map(r=>`${+r.qty} ${(runeByN(r.n)||{}).en||'?'}`).join(' + ');
+}
+function fmtPzh(p){
+  p=normPrice(p); if(!p) return '—';
+  if(p.type==='trade') return '以物易物' + (p.want ? '：'+p.want : '');
+  const rs=(p.runes||[]).filter(r=>r.qty>0); if(!rs.length) return '—';
+  return rs.map(r=>{ const x=runeByN(r.n)||{}; return `#${r.n} ${x.zh}(${x.en}) × ${+r.qty}`; }).join(' + ');
+}
+// rough rune worth (3 lower = 1 higher up to #20, 2 = 1 above) – only used to order prices
+const runeVal = n => n<=20 ? Math.pow(3,n-1) : Math.pow(3,19)*Math.pow(2,n-20);
+function pKey(p){ p=normPrice(p); if(!p || p.type!=='rune') return -1; return (p.runes||[]).reduce((a,r)=>a+(+r.qty||0)*runeVal(r.n),0); }
+
+let peSeq = 0;
+// price editor: rune combination or barter; works inside the PiP window too (only touches its own box)
+function PriceEditor(box){
+  const id = ++peSeq;
+  const opts = RUNES.slice().reverse().map(r=>`<option value="${r.n}">${runeOpt(r)}</option>`).join('');
+  box.classList.add('pe');
+  box.innerHTML = `<div class="pe-mode">
+      <label><input type="radio" name="pem${id}" value="rune" checked> 符文出價</label>
+      <label><input type="radio" name="pem${id}" value="trade"> 以物易物</label>
+      <label style="margin-left:auto"><input type="checkbox" class="pe-neg"> 可議價</label></div>
+    <div class="pe-rune"><div class="pe-rows"></div>
+      <div class="row" style="gap:6px;margin-top:6px"><button type="button" class="btn sm pe-add" style="flex:0 0 auto">＋ 新增符文</button><span class="muted pe-sum" style="flex:1;font-size:12px"></span></div></div>
+    <div class="pe-trade" style="display:none"><textarea class="pe-want" rows="4" placeholder="想交換的物品，例如：+2 法師技能 / 20 FCR 頭環，或 2 顆完美寶石…"></textarea></div>`;
+  const q = s => box.querySelector(s);
+  const addRow = (n=30, qty=1) => {
+    const d = box.ownerDocument.createElement('div'); d.className='pe-row';
+    d.innerHTML = `<select class="pe-r">${opts}</select><input type="number" class="pe-q" min="0" step="1" value="${qty}"><button type="button" class="x pe-x" title="移除">✕</button>`;
+    d.querySelector('.pe-r').value = n; q('.pe-rows').appendChild(d); sum();
+  };
+  const mode = () => (box.querySelector(`input[name=pem${id}]:checked`)||{}).value || 'rune';
+  const sum = () => { const p=this.get(); q('.pe-sum').textContent = p.type==='rune' && p.runes.length ? '＝ '+fmtPzh(p) : ''; };
+  const sync = () => { const m=mode(); q('.pe-rune').style.display = m==='rune'?'':'none'; q('.pe-trade').style.display = m==='trade'?'':'none'; sum(); };
+  box.addEventListener('click', e=>{
+    if(e.target.closest('.pe-add')){ const rows=box.querySelectorAll('.pe-row'); const last=rows[rows.length-1]; addRow(last? Math.max(1,+last.querySelector('.pe-r').value-1) : 30, 1); box.dispatchEvent(new Event('input',{bubbles:true})); }
+    else if(e.target.closest('.pe-x')){ e.target.closest('.pe-row').remove(); if(!box.querySelector('.pe-row')) addRow(); sum(); box.dispatchEvent(new Event('input',{bubbles:true})); }
+  });
+  box.addEventListener('change', sync); box.addEventListener('input', sum);
+  this.get = () => {
+    const neg = q('.pe-neg').checked;
+    if(mode()==='trade') return {type:'trade', want: q('.pe-want').value.trim().slice(0,200), negotiable:neg};
+    const runes=[...box.querySelectorAll('.pe-row')].map(r=>({n:+r.querySelector('.pe-r').value, qty:Math.max(0, +r.querySelector('.pe-q').value||0)})).filter(r=>r.qty>0);
+    return {type:'rune', runes, negotiable:neg};
+  };
+  this.set = (p) => {
+    p = normPrice(p) || ls.get('d2r_lastprice', null) || {type:'rune', runes:[{n:30, qty:1}]};
+    q('.pe-rows').innerHTML='';
+    (p.type==='rune' && p.runes && p.runes.length ? p.runes : [{n:30,qty:1}]).forEach(r=>addRow(r.n, r.qty));
+    q('.pe-want').value = p.want || '';
+    q('.pe-neg').checked = !!p.negotiable;
+    box.querySelector(`input[name=pem${id}][value=${p.type==='trade'?'trade':'rune'}]`).checked = true;
+    sync();
+  };
+  this.valid = () => { const p=this.get(); return p.type==='trade' ? (p.want ? '' : '請填寫想交換的物品') : (p.runes.length ? '' : '請至少填一個符文數量'); };
+  this.remember = () => { const p=this.get(); ls.set('d2r_lastprice', p); };
+  this.set(null);
+}
+
+// categories: 3 built-in + your own
+const BASE_CATS = [{id:'ring',label:'戒指'},{id:'amulet',label:'護身符'},{id:'circlet',label:'頭環'}];
+let customCats = ls.get('d2r_cats', []);
+const allCats = () => [...BASE_CATS, ...customCats];
+const catLabel = id => { const c=allCats().find(c=>c.id===id); return c ? c.label : ''; };
+let onCatsChanged = ()=>{};
+function addCustomCat(label){
+  label = norm(label).slice(0,12); if(!label) return null;
+  const ex = allCats().find(c=>c.label===label); if(ex) return ex.id;
+  const c = {id:'c'+Date.now().toString(36), label}; customCats.push(c); ls.set('d2r_cats', customCats);
+  catSelects.forEach(s=>{ const v=s.value; fillCatSelect(s, s.dataset.other==='1'); s.value=v; });
+  onCatsChanged();
+  return c.id;
+}
+const catSelects = [];   // every category <select>, wherever it lives (page or PiP window)
+function fillCatSelect(sel, withOther){
+  if(!catSelects.includes(sel)) catSelects.push(sel);
+  sel.classList.add('catsel'); sel.dataset.other = withOther?'1':'';
+  sel.innerHTML = allCats().map(c=>`<option value="${esc(c.id)}">${esc(c.label)}</option>`).join('') + (withOther?'<option value="other">其他</option>':'') + '<option value="__add">＋ 新增類別…</option>';
+}
+// "＋ 新增類別…" opens a small inline box right below the select (works in the PiP window as well)
+function bindCatSelect(sel, withOther){
+  fillCatSelect(sel, withOther);
+  let prev = sel.value;
+  const doc = sel.ownerDocument;
+  const box = doc.createElement('div'); box.className='row catadd'; box.style.cssText='display:none;gap:4px;margin-top:4px';
+  box.innerHTML = '<input type="text" maxlength="12" placeholder="新類別名稱，例如：珠寶"><button type="button" class="btn sm pri" style="flex:0 0 auto">新增</button><button type="button" class="btn sm" style="flex:0 0 auto">取消</button>';
+  sel.insertAdjacentElement('afterend', box);
+  const [inp, ok, no] = box.children;
+  const close = (v) => { box.style.display='none'; sel.value = v; prev = v; sel.dispatchEvent(new Event('input',{bubbles:true})); };
+  sel.addEventListener('focus', ()=>{ if(sel.value!=='__add') prev=sel.value; });
+  sel.addEventListener('change', ()=>{ if(sel.value==='__add'){ box.style.display='flex'; inp.value=''; inp.focus(); } else prev=sel.value; });
+  ok.onclick = ()=>{ const id = addCustomCat(inp.value); if(!id){ inp.focus(); return; } fillCatSelect(sel, withOther); close(id); };
+  no.onclick = ()=> close(prev && prev!=='__add' ? prev : sel.options[0].value);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); ok.click(); } if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); no.click(); } });
+}
+
+/* ================= image helpers ================= */
+function loadImg(file){
+  return new Promise((res,rej)=>{ const u=URL.createObjectURL(file); const im=new Image(); im.onload=()=>res(im); im.onerror=rej; im.src=u; });
+}
+function scaleCanvas(im, max, minScale){
+  let r = Math.min(1, max/Math.max(im.naturalWidth||im.width, im.naturalHeight||im.height));
+  if(minScale) r = Math.max(r, minScale);
+  const w=im.naturalWidth||im.width, h=im.naturalHeight||im.height;
+  const c = document.createElement('canvas'); c.width=Math.round(w*r); c.height=Math.round(h*r);
+  const g=c.getContext('2d'); g.imageSmoothingQuality='high'; g.drawImage(im,0,0,c.width,c.height); return c;
+}
+function thumbData(im){
+  let max=560, q=0.8, d;
+  do { d = scaleCanvas(im, max).toDataURL('image/jpeg', q); max-=80; q-=0.06; } while(d.length>140000 && max>200);
+  return d;
+}
+
+/* ================= OCR ================= */
+const OCR_PROMPT = `你是《暗黑破壞神 II：獄火重生》(D2R) 的物品截圖辨識器。圖片是遊戲中物品說明框的截圖（通常為繁體中文介面，也可能是簡體中文或英文）。
+請辨識圖中「主要的那一件物品」，只輸出 JSON，不要任何其他文字：
+{"category":"ring|amulet|circlet|other","quality":"unique|set|rare|magic|crafted|normal","name":"物品名稱（說明框第一行）","base":"基底類型，如 戒指、護身符、頭環、頭冠、寶冠、冠冕","requiredLevel":數字或null,"itemLevel":數字或null,"ethereal":false,"lines":["每條魔法屬性一行"]}
+規則：
+- 品質依名稱文字顏色判斷：金褐色/暗金=unique，綠色=set，亮黃色=rare，藍色=magic，橘色=crafted，白或灰=normal。
+- lines 只放屬性（藍色文字），保留原本的數字、+、%、括號；不要放名稱、基底、需要等級、物品等級、防禦、耐久、套裝獎勵說明、價格或操作提示。
+- 若為簡體中文，請轉為繁體中文；若為英文，請翻譯成 D2R 繁體中文用語。
+- 看不清楚的字，寫出最可能的內容。`;
+
+const SET = Object.assign({engine:'tesseract', key:'', model:'claude-sonnet-5-5', contact:''}, ls.get('d2r_settings', {}));
+function saveSet(){ ls.set('d2r_settings', SET); }
+
+let tessP = null;
+function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=()=>rej(new Error('load')); document.head.appendChild(s); }); }
+let tessProgress = ()=>{};
+function getTess(){
+  if(!tessP) tessP = (async()=>{
+    if(!window.Tesseract) await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js');
+    const w = await Tesseract.createWorker('chi_tra', 1, { logger: m => tessProgress(m) });
+    await w.setParameters({ tessedit_pageseg_mode: '6', preserve_interword_spaces: '1' });
+    return w;
+  })().catch(e=>{ tessP=null; throw e; });
+  return tessP;
+}
+// D2R text is bright & coloured on a dark background: keep the brightest channel, threshold, invert to black-on-white, upscale
+function prepForOcr(im, forceScale){
+  const w0 = im.naturalWidth||im.width, scale = forceScale || (w0 < 900 ? Math.min(3, 1400/w0) : (w0>2200 ? 2200/w0 : 1));
+  const c = scaleCanvas(im, 99999, scale);
+  const g = c.getContext('2d'); const d = g.getImageData(0,0,c.width,c.height); const p=d.data;
+  for(let i=0;i<p.length;i+=4){ const m=Math.max(p[i],p[i+1],p[i+2]); const v = m>95 ? 0 : 255; p[i]=p[i+1]=p[i+2]=v; }
+  g.putImageData(d,0,0);
+  return {canvas:c, scale};
+}
+function classifyColor(im, bbox, scale){
+  try{
+    const x=Math.max(0,Math.floor(bbox.x0/scale)), y=Math.max(0,Math.floor(bbox.y0/scale));
+    const w=Math.max(1,Math.ceil((bbox.x1-bbox.x0)/scale)), h=Math.max(1,Math.ceil((bbox.y1-bbox.y0)/scale));
+    const c=document.createElement('canvas'); c.width=w; c.height=h; const g=c.getContext('2d'); g.drawImage(im,x,y,w,h,0,0,w,h);
+    const p=g.getImageData(0,0,w,h).data; let R=0,G=0,B=0,n=0;
+    for(let i=0;i<p.length;i+=4){ if(Math.max(p[i],p[i+1],p[i+2])>110){ R+=p[i];G+=p[i+1];B+=p[i+2];n++; } }
+    if(!n) return null; R/=n; G/=n; B/=n;
+    if(G>R*1.25 && G>B*1.25) return 'set';
+    if(B>R*1.15 && B>G*1.05) return 'magic';
+    if(R>170 && G>170 && B<R*0.7) return 'rare';
+    if(R>G*1.35 && B<G*0.6) return 'crafted';
+    if(R>G && G>B && R-B>35) return 'unique';
+    return 'normal';
+  }catch(e){ return null; }
+}
+function cleanOcrLine(t){
+  let s = t.replace(/(?<=[㐀-鿿])\s+(?=[㐀-鿿])/g,'')
+           .replace(/(?<=\d)\s+(?=%)/g,'').replace(/^[十卜]\s*(?=\d)/,'+').trim();
+  // Tesseract often misreads "%" as "9", "96", "0" (e.g. +20% -> +2096 / +209 / +200).
+  // Percent stats on rings/amulets/circlets never exceed 100, so trim the junk back to a percentage.
+  s = s.replace(/(\d+)9%/g, (m,n)=> (+(n+'9')>100 && +n>0) ? n+'%' : m);
+  if(!/%/.test(s) && /施法|跑步|行走|攻擊速度|恢復|魔法|金幣|吸取|偷取|抗性|機率|FCR|FRW|IAS|FHR/i.test(s)){
+    s = s.replace(/\+?\d{3,}/, num=>{
+      let sign = num[0]==='+' ? '+' : '', n = num.replace('+','');
+      while(+n>100){ const m=n.match(/^(\d+?)(96|9|0|6)$/); if(!m) return num; n=m[1]; }
+      return sign+n+'%';
+    });
+  }
+  s = s.replace(/\(FC[A-Z]{0,3}\)/g,'(FCR)').replace(/進陛/g,'進階');
+  return norm(s);
+}
+/* ---------- OCR post-processing: known-word fix + learned corrections ---------- */
+const nums = s => (norm(s||'').match(/\d+/g)||[]);
+function lev(a,b){
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  let prev=Array.from({length:n+1},(_,j)=>j), cur=new Array(n+1);
+  for(let i=1;i<=m;i++){ cur[0]=i; for(let j=1;j<=n;j++){ cur[j]=Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+(a[i-1]===b[j-1]?0:1)); } [prev,cur]=[cur,prev]; }
+  return prev[n];
+}
+const sim = (a,b) => { a=a||''; b=b||''; const L=Math.max(a.length,b.length); return L ? 1-lev(a,b)/L : 1; };
+// D2R terms of 3+ characters: a window that differs from one of these by a single character is corrected
+const KNOWN_WORDS = ['死靈法師','亞馬遜','野蠻人','德魯伊','聖騎士','技能等級','所有技能','施法速度','攻擊速度','更快速跑步','打擊恢復','所有抗性',
+  '火焰抗性','冰冷抗性','閃電抗性','毒素抗性','火焰傷害','冰冷傷害','閃電傷害','毒素傷害','需要等級','物品等級','耐久度','護身符','魔法物品','擊中時','最大傷害','最小傷害','命中率','吸取生命','吸取法力','偷取生命','偷取法力','只限聖騎士','格擋機率','無法修復','德魯伊技能'];
+const KNOWN_SET = new Set(KNOWN_WORDS);
+const isCJK = c => /[㐀-鿿]/.test(c);
+function fixWords(s){
+  if(!s) return s;
+  if([...s].length<=8) s = s.replace(/^[^戒\d+\-]指/,'戒指').replace(/^(.身符|護.符|護身.)(?=$|\s)/,'護身符').replace(/^[^頭\d+\-]環/,'頭環');
+  s = s.replace(/^防.(?=\s*[:：])/,'防禦').replace(/^耐久.(?=\s*[:：])/,'耐久度').replace(/^.要(?=(等級|力量|敏捷)\s*[:：])/,'需要');
+  const chars=[...s];
+  for(const w of KNOWN_WORDS){
+    const W=[...w], n=W.length;
+    for(let i=0;i+n<=chars.length;i++){
+      let diff=0, cjk=true;
+      for(let k=0;k<n;k++){ if(chars[i+k]!==W[k]) diff++; if(!isCJK(chars[i+k])) cjk=false; }
+      if(diff===1 && cjk && !KNOWN_SET.has(chars.slice(i,i+n).join(''))){ for(let k=0;k<n;k++) chars[i+k]=W[k]; }
+    }
+  }
+  return chars.join('');
+}
+const Learn = {
+  map: ls.get('d2r_learn', {}),
+  tmpl: s => norm(s||'').replace(/\d+/g,'#').replace(/\s+/g,''),
+  count(){ return Object.keys(this.map).length; },
+  save(){ ls.set('d2r_learn', this.map); },
+  clear(){ this.map={}; this.save(); },
+  // remember how the user corrected an OCR reading (numbers are kept as placeholders)
+  record(before, after){
+    let n=0;
+    const put=(a,b)=>{
+      if(!a||!b) return; const ta=this.tmpl(a), tb=this.tmpl(b);
+      if(ta===tb || nums(a).length!==nums(b).length || sim(ta,tb)<0.4) return;
+      this.map[ta]=norm(b).replace(/\d+/g,'#'); n++;
+    };
+    put(before.name, after.name); put(before.base, after.base);
+    const A=before.lines||[], B=after.lines||[], used=new Set();
+    for(const a of A){
+      let bi=-1, bs=0;
+      B.forEach((b,i)=>{ if(used.has(i) || nums(a).join()!==nums(b).join()) return; const s=sim(this.tmpl(a),this.tmpl(b)); if(s>bs){ bs=s; bi=i; } });
+      if(bi>=0){ used.add(bi); put(a, B[bi]); }
+    }
+    if(n) this.save();
+    return n;
+  },
+  apply(s){
+    if(!s) return s; const to=this.map[this.tmpl(s)]; if(!to) return s;
+    const ns=nums(s); let i=0; return to.replace(/#/g,()=> ns[i++] ?? '');
+  },
+};
+function postOcr(d){
+  const fx = s => Learn.apply(fixWords(norm(s||'')));
+  d.name = fx(d.name); d.base = fx(d.base);
+  d.lines = (d.lines||[]).map(fx).filter(Boolean);
+  if(!d.category) d.category = detectCat((d.base||'')+' '+(d.name||'')) || null;
+  d._ocr = {name:d.name, base:d.base, lines:d.lines.slice()};
+  return d;
+}
+/* ---------- duplicate detection ----------
+   Same item = every number identical, same number of lines, and text ≥70% alike
+   (tolerates OCR typos in the name, but +39 vs +38 life counts as a different item). */
+const flatText = d => norm([d.name, ...(d.lines||[])].join('')).replace(/\s+/g,'');
+function sameItem(a,b){
+  if(!a||!b) return false;
+  const na=[...nums(a.name), ...(a.lines||[]).flatMap(nums)].join(','), nb=[...nums(b.name), ...(b.lines||[]).flatMap(nums)].join(',');
+  if(!na || na!==nb) return false;
+  if((a.lines||[]).length!==(b.lines||[]).length) return false;
+  return sim(flatText(a), flatText(b)) >= 0.7;
+}
+
+// adaptive binarisation: each text line gets its own threshold (60% of the brightest text near it),
+// so dim grey names are kept while the darker background behind the box is dropped
+function prepAdaptive(im, scale){
+  const c = scaleCanvas(im, 99999, scale);
+  const g = c.getContext('2d'); const d = g.getImageData(0,0,c.width,c.height); const p=d.data; const W=c.width, H=c.height;
+  const M=new Uint8Array(W*H); for(let i=0;i<W*H;i++) M[i]=Math.max(p[i*4],p[i*4+1],p[i*4+2]);
+  const rowP=new Float32Array(H); const hist=new Uint32Array(256);
+  for(let y=0;y<H;y++){ hist.fill(0); for(let x=0;x<W;x++) hist[M[y*W+x]]++; let k=Math.floor(W*0.98), acc=0, v=0; for(v=0;v<256;v++){ acc+=hist[v]; if(acc>k) break; } rowP[y]=v; }
+  const R=Math.max(3, Math.round(H/30)); const T=new Float32Array(H);
+  for(let y=0;y<H;y++){ let m=0; for(let k=-R;k<=R;k++){ const yy=y+k; if(yy>=0&&yy<H&&rowP[yy]>m) m=rowP[yy]; } T[y]=Math.max(45, 0.6*m); }
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const i=y*W+x; const v=M[i]>T[y]?0:255; p[i*4]=p[i*4+1]=p[i*4+2]=v; }
+  g.putImageData(d,0,0);
+  return c;
+}
+async function ocrTesseractOnce(im, w, forceScale){
+  const {canvas, scale} = prepForOcr(im, forceScale);
+  const A = (await w.recognize(prepAdaptive(im, scale))).data.lines||[];
+  const F = (await w.recognize(canvas)).data.lines||[];
+  // merge the two readings line by line (matched by vertical position), keeping the more confident one
+  const all = [...A, ...F].filter(l=>l.text.trim() && l.confidence>15).map(l=>({text:Learn.apply(fixWords(cleanOcrLine(l.text))), conf:l.confidence, bbox:l.bbox, yc:(l.bbox.y0+l.bbox.y1)/2, h:l.bbox.y1-l.bbox.y0})).filter(l=>l.text.length>=2);
+  all.sort((a,b)=>a.yc-b.yc);
+  const lines=[];
+  for(const l of all){ const last=lines[lines.length-1]; if(last && Math.abs(last.yc-l.yc) < Math.max(last.h,l.h)*0.5){ if(l.conf>last.conf) lines[lines.length-1]=l; } else lines.push(l); }
+  const raw = lines.map(l=>l.text).join('\n');
+  const d = draftFromText(raw);
+  if(lines[0]) d.quality = classifyColor(im, lines[0].bbox, scale);
+  d._raw = raw;
+  d._score = (d.category?3:0) + (d.reqLevel?1:0) + (d.name?1:0) + Object.keys(parseProps(d.lines).props).length;
+  return d;
+}
+async function ocrTesseract(im, onP){
+  tessProgress = m => { if(m.status==='recognizing text') onP('辨識中 '+Math.round(m.progress*100)+'%'); else if(/load|initializ/.test(m.status)) onP('下載語言檔… '+Math.round((m.progress||0)*100)+'%'); };
+  const w = await getTess();
+  let best = await ocrTesseractOnce(im, w);
+  // if the item type or level was missed, try other zoom levels and keep the most complete reading
+  if(!best.category || !best.reqLevel){
+    const w0 = im.naturalWidth||im.width;
+    for(const target of [1000, 1600]){
+      const sc = Math.min(4, Math.max(1, target/w0));
+      const d = await ocrTesseractOnce(im, w, sc);
+      if(d._score > best._score) best = d;
+      if(best.category && best.reqLevel) break;
+    }
+  }
+  return postOcr(best);
+}
+async function ocrClaude(im){
+  if(!SET.key) throw new Error('請先在「設定」填寫 Anthropic API key');
+  const b64 = scaleCanvas(im, 1600).toDataURL('image/jpeg', 0.92).split(',')[1];
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'content-type':'application/json','x-api-key':SET.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({model: SET.model || 'claude-sonnet-5-5', max_tokens: 1500,
+      messages:[{role:'user', content:[{type:'image', source:{type:'base64', media_type:'image/jpeg', data:b64}}, {type:'text', text:OCR_PROMPT}]}]}),
+  });
+  const j = await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error((j.error && j.error.message) || ('API 錯誤 '+r.status));
+  const text = (j.content||[]).map(c=>c.text||'').join('');
+  const m = text.match(/\{[\s\S]*\}/); if(!m) throw new Error('無法解析辨識結果');
+  const o = JSON.parse(m[0]);
+  const lines = (Array.isArray(o.lines)?o.lines:[]).map(norm).filter(Boolean);
+  return postOcr({
+    category: ['ring','amulet','circlet'].includes(o.category)?o.category:(detectCat((o.base||'')+' '+(o.name||''))||null),
+    quality: QUAL_LABEL[o.quality]?o.quality:null, name: norm(o.name||''), base: norm(o.base||''),
+    reqLevel: +o.requiredLevel||null, ilvl: +o.itemLevel||null, eth: !!o.ethereal, lines,
+    _otherCat: o.category==='other', _raw: text,
+  });
+}
+
+/* ================= GitHub-backed store ================= */
+const DATA_PATH = 'data/listings.json';
+function detectRepo(){
+  const h = location.hostname;
+  if(/\.github\.io$/i.test(h)){
+    const owner = h.split('.')[0]; const seg = location.pathname.split('/').filter(Boolean)[0];
+    const repo = seg && !/\.html?$/.test(seg) ? seg : owner+'.github.io';
+    return {owner, repo};
+  }
+  return {owner:'', repo:''};
+}
+const GH = Object.assign({branch:'main'}, detectRepo(), ls.get('d2r_gh', {}));
+const Store = {
+  listings:[], sha:null, loaded:false, watch:new Set(ls.get('d2r_watch', [])), imgCache:{},
+  get admin(){ return !!GH.token; },
+  api(path, opts={}){
+    const url = `https://api.github.com/repos/${encodeURIComponent(GH.owner)}/${encodeURIComponent(GH.repo)}/contents/${path}`;
+    return fetch(url + (opts.method && opts.method!=='GET' ? '' : `?ref=${encodeURIComponent(GH.branch)}&t=${Date.now()}`), {
+      method: opts.method||'GET',
+      headers: Object.assign({'Accept':'application/vnd.github+json','Authorization':'Bearer '+GH.token,'X-GitHub-Api-Version':'2022-11-28'}, opts.headers||{}),
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      cache:'no-store',
+    });
+  },
+  async load(){
+    setSync('讀取中…');
+    try{
+      if(this.admin){
+        const r = await this.api(DATA_PATH);
+        if(r.status===404){ this.listings=[]; this.sha=null; }
+        else if(!r.ok){ throw await ghErr(r); }
+        else {
+          const j = await r.json(); this.sha = j.sha;
+          let text = j.content ? b64decUtf8(j.content) : null;
+          if(text==null){ const rr = await this.api(DATA_PATH, {headers:{'Accept':'application/vnd.github.raw+json'}}); text = await rr.text(); }
+          this.listings = parseData(text);
+        }
+      }else{
+        const r = await fetch(DATA_PATH+'?t='+Date.now(), {cache:'no-store'});
+        this.listings = r.ok ? parseData(await r.text()) : [];
+        if(!r.ok && r.status!==404) throw new Error('HTTP '+r.status);
+      }
+      this.loaded = true; setSync(''); hideBanner();
+    }catch(e){
+      this.loaded = true; setSync('');
+      showBanner(location.protocol==='file:' ? '你正在直接開啟本機檔案，瀏覽器不允許讀取資料。請上傳到 GitHub Pages 後再使用。' : '資料讀取失敗：'+(e.message||e));
+    }
+    render();
+  },
+  q: Promise.resolve(),
+  // queue a write of listings.json (single writer, sequential)
+  commit(msg){
+    const job = this.q.then(async()=>{
+      setSync('儲存中…');
+      const used = new Set(this.listings.map(l=>l.category));
+      const body = JSON.stringify({version:2, updatedAt:Date.now(), categories:customCats.filter(c=>used.has(c.id)), listings:this.listings}, null, 1);
+      for(let attempt=0; attempt<2; attempt++){
+        const r = await this.api(DATA_PATH, {method:'PUT', body:{message:msg, content:b64encUtf8(body), branch:GH.branch, ...(this.sha?{sha:this.sha}:{})}});
+        if(r.ok){ const j=await r.json(); this.sha=j.content.sha; setSync('已儲存 · 網站約 1 分鐘後更新'); setTimeout(()=>setSync(''),6000); return; }
+        if((r.status===409||r.status===422) && attempt===0){ const g=await this.api(DATA_PATH); if(g.ok){ this.sha=(await g.json()).sha; continue; } if(g.status===404){ this.sha=null; continue; } }
+        throw await ghErr(r);
+      }
+    });
+    this.q = job.catch(()=>{});
+    return job.catch(e=>{ setSync(''); toast('儲存到 GitHub 失敗：'+(e.message||e), true); throw e; });
+  },
+  async putImage(id, dataUrl){
+    const path = `images/${id}.${/^data:image\/png/.test(dataUrl)?'png':'jpg'}`;
+    const r = await this.api(path, {method:'PUT', body:{message:'add image '+id, content:dataUrl.split(',')[1], branch:GH.branch}});
+    if(!r.ok) throw await ghErr(r);
+    this.imgCache[path] = dataUrl;
+    return path;
+  },
+  async delImage(path){
+    if(!path || !/^images\//.test(path)) return;
+    try{
+      const g = await this.api(path); if(!g.ok) return;
+      const sha = (await g.json()).sha;
+      await this.api(path, {method:'DELETE', body:{message:'remove '+path, sha, branch:GH.branch}});
+    }catch(e){}
+  },
+  toggleWatch(id){
+    if(this.watch.has(id)) this.watch.delete(id); else this.watch.add(id);
+    ls.set('d2r_watch', [...this.watch]); render();
+  },
+  async add(item){ this.listings.unshift(item); render(); await this.commit('add '+item.name); },
+  async addMany(items){ if(!items.length) return; this.listings.unshift(...items.slice().reverse()); render(); await this.commit(items.length>1 ? `add ${items.length} items` : 'add '+items[0].name); },
+  async update(id, patch, msg){ const l=this.listings.find(x=>x.id===id); if(!l) return; Object.assign(l, patch); render(); await this.commit(msg||('update '+l.name)); },
+  async remove(id){ const l=this.listings.find(x=>x.id===id); if(!l) return; this.listings=this.listings.filter(x=>x.id!==id); render(); await this.commit('delete '+l.name); this.delImage(l.image); },
+};
+function parseData(text){
+  try{
+    const j=JSON.parse(text);
+    if(j && Array.isArray(j.categories)){ for(const c of j.categories){ if(c && c.id && c.label && !customCats.some(x=>x.id===c.id)) customCats.push({id:String(c.id), label:String(c.label).slice(0,12)}); } ls.set('d2r_cats', customCats); }
+    return Array.isArray(j) ? j : (Array.isArray(j.listings)?j.listings:[]);
+  }catch(e){ return []; }
+}
+async function ghErr(r){
+  let m=''; try{ m=(await r.json()).message||''; }catch(e){}
+  if(r.status===401) return new Error('權杖無效或已過期');
+  if(r.status===403) return new Error('權杖沒有這個 repo 的寫入權限（Contents: Read and write）'+(m?'：'+m:''));
+  if(r.status===404) return new Error('找不到 repo 或分支，請確認帳號 / repo 名稱 / 分支');
+  return new Error('GitHub '+r.status+(m?'：'+m:''));
+}
+const imgSrc = p => p ? (Store.imgCache[p] || p) : '';
+function setSync(t){ $('#sync').textContent=t; }
+function showBanner(t){ const b=$('#banner'); b.textContent=t; b.style.display='block'; }
+function hideBanner(){ $('#banner').style.display='none'; }
+
+/* ================= filter state ================= */
+const F0 = () => ({cat:'all', q:'', quals:[], status:'active', watched:false, stats:[], cls:'any', req:'', rune:'any', pmin:'', pmax:'', nego:false, ladder:'any', hc:'any', plat:'any', region:'any', sort:'new'});
+let F = Object.assign(F0(), ls.get('d2r_filters2', {}));
+function saveF(){ const {cat, ...rest} = F; ls.set('d2r_filters2', rest); }
+const status = l => l.status==='sold' ? 'sold' : l.status==='cancelled' ? 'cancelled' : 'active';
+
+function applyFilters(list, ignoreCat){
+  const q = norm(F.q).toLowerCase();
+  const pmin = F.pmin===''?null:+F.pmin, pmax = F.pmax===''?null:+F.pmax, req = F.req===''?null:+F.req;
+  return list.filter(l=>{
+    if(!ignoreCat && F.cat!=='all' && l.category!==F.cat) return false;
+    const st = status(l);
+    if(st==='cancelled') return false;
+    if(F.status!=='all' && st!==F.status) return false;
+    if(F.watched && !Store.watch.has(l.id)) return false;
+    if(F.quals.length && !F.quals.includes(l.quality)) return false;
+    if(F.ladder!=='any' && l.ladder!==F.ladder) return false;
+    if(F.hc!=='any' && l.hc!==F.hc) return false;
+    if(F.plat!=='any' && l.platform!==F.plat) return false;
+    if(F.region!=='any' && l.region!==F.region) return false;
+    if(F.nego && !l.negotiable) return false;
+    if(req!=null && (l.reqLevel||0)>req) return false;
+    const p = st==='sold' && l.finalPrice ? l.finalPrice : l.price;
+    if(F.rune!=='any'){
+      const pp = normPrice(p); if(!pp) return false;
+      if(F.rune==='trade'){ if(pp.type!=='trade') return false; }
+      else {
+        const r = pp.type==='rune' && (pp.runes||[]).find(r=>r.n===+F.rune); if(!r) return false;
+        if(pmin!=null && r.qty<pmin) return false;
+        if(pmax!=null && r.qty>pmax) return false;
+      }
+    }
+    if(F.cls!=='any' && l.cls!==F.cls) return false;
+    for(const s of F.stats){ if(s.min!=='' && s.min!=null && eff(l, s.key) < +s.min) return false; }
+    if(q){
+      const hay = [l.name,l.base,(l.lines||[]).join(' '),l.note,fmtPzh(l.price),QUAL_LABEL[l.quality],catLabel(l.category),l.cls].join(' ').toLowerCase();
+      if(!q.split(' ').every(w=>hay.includes(w))) return false;
+    }
+    return true;
+  });
+}
+function sortList(list){
+  const s=F.sort, a=list.slice();
+  if(s==='new') a.sort((x,y)=>y.createdAt-x.createdAt);
+  else if(s==='pasc'){ const k=l=>{ const v=pKey(l.price); return v<0?Infinity:v; }; a.sort((x,y)=>k(x)-k(y)); }
+  else if(s==='pdesc'){ const k=l=>{ const v=pKey(l.price); return v<0?-Infinity:v; }; a.sort((x,y)=>k(y)-k(x)); }
+  else if(s.startsWith('stat:')){ const k=s.slice(5); a.sort((x,y)=>eff(y,k)-eff(x,k)); }
+  return a;
+}
+
+/* ================= rendering ================= */
+function tooltipHTML(l){
+  const q='q-'+(l.quality||'normal');
+  let h = `<div class="name ${q}">${esc(l.name||'(未命名)')}</div>`;
+  if(l.base && l.base!==l.name) h += `<div class="${q}">${esc(l.base)}</div>`;
+  if(l.reqLevel) h += `<div class="req">需要等級: ${esc(l.reqLevel)}</div>`;
+  if(l.ilvl) h += `<div class="req" style="color:#999">物品等級: ${esc(l.ilvl)}</div>`;
+  for(const ln of (l.lines||[])) h += `<div class="stat">${esc(ln)}</div>`;
+  if(l.eth) h += `<div class="eth">無形</div>`;
+  return h;
+}
+function cardHTML(l){
+  const st=status(l);
+  const p = st==='sold' && l.finalPrice ? l.finalPrice : l.price;
+  return `<article class="card ${st!=='active'?'dim':''}" data-id="${esc(l.id)}">
+    ${st==='sold'?'<span class="badge sold">已售出</span>':''}
+    <div class="tt">${tooltipHTML(l)}</div>
+    <div class="tags">
+      <span class="tag">${esc(catLabel(l.category)||'')}</span>
+      <span class="tag l">${l.ladder==='ladder'?'天梯':'非天梯'}</span>
+      ${l.hc==='hc'?'<span class="tag hc">專家</span>':''}
+      <span class="tag">${esc(l.platform)}</span><span class="tag">${esc(REGION_LABEL[l.region]||l.region)}</span>
+      ${l.image?'<span class="tag">截圖</span>':''}
+    </div>
+    <div class="cfoot">
+      <div class="price">${esc(fmtP(p))}<small>${st==='sold'?'成交價':(l.negotiable?'售價 · 可議':'售價')}</small></div>
+      <div class="time">${esc(fmtAgo(l.createdAt))}</div>
+      <button class="star ${Store.watch.has(l.id)?'on':''}" data-star="${esc(l.id)}" title="收藏">★</button>
+    </div>
+  </article>`;
+}
+function renderTabs(){
+  const base = applyFilters(Store.listings, true);
+  const n = {all:base.length}; for(const l of base) n[l.category]=(n[l.category]||0)+1;
+  $('#tabs').innerHTML = getCats().map(c=>`<button class="tab ${view==='shop'&&F.cat===c.id?'on':''}" data-cat="${c.id}">${c.icon||''}${c.label}<span class="n">${n[c.id]||0}</span></button>`).join('');
+}
+function renderGrid(){
+  const list = sortList(applyFilters(Store.listings));
+  $('#count').textContent = `${list.length} 件`;
+  if(!Store.loaded){ $('#grid').innerHTML='<div class="empty"><span class="spin"></span> 讀取中…</div>'; return; }
+  if(!list.length){
+    $('#grid').innerHTML = `<div class="empty">${Store.listings.length?'沒有符合條件的物品，試著放寬篩選條件。':'目前沒有刊登的物品。'}</div>`;
+    return;
+  }
+  $('#grid').innerHTML = list.map(cardHTML).join('');
+}
+function renderPresets(){
+  $('#presets').innerHTML = (PRESETS[F.cat]||[]).map((p,i)=>`<span class="chip" data-preset="${i}">${esc(p.l)}</span>`).join('');
+}
+function renderSide(){
+  $('#statusChips').innerHTML = [['active','販售中'],['sold','已售出'],['all','全部']].map(([k,t])=>`<span class="chip ${F.status===k?'on':''}" data-status="${k}">${t}</span>`).join('');
+  $('#ownChips').innerHTML = `<span class="chip ${F.watched?'on':''}" data-own="watched">★ 收藏 (${Store.watch.size})</span>`;
+  $('#qualChips').innerHTML = QUALS.map(([k,t])=>`<span class="chip q-${k} ${F.quals.includes(k)?'on':''}" data-qual="${k}">${t}</span>`).join('');
+  $('#statRows').innerHTML = F.stats.map((s,i)=>`<div class="statrow">
+      <select data-sk="${i}">${PROPS.map(([k,t])=>`<option value="${k}" ${k===s.key?'selected':''}>${t}</option>`).join('')}</select>
+      <input type="number" data-sv="${i}" value="${esc(s.min)}" placeholder="≥">
+      <button class="x" data-sx="${i}">✕</button></div>`).join('') || '<div class="muted">尚未設定（可用上方快速條件）</div>';
+  $('#fCls').value=F.cls; $('#fReq').value=F.req; $('#fRune').value=F.rune; $('#fPmin').value=F.pmin; $('#fPmax').value=F.pmax;
+  $('#fPmin').disabled = $('#fPmax').disabled = (F.rune==='any' || F.rune==='trade');
+  $('#fNego').classList.toggle('on', F.nego);
+  $('#fLadder').value=F.ladder; $('#fHc').value=F.hc; $('#fPlat').value=F.plat; $('#fRegion').value=F.region;
+  $('#fQ').value=F.q; $('#fSort').value=F.sort;
+}
+let view='shop';
+function render(){
+  renderTabs();
+  const nav = Store.admin ? [['shop','拍賣所'],['capture','截圖上架'],['admin','管理後台']] : (view!=='shop' ? [['shop','← 回到拍賣所']] : []);
+  $('#navBtns').innerHTML = nav.map(([k,l])=>`<button class="btn ${view===k?'pri':''}" data-nav="${k}">${l}</button>`).join('');
+  if(view==='admin') renderAdmin();
+  else if(view==='capture'){ $('#capLogin').style.display = Store.admin?'none':''; $('#capBody').style.display = Store.admin?'':'none'; }
+  else { renderPresets(); renderSide(); renderGrid(); }
+  if(openDetailId) renderDetail();
+}
+
+/* ================= shop events ================= */
+fillSelect($('#fCls'), CLASSES, '全部');
+fillSelect($('#fPlat'), PLATS, '全部');
+fillSelect($('#fRegion'), REGIONS, '全部');
+$('#fRune').innerHTML = '<option value="any">全部</option><option value="trade">以物易物</option>' + RUNES.slice().reverse().map(r=>`<option value="${r.n}">${runeOpt(r)}</option>`).join('');
+if(F.rune!=='any' && F.rune!=='trade' && !runeByN(F.rune)) F.rune='any';
+fillSelect($('#fSort'), SORTS);
+function setF(patch){ Object.assign(F, patch); saveF(); render(); }
+$('#tabs').addEventListener('click', e=>{ const b=e.target.closest('[data-cat]'); if(!b) return; location.hash=getCats().find(x=>x.id===b.dataset.cat).hash; });
+function fromHash(){
+  const h=location.hash.slice(1);
+  if(h==='admin') view='admin';
+  else if(h==='capture') view='capture';
+  else { view='shop'; const c=getCats().find(x=>x.hash===h); F.cat = c?c.id:'all'; }
+  $('#viewShop').style.display = view==='shop'?'':'none';
+  $('#viewAdmin').style.display = view==='admin'?'':'none';
+  $('#viewCapture').style.display = view==='capture'?'':'none';
+  render();
+}
+window.addEventListener('hashchange', fromHash);
+$('#side').addEventListener('click', e=>{
+  const t=e.target;
+  if(t.dataset.status) setF({status:t.dataset.status});
+  else if(t.dataset.own==='watched') setF({watched:!F.watched});
+  else if(t.id==='fNego') setF({nego:!F.nego});
+  else if(t.dataset.qual){ const k=t.dataset.qual; setF({quals: F.quals.includes(k)?F.quals.filter(x=>x!==k):[...F.quals,k]}); }
+  else if(t.dataset.sx!=null){ F.stats.splice(+t.dataset.sx,1); setF({}); }
+  else if(t.dataset.preset!=null){
+    const p=PRESETS[F.cat][+t.dataset.preset];
+    const stats=F.stats.filter(s=>!(s.key in p.s));
+    for(const [k,v] of Object.entries(p.s)) stats.push({key:k,min:v});
+    setF({stats}); toast('已套用：'+p.l);
+  }
+});
+$('#side').addEventListener('change', e=>{
+  const t=e.target;
+  if(t.dataset.sk!=null){ F.stats[+t.dataset.sk].key=t.value; setF({}); }
+  else if(t.dataset.sv!=null){ F.stats[+t.dataset.sv].min=t.value; setF({}); }
+});
+$('#addStat').onclick=()=>{ F.stats.push({key:'fcr',min:''}); setF({}); };
+const bindF = (id,key) => $(id).addEventListener('change', e=>setF({[key]:e.target.value}));
+bindF('#fCls','cls'); bindF('#fReq','req'); bindF('#fRune','rune'); bindF('#fPmin','pmin'); bindF('#fPmax','pmax');
+bindF('#fLadder','ladder'); bindF('#fHc','hc'); bindF('#fPlat','plat'); bindF('#fRegion','region'); bindF('#fSort','sort');
+let qT; $('#fQ').addEventListener('input', e=>{ clearTimeout(qT); qT=setTimeout(()=>{ F.q=e.target.value; saveF(); renderTabs(); renderGrid(); },180); });
+$('#resetF').onclick=()=>{ const cat=F.cat; F=F0(); F.cat=cat; saveF(); render(); };
+$('#openSide').onclick=()=>$('#side').classList.add('open');
+$('#closeSide').onclick=()=>$('#side').classList.remove('open');
+$('#grid').addEventListener('click', e=>{
+  const s=e.target.closest('[data-star]'); if(s){ e.stopPropagation(); Store.toggleWatch(s.dataset.star); return; }
+  const c=e.target.closest('.card'); if(c) openDetail(c.dataset.id);
+});
+$('#navBtns').addEventListener('click', e=>{ const k=e.target.dataset && e.target.dataset.nav; if(!k) return; location.hash = k==='shop' ? (getCats().find(c=>c.id===F.cat)||getCats()[0]).hash : k; });
+
+/* ================= detail ================= */
+let openDetailId=null;
+function openDetail(id){ openDetailId=id; renderDetail(); openOv('ovDetail'); }
+new MutationObserver(()=>{ if(!$('#ovDetail').classList.contains('on')) openDetailId=null; }).observe($('#ovDetail'), {attributes:true, attributeFilter:['class']});
+function renderDetail(){
+  const l = Store.listings.find(x=>x.id===openDetailId);
+  if(!l){ closeOv('ovDetail'); return; }
+  const st=status(l);
+  $('#dTitle').innerHTML = `<span class="q-${esc(l.quality)}">${esc(l.name)}</span> <span class="muted">· ${esc(catLabel(l.category))} · ${esc(QUAL_LABEL[l.quality]||'')}</span>`;
+  const similar = Store.listings.filter(x=>x.id!==l.id && status(x)==='sold' && x.name===l.name && x.category===l.category).sort((a,b)=>(b.soldAt||0)-(a.soldAt||0)).slice(0,6);
+  $('#dBody').innerHTML = `
+    <div>
+      <div class="tooltip tt">${tooltipHTML(l)}</div>
+      <div class="pchips">${Object.entries(l.props||{}).map(([k,v])=>`<span class="pchip">${esc(PROP_LABEL[k]||k)} ${esc(v)}</span>`).join('')}</div>
+      ${l.image?`<img class="shot" src="${esc(imgSrc(l.image))}" alt="物品截圖">`:''}
+    </div>
+    <div>
+      <dl class="info">
+        <dt>狀態</dt><dd>${{active:'販售中',sold:'已售出',cancelled:'已下架'}[st]}</dd>
+        <dt>${st==='sold'?'成交價':'售價'}</dt><dd class="price" style="font-size:14px">${esc(fmtPzh(st==='sold'&&l.finalPrice?l.finalPrice:l.price))}${l.negotiable&&st==='active'?' <span class="muted">可議價</span>':''}</dd>
+        <dt>伺服器</dt><dd>${l.ladder==='ladder'?'天梯':'非天梯'} · ${l.hc==='hc'?'專家':'普通'} · ${esc(l.platform)} · ${esc(REGION_LABEL[l.region]||l.region)}</dd>
+        <dt>聯絡</dt><dd>${esc(l.contact||'—')} ${l.contact?'<button class="btn sm" id="cpContact">複製</button>':''}</dd>
+        ${l.note?`<dt>備註</dt><dd>${esc(l.note)}</dd>`:''}
+        <dt>上架</dt><dd>${esc(fmtAgo(l.createdAt))}</dd>
+      </dl>
+      ${similar.length?`<div class="sec">近期同名成交</div><div class="atable">${similar.map(s=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #241d15"><span class="price" style="font-size:14px">${esc(fmtP(s.finalPrice||s.price))}</span><span class="muted">${esc((s.lines||[]).slice(0,2).join(' / '))}</span></div>`).join('')}</div>`:''}
+    </div>`;
+  let f = `<button class="btn" id="dStar">${Store.watch.has(l.id)?'★ 已收藏':'☆ 收藏'}</button><button class="btn" id="dCopy">複製交易訊息</button><span style="flex:1"></span>`;
+  if(Store.admin){
+    f += `<button class="btn" id="dEdit">編輯</button>`;
+    if(st==='active') f += `<button class="btn" id="dSold">標記已售出</button>`;
+  }
+  $('#dFoot').innerHTML = f;
+  const on=(id,fn)=>{ const el=$(id); if(el) el.onclick=fn; };
+  on('#dStar', ()=>Store.toggleWatch(l.id));
+  on('#cpContact', ()=>copy(l.contact, '已複製聯絡方式'));
+  on('#dCopy', ()=>copy(tradeText(l), '已複製交易訊息'));
+  on('#dSold', ()=>openSold(l));
+  on('#dEdit', ()=>{ closeOv('ovDetail'); editListing(l); });
+}
+async function copy(text, msg){ try{ await navigator.clipboard.writeText(text); toast(msg); }catch(e){ toast('無法複製，請手動選取文字', true); } }
+function tradeText(l){
+  return `【出售】${l.name}${l.base&&l.base!==l.name?'（'+l.base+'）':''}\n${(l.lines||[]).join(' / ')}\n${l.ladder==='ladder'?'天梯':'非天梯'} ${l.hc==='hc'?'專家':'普通'} ${l.platform} ${REGION_LABEL[l.region]||''}\n價格：${fmtPzh(l.price)}${l.negotiable?'（可議）':''}\n聯絡：${l.contact||''}`;
+}
+
+/* ================= admin ================= */
+let aStatus='active', aQ='';
+const ST_LABEL={active:'販售中', sold:'已售出', cancelled:'已下架'};
+function sumRunes(list){
+  const m={}; let trade=0;
+  for(const p0 of list){ const p=normPrice(p0); if(!p) continue; if(p.type==='trade'){ trade++; continue; } for(const r of p.runes||[]) if(r.qty>0) m[r.n]=(m[r.n]||0)+(+r.qty); }
+  const ks=Object.keys(m).map(Number).sort((a,b)=>b-a);
+  const parts = ks.map(n=>`${+m[n].toFixed(1)} ${runeByN(n).en}`); if(trade) parts.push(`以物易物 ${trade} 件`);
+  return parts.length ? parts.join(' · ') : '—';
+}
+function renderAdmin(){
+  $('#adminSetup').style.display = Store.admin ? 'none':'';
+  $('#adminBody').style.display = Store.admin ? '':'none';
+  if(!Store.admin){
+    $('#cOwner').value = $('#cOwner').value || GH.owner || '';
+    $('#cRepo').value = $('#cRepo').value || GH.repo || '';
+    return;
+  }
+  const all=Store.listings, by={active:0,sold:0,cancelled:0};
+  for(const l of all) by[status(l)]++;
+  const sold = all.filter(l=>status(l)==='sold');
+  const month = sold.filter(l=>(l.soldAt||0) > Date.now()-30*864e5);
+  $('#aStats').innerHTML = [
+    [by.active,'販售中'],[by.sold,'已售出'],[by.cancelled,'已下架'],
+    [sumRunes(month.map(l=>l.finalPrice||l.price)),'近 30 天成交'],
+    [sumRunes(sold.map(l=>l.finalPrice||l.price)),'累計成交'],
+  ].map(([n,t])=>`<div class="stat-box"><b style="${String(n).length>8?'font-size:15px':''}">${esc(n)}</b><span>${esc(t)}</span></div>`).join('');
+  $('#aStatus').innerHTML = [['active','販售中'],['sold','已售出'],['cancelled','已下架'],['all','全部']]
+    .map(([k,t])=>`<span class="chip ${aStatus===k?'on':''}" data-ast="${k}">${t} ${k==='all'?all.length:by[k]}</span>`).join('');
+  const q=norm(aQ).toLowerCase();
+  const rows = all.filter(l=>(aStatus==='all'||status(l)===aStatus) && (!q || [l.name,l.base,(l.lines||[]).join(' '),l.note].join(' ').toLowerCase().includes(q)))
+    .sort((a,b)=>b.createdAt-a.createdAt);
+  if(!rows.length){ $('#aTable').innerHTML='<tr><td class="muted" style="padding:24px;text-align:center">沒有刊登</td></tr>'; }
+  else $('#aTable').innerHTML = `<tr><th></th><th>名稱</th><th>類別</th><th>屬性</th><th>價格</th><th>狀態</th><th>時間</th><th></th></tr>` + rows.map(l=>{
+    const st=status(l), p = st==='sold' ? (l.finalPrice||l.price) : l.price;
+    const time = st==='sold'&&l.soldAt ? '售於 '+fmtAgo(l.soldAt) : fmtAgo(l.createdAt);
+    let acts = `<button class="btn sm" data-a="edit">編輯</button>`;
+    if(st==='active') acts += `<button class="btn sm" data-a="sold">售出</button><button class="btn sm" data-a="cancel">下架</button>`;
+    else acts += `<button class="btn sm" data-a="relist">重新上架</button>`;
+    acts += `<button class="btn sm danger" data-a="del">刪除</button>`;
+    return `<tr data-id="${esc(l.id)}">
+      <td>${l.image?`<img src="${esc(imgSrc(l.image))}" alt="">`:''}</td>
+      <td><a href="javascript:void 0" data-a="open" class="q-${esc(l.quality)}" style="text-decoration:none">${esc(l.name)}</a></td>
+      <td>${esc(catLabel(l.category)||'')}</td>
+      <td class="muted">${esc((l.lines||[]).slice(0,3).join(' / '))}${(l.lines||[]).length>3?' …':''}</td>
+      <td class="price" style="font-size:14px;white-space:nowrap">${esc(fmtP(p))}</td>
+      <td><span class="st ${st}">${ST_LABEL[st]}</span></td>
+      <td class="muted" style="white-space:nowrap">${esc(time)}</td>
+      <td class="acts">${acts}</td></tr>`;
+  }).join('');
+  $('#sRepo').textContent = `資料位置：${GH.owner}/${GH.repo} (${GH.branch}) / ${DATA_PATH}`;
+}
+$('#aStatus').addEventListener('click', e=>{ const k=e.target.dataset.ast; if(k){ aStatus=k; renderAdmin(); } });
+$('#aQ').addEventListener('input', e=>{ aQ=e.target.value; renderAdmin(); });
+$('#aTable').addEventListener('click', async e=>{
+  const b=e.target.closest('[data-a]'); if(!b) return;
+  const id=b.closest('tr').dataset.id, l=Store.listings.find(x=>x.id===id); if(!l) return;
+  const a=b.dataset.a;
+  try{
+    if(a==='open') openDetail(id);
+    else if(a==='edit') editListing(l);
+    else if(a==='sold') openSold(l);
+    else if(a==='cancel'){ if(await askConfirm('確定下架「'+l.name+'」？')) await Store.update(id,{status:'cancelled'},'cancel '+l.name); }
+    else if(a==='relist') await Store.update(id,{status:'active', soldAt:null, finalPrice:null, createdAt:Date.now()},'relist '+l.name);
+    else if(a==='del'){ if(await askConfirm('確定刪除「'+l.name+'」？刪除後無法復原。')){ await Store.remove(id); toast('已刪除'); } }
+  }catch(err){}
+});
+
+// login
+$('#cLogin').onclick=async()=>{
+  const cfg={owner:$('#cOwner').value.trim(), repo:$('#cRepo').value.trim(), branch:$('#cBranch').value.trim()||'main', token:$('#cToken').value.trim()};
+  if(!cfg.owner||!cfg.repo||!cfg.token){ $('#cMsg2').textContent='請填寫全部欄位'; return; }
+  $('#cMsg2').innerHTML='<span class="spin"></span> 檢查中…'; $('#cLogin').disabled=true;
+  try{
+    const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}`, {headers:{'Authorization':'Bearer '+cfg.token,'Accept':'application/vnd.github+json'}});
+    if(!r.ok) throw await ghErr(r);
+    const j = await r.json();
+    if(!(j.permissions && j.permissions.push)) throw new Error('這個權杖沒有寫入權限，請在權杖設定中把 Contents 設為 Read and write');
+    Object.assign(GH, cfg); ls.set('d2r_gh', cfg);
+    $('#cToken').value=''; $('#cMsg2').textContent='';
+    toast('登入成功'); await Store.load();
+  }catch(e){ $('#cMsg2').innerHTML='<span class="bad">'+esc(e.message||e)+'</span>'; }
+  $('#cLogin').disabled=false;
+};
+$('#sLogout').onclick=async()=>{
+  if(!await askConfirm('登出後這台裝置需要重新輸入權杖才能管理。確定？')) return;
+  delete GH.token; ls.del('d2r_gh'); Store.sha=null; toast('已登出'); location.hash='all'; Store.load();
+};
+$('#sReload').onclick=()=>Store.load();
+
+// settings
+$('#sEngine').value=SET.engine; $('#sKey').value=SET.key; $('#sModel').value=SET.model; $('#sContact').value=SET.contact;
+$('#sClaudeWrap').style.display = SET.engine==='claude'?'':'none';
+$('#sEngine').onchange=e=>{ SET.engine=e.target.value; saveSet(); $('#sClaudeWrap').style.display = SET.engine==='claude'?'':'none'; };
+$('#sKey').onchange=e=>{ SET.key=e.target.value.trim(); saveSet(); };
+$('#sModel').onchange=e=>{ SET.model=e.target.value.trim()||'claude-sonnet-5-5'; saveSet(); };
+$('#sContact').onchange=e=>{ SET.contact=e.target.value.trim(); saveSet(); };
+
+/* ================= upload ================= */
+$('#drop').onclick=()=>$('#file').click();
+$('#file').onchange=e=>{ handleFiles([...e.target.files]); e.target.value=''; };
+['dragenter','dragover'].forEach(ev=>$('#drop').addEventListener(ev,e=>{e.preventDefault();$('#drop').classList.add('over');}));
+['dragleave','drop'].forEach(ev=>$('#drop').addEventListener(ev,e=>{e.preventDefault();$('#drop').classList.remove('over');}));
+$('#drop').addEventListener('drop', e=>handleFiles([...e.dataTransfer.files]));
+document.addEventListener('paste', e=>{
+  if(view!=='admin' || !Store.admin || document.querySelector('.ov.on')) return;
+  const files=[...(e.clipboardData&&e.clipboardData.items||[])].filter(i=>i.type.startsWith('image/')).map(i=>i.getAsFile());
+  if(files.length){ e.preventDefault(); handleFiles(files); }
+});
+$('#parseText').onclick=()=>{
+  const t=$('#pasteText').value.trim(); if(!t){ toast('請先貼上物品文字',true); return; }
+  const d=draftFromText(t); d._raw=t; $('#pasteText').value=''; startQueue([d]);
+};
+$('#btnManual').onclick=()=>startQueue([{lines:[]}]);
+let busy=false;
+async function handleFiles(files){
+  files=files.filter(f=>f && f.type.startsWith('image/'));
+  if(!files.length || busy) return;
+  busy=true; $('#prog').innerHTML='';
+  const rows = files.map(()=>{ const d=document.createElement('div'); $('#prog').appendChild(d); return d; });
+  const drafts=[];
+  for(let i=0;i<files.length;i++){
+    const row=rows[i];
+    row.innerHTML=`<span class="spin"></span><span>讀取第 ${i+1} 張…</span>`;
+    let im, thumb;
+    try{ im=await loadImg(files[i]); thumb=thumbData(im); }catch(e){ row.innerHTML='<span class="bad">無法讀取圖片</span>'; continue; }
+    const say = t => { row.innerHTML=`<img src="${thumb}" alt=""><span class="spin"></span><span>${esc(t)}</span>`; };
+    say('辨識中…');
+    let draft;
+    try{
+      draft = SET.engine==='claude' ? await ocrClaude(im) : await ocrTesseract(im, say);
+      row.innerHTML=`<img src="${thumb}" alt=""><span class="ok">✓</span><span>${esc(draft.name||'已辨識')} · ${(draft.lines||[]).length} 條屬性</span>`;
+    }catch(e){
+      draft = {lines:[], _noOcr:true};
+      row.innerHTML=`<img src="${thumb}" alt=""><span style="color:#ffcc80">辨識失敗：${esc(e.message||'未知錯誤')}，請手動填寫</span>`;
+    }
+    draft.image = thumb; draft._newImage = true;
+    drafts.push(draft);
+  }
+  busy=false;
+  if(drafts.length) setTimeout(()=>startQueue(drafts), 400);
+}
+
+/* ================= editor ================= */
+fillSelect($('#eQual'), QUALS);
+fillSelect($('#ePlat'), PLATS); fillSelect($('#eRegion'), REGIONS);
+bindCatSelect($('#eCat'), false);
+const ePE = new PriceEditor($('#ePrice'));
+const sPE = new PriceEditor($('#sPrice'));
+let queue=[], qi=0, editId=null, eImage=null, eNewImage=false, eEth=false;
+function startQueue(drafts){ queue=drafts; qi=0; editId=null; loadDraft(); openOv('ovEdit'); }
+function editListing(l){ queue=[Object.assign({}, l)]; qi=0; editId=l.id; loadDraft(); openOv('ovEdit'); }
+function loadDraft(){
+  const d = queue[qi]||{};
+  const mem = ls.get('d2r_seller', {});
+  const v = (id,x)=>{ $(id).value = x==null?'':x; };
+  v('#eCat', (d.category && catLabel(d.category)) ? d.category : (F.cat!=='all'?F.cat:'ring'));
+  v('#eQual', d.quality || 'rare');
+  v('#eName', d.name); v('#eBase', d.base);
+  v('#eLines', (d.lines||[]).join('\n'));
+  v('#eReq', d.reqLevel); v('#eIlvl', d.ilvl);
+  v('#eLadder', d.ladder || mem.ladder || 'ladder'); v('#eHc', d.hc || mem.hc || 'sc');
+  v('#ePlat', d.platform || mem.platform || 'PC'); v('#eRegion', d.region || mem.region || 'Asia');
+  { const pp = normPrice(d.price); ePE.set(pp ? Object.assign({}, pp, {negotiable: pp.negotiable ?? !!d.negotiable}) : null); }
+  v('#eContact', d.contact || SET.contact || ''); v('#eNote', d.note);
+  eImage = d.image || null; eNewImage = !!d._newImage; eEth = !!d.eth;
+  $('#eRaw').textContent = d._raw || ''; $('#eRawWrap').style.display = d._raw ? '' : 'none';
+  let w='';
+  if(d._noOcr) w='<div class="warn">⚠ 截圖未能自動辨識，請手動輸入名稱與屬性（截圖仍會附在刊登中）。</div>';
+  else if(d._otherCat) w='<div class="warn">⚠ 這張截圖看起來不是戒指 / 護身符 / 頭環，請確認類別。</div>';
+  else if(!editId && d.lines && d.lines.length) w='<div class="warn" style="color:var(--green)">✓ 已自動解析，請核對名稱、品質、屬性與價格後上架。</div>';
+  $('#edWarn').innerHTML=w;
+  $('#edTitle').textContent = editId ? '編輯刊登' : '上架物品';
+  $('#edSave').textContent = editId ? '儲存變更' : '上架';
+  const multi = queue.length>1;
+  $('#edQueue').style.display = multi?'':'none'; $('#edQueue').textContent = `第 ${qi+1} / ${queue.length} 件`;
+  $('#edSkip').style.display = multi?'':'none';
+  $('#edMsg').textContent='';
+  preview();
+}
+function collect(){
+  const lines = $('#eLines').value.split(/\r?\n/).map(norm).filter(Boolean);
+  const parsed = parseProps(lines);
+  return {
+    category: $('#eCat').value==='__add' ? 'ring' : $('#eCat').value, quality: $('#eQual').value,
+    name: norm($('#eName').value).slice(0,40), base: norm($('#eBase').value).slice(0,20),
+    lines: lines.filter(l=>{ const r=parseLine(l); return !(r && (r.key==='reqLevel'||r.key==='ilvl')); }).slice(0,20),
+    props: parsed.props, cls: parsed.cls,
+    reqLevel: +$('#eReq').value || parsed.reqLevel || null, ilvl: +$('#eIlvl').value || parsed.ilvl || null, eth: eEth||parsed.eth,
+    ladder: $('#eLadder').value, hc: $('#eHc').value, platform: $('#ePlat').value, region: $('#eRegion').value,
+    price: ePE.get(), negotiable: ePE.get().negotiable,
+    contact: $('#eContact').value.trim().slice(0,40), note: $('#eNote').value.trim().slice(0,120),
+  };
+}
+function preview(){
+  const d=collect();
+  $('#ePreview').innerHTML = tooltipHTML(d);
+  const chips = Object.entries(d.props).map(([k,v])=>`<span class="pchip">${esc(PROP_LABEL[k]||k)} ${v}${(k==='classSkills'||k==='treeSkills')&&d.cls?' ('+esc(d.cls)+')':''}</span>`);
+  $('#eChips').innerHTML = chips.length ? chips.join('') : '<span class="muted">尚未解析到可篩選的屬性</span>';
+  $('#eImg').style.display = eImage?'block':'none'; if(eImage) $('#eImg').src=imgSrc(eImage);
+  $('#eRmImg').style.display = eImage?'':'none';
+}
+$('#ovEdit').addEventListener('input', preview);
+$('#eRmImg').onclick=()=>{ eImage=null; preview(); };
+$('#edSkip').onclick=()=>nextDraft();
+function nextDraft(){ qi++; if(qi<queue.length) loadDraft(); else closeOv('ovEdit'); }
+$('#edSave').onclick=async()=>{
+  const d=collect();
+  if(!d.name){ $('#edMsg').textContent='請填寫名稱'; return; }
+  if(!d.lines.length){ $('#edMsg').textContent='請至少填寫一條屬性'; return; }
+  { const pv=ePE.valid(); if(pv){ $('#edMsg').textContent=pv; return; } }
+  ePE.remember();
+  ls.set('d2r_seller', {ladder:d.ladder, hc:d.hc, platform:d.platform, region:d.region});
+  if(!SET.contact && d.contact){ SET.contact=d.contact; saveSet(); $('#sContact').value=d.contact; }
+  $('#edSave').disabled=true; $('#edMsg').innerHTML='<span class="spin"></span> 儲存到 GitHub…';
+  try{
+    if(editId){
+      const old = Store.listings.find(x=>x.id===editId) || {};
+      const patch = Object.assign({}, d, {updatedAt:Date.now()});
+      if(!eImage && old.image){ patch.image=null; Store.delImage(old.image); }
+      await Store.update(editId, patch, 'edit '+d.name);
+      toast('已儲存變更'); closeOv('ovEdit'); editId=null;
+    }else{
+      const ocr0 = queue[qi] && queue[qi]._ocr;
+      if(ocr0){ const n = Learn.record(ocr0, {name:d.name, base:d.base, lines:d.lines}); if(n) toast(`已學會 ${n} 條辨識修正`); renderLearn(); }
+      const id = newId();
+      const item = Object.assign({id}, d, {createdAt:Date.now(), status:'active', image:null});
+      if(eImage && eNewImage){
+        try{ item.image = await Store.putImage(id, eImage); }catch(e){ toast('截圖上傳失敗，物品仍會上架：'+(e.message||e), true); }
+      }
+      await Store.add(item);
+      toast('已上架：'+item.name);
+      const src = queue[qi] && queue[qi]._trayId && tray.find(t=>t.id===queue[qi]._trayId);
+      if(src){ src.listed=true; TrayDB.put(src); renderTray(); }
+      nextDraft();
+    }
+  }catch(e){ /* toast already shown */ }
+  $('#edSave').disabled=false; $('#edMsg').textContent='';
+};
+
+/* ================= sold ================= */
+let soldId=null;
+function openSold(l){ soldId=l.id; $('#sName').textContent=l.name; sPE.set(l.price); openOv('ovSold'); }
+$('#sOk').onclick=async()=>{
+  const pv=sPE.valid(); if(pv){ toast(pv, true); return; }
+  closeOv('ovSold'); const l=Store.listings.find(x=>x.id===soldId);
+  try{ await Store.update(soldId,{status:'sold', soldAt:Date.now(), finalPrice:sPE.get()}, 'sold '+(l?l.name:'')); toast('已標記售出'); }catch(e){}
+};
+
+/* ================= tooltip detector ================= */
+// Finds a D2R item tooltip in a frame: blue stat lines stacked & centred on the same x,
+// then grows upward/downward through centred text lines that sit on the dark tooltip background.
+// Primary detector: find the tooltip's own rectangle by its edges (the box is much darker than whatever is behind it).
+// Seeds on blue stat text, then looks for the left/right/top/bottom borders around it.
+function detectTooltip(img){
+  const W=img.width, H=img.height, d=img.data, N=W*H;
+  const mx=new Uint8Array(N), blue=new Uint8Array(N);
+  for(let i=0,j=0;i<N;i++,j+=4){
+    const r=d[j],g=d[j+1],b=d[j+2]; mx[i]=r>g?(r>b?r:b):(g>b?g:b);
+    blue[i]=(b>140 && b>r+50 && b>g+50)?1:0;
+  }
+  // blue text line candidates
+  const lines=[]; const rowHas=y=>{ const o=y*W; for(let x=0;x<W;x++) if(blue[o+x]) return true; return false; };
+  for(let y=0;y<H;){
+    if(!rowHas(y)){ y++; continue; }
+    const y0=y; while(y<H && rowHas(y)) y++; const y1=y;
+    if(y1-y0<4 || y1-y0>30) continue;
+    const col=new Uint8Array(W); for(let yy=y0;yy<y1;yy++){ const o=yy*W; for(let x=0;x<W;x++) if(blue[o+x]) col[x]=1; }
+    let st=-1, pv=-99;
+    const flush=(a,b)=>{
+      if(b-a<25) return;
+      // tooltip text sits on a dark background: rows just above/below must be mostly dark
+      const ya=Math.max(0,y0-2), yb=Math.min(H-1,y1+1); let dk=0;
+      for(let x=a;x<=b;x++){ if(mx[ya*W+x]<=30) dk++; if(mx[yb*W+x]<=30) dk++; }
+      if(dk/(2*(b-a+1))>=0.5) lines.push([a,y0,b,y1]);
+    };
+    for(let x=0;x<W;x++) if(col[x]){ if(x-pv>30){ if(st>=0) flush(st,pv); st=x; } pv=x; }
+    if(st>=0) flush(st,pv);
+  }
+  if(!lines.length) return detectTooltipText(img);
+  // group lines that share a centre (tooltip text is centred)
+  const tol=Math.max(6, W*0.012), groups=[];
+  for(const L of lines){ const cx=(L[0]+L[2])/2; let g=groups.find(g=>Math.abs(g.cx-cx)<tol); if(!g){ g={cx, ls:[]}; groups.push(g); } g.ls.push(L); }
+  groups.sort((a,b)=>b.ls.length-a.ls.length);
+  const med=a=>{ const s=a.slice().sort((x,y)=>x-y); return s[s.length>>1]; };
+  const bright=(y,x)=>mx[y*W+x];
+  const isEdge=(outside,inside)=> outside>=20 && outside>1.6*inside+4;
+  for(const g of groups.slice(0,5)){
+    const ls=g.ls.sort((a,b)=>a[1]-b[1]);
+    const lineH=med(ls.map(l=>l[3]-l[1]));
+    const pitch=ls.length>1 ? Math.max(lineH, med(ls.slice(1).map((l,i)=>l[1]-ls[i][1]))) : Math.round(lineH*1.4);
+    const ty0=ls[0][1], ty1=ls[ls.length-1][3], ex0=Math.min(...ls.map(l=>l[0])), ex1=Math.max(...ls.map(l=>l[2]));
+    const nR=ty1-ty0;
+    let L=-1, Ls=0, R=-1, Rs=0;
+    for(let x=Math.max(1,ex0-5*pitch); x<ex0; x++){ let c=0; for(let y=ty0;y<ty1;y++) if(isEdge(bright(y,x-1),bright(y,x))) c++; if(c>Ls){ Ls=c; L=x; } }
+    for(let x=ex1+1; x<Math.min(W-1,ex1+5*pitch); x++){ let c=0; for(let y=ty0;y<ty1;y++) if(isEdge(bright(y,x+1),bright(y,x))) c++; if(c>Rs){ Rs=c; R=x; } }
+    if(L<0 || R<0 || Ls<Math.max(3,nR*0.35) || Rs<Math.max(3,nR*0.35)) continue;
+    const c0=L+2, c1=R-2, nc=c1-c0+1; if(nc<10) continue;
+    const rowEdge=(y,dy)=>{ let c=0; for(let x=c0;x<=c1;x++) if(isEdge(bright(y+dy,x),bright(y,x))) c++; return c/nc; };
+    let T=-1, B=-1;
+    for(let y=ty0-1; y>Math.max(0,ty0-14*pitch); y--) if(rowEdge(y,-1)>=0.5){ T=y; break; }
+    for(let y=ty1; y<Math.min(H-1,ty1+10*pitch); y++) if(rowEdge(y,1)>=0.5){ B=y; break; }
+    if(T<0 || B<0){ if(ls.length>=2) { const f=detectTooltipText(img); if(f) return f; } continue; }
+    if(R-L > W*0.6 || B-T < lineH*2) continue;
+    // drop grey "Ctrl + click / hold Shift" hint lines at the bottom of the box
+    for(let guard=0; guard<3; guard++){
+      let yb=B; while(yb>ty1){ let c=0; for(let x=c0;x<=c1;x++) if(bright(yb,x)>=110) c++; if(c>=2) break; yb--; }
+      if(yb<=ty1) break;
+      let ya=yb; while(ya>ty1){ let c=0; for(let x=c0;x<=c1;x++) if(bright(ya-1,x)>=110) c++; if(c<1) break; ya--; }
+      let sat=0, lum=0, n=0;
+      for(let y=ya;y<=yb;y++) for(let x=c0;x<=c1;x++){ const i=y*W+x; if(mx[i]>=110){ const j=i*4; sat+=mx[i]-Math.min(d[j],d[j+1],d[j+2]); lum+=mx[i]; n++; } }
+      if(!(n && sat/n<25 && lum/n<185)) break;
+      B = Math.max(ty1, ya-2);
+    }
+    return {x:L, y:T, w:R-L+1, h:B-T+1, lines:ls.length};
+  }
+  return detectTooltipText(img);
+}
+
+// Fallback detector: grows the box line by line from centred text.
+function detectTooltipText(img){
+  const W=img.width, H=img.height, d=img.data, N=W*H;
+  const mx=new Uint8Array(N), blue=new Uint8Array(N);
+  for(let i=0,j=0;i<N;i++,j+=4){
+    const r=d[j],g=d[j+1],b=d[j+2]; const m=r>g?(r>b?r:b):(g>b?g:b); mx[i]=m;
+    blue[i]= (b>140 && b>r+50 && b>g+50) ? 1 : 0;
+  }
+  const rowAny=(arr,y,x0,x1)=>{ let c=0; for(let x=x0,o=y*W+x0;x<x1;x++,o++) if(arr[o]) c++; return c; };
+  // 1. blue text lines
+  const lines=[];
+  let y=0;
+  while(y<H){
+    if(rowAny(blue,y,0,W)){
+      const y0=y; while(y<H && rowAny(blue,y,0,W)) y++;
+      const y1=y, h=y1-y0;
+      if(h>=4 && h<=30){
+        const colHas=new Uint8Array(W);
+        for(let yy=y0;yy<y1;yy++){ const o=yy*W; for(let x=0;x<W;x++) if(blue[o+x]) colHas[x]=1; }
+        let st=-1, pv=-99;
+        const flush=(a,b)=>{
+          if(b-a<25) return;
+          const ya=Math.max(0,y0-2), yb=Math.min(H-1,y1+1); let dk=0;
+          for(let x=a;x<=b;x++){ if(mx[ya*W+x]<=30) dk++; if(mx[yb*W+x]<=30) dk++; }
+          if(dk/(2*(b-a+1))>=0.5) lines.push([a,y0,b,y1]);
+        };
+        for(let x=0;x<W;x++){ if(colHas[x]){ if(x-pv>30){ if(st>=0) flush(st,pv); st=x; } pv=x; } }
+        if(st>=0) flush(st,pv);
+      }
+    }
+    y++;
+  }
+  if(lines.length<2) return null;
+  const tol=Math.max(6, W*0.012);
+  let best=null;
+  for(const L of lines){ const cx=(L[0]+L[2])/2; const g=lines.filter(M=>Math.abs((M[0]+M[2])/2-cx)<tol); if(!best||g.length>best.length) best=g; }
+  if(best.length<2) return null;
+  best.sort((a,b)=>a[1]-b[1]);
+  const med=a=>{ const s=a.slice().sort((x,y)=>x-y); return s[s.length>>1]; };
+  const cx=med(best.map(l=>(l[0]+l[2])/2));
+  const tops=best.map(l=>l[1]); const diffs=tops.slice(1).map((t,i)=>t-tops[i]);
+  const pitch=Math.max(6, med(diffs));
+  if(diffs.some(dd=>dd>pitch*2.6)) { /* non-contiguous group, keep the largest contiguous run */
+    let runs=[[best[0]]]; for(let i=1;i<best.length;i++){ if(best[i][1]-best[i-1][1]>pitch*2.6) runs.push([]); runs[runs.length-1].push(best[i]); }
+    best=runs.sort((a,b)=>b.length-a.length)[0]; if(best.length<2) return null;
+  }
+  const maxW=Math.max(...best.map(l=>l[2]-l[0]));
+  const lineH=med(best.map(l=>l[3]-l[1]));
+  const wx0=Math.max(0,Math.floor(cx-maxW/2-pitch)), wx1=Math.min(W,Math.ceil(cx+maxW/2+pitch));
+  const brightRow=yy=>{ let c=0; const o=yy*W; for(let x=wx0;x<wx1;x++) if(mx[o+x]>=110) c++; return c; };
+  function probe(yf, dir){
+    const lim=Math.round(pitch*1.6);
+    for(let k=1;k<lim;k++){
+      let yy=yf+dir*k; if(yy<0||yy>=H) return null;
+      if(brightRow(yy)>=2){
+        const b0=yy; while(yy>=0 && yy<H && brightRow(yy)>=1) yy+=dir;
+        let a=Math.min(b0,yy-dir), b=Math.max(b0,yy-dir);
+        // things behind the translucent box can make a band too tall: keep one line height next to the previous line
+        const lim2=Math.ceil(lineH*1.35);
+        if(b-a+1>lim2){ if(dir<0) a=b-lim2+1; else b=a+lim2-1; }
+        return [a,b+1];
+      }
+    }
+    return null;
+  }
+  function accept(y0,y1,g0,g1){
+    if(y1-y0<3 || y1-y0>pitch*1.5) return null;
+    let xs0=W, xs1=-1;
+    for(let yy=y0;yy<y1;yy++){ const o=yy*W; for(let x=wx0;x<wx1;x++) if(mx[o+x]>=110){ if(x<xs0) xs0=x; if(x>xs1) xs1=x; } }
+    if(xs1<0) return null;
+    if(Math.abs((xs0+xs1)/2-cx)>tol) return null;
+    const p=Math.round(pitch); let dk=0, n=0;
+    for(let yy=y0;yy<y1;yy++){ const o=yy*W;
+      for(let x=Math.max(0,xs0-p);x<xs0-2;x++){ n++; if(mx[o+x]<=30) dk++; }
+      for(let x=xs1+3;x<=Math.min(W-1,xs1+p);x++){ n++; if(mx[o+x]<=30) dk++; } }
+    // background check: either the margins beside the text are dark, or (for the widest line, whose margins
+    // fall outside the box) the blank row between this line and the previous one is mostly dark
+    let gapOk=0;
+    for(let gy=Math.min(g0,g1); gy<=Math.max(g0,g1); gy++){ if(gy<0||gy>=H) continue; let c2=0; const o=gy*W; for(let x=xs0;x<=xs1;x++) if(mx[o+x]<=30) c2++; gapOk=Math.max(gapOk, c2/(xs1-xs0+1)); }
+    if((!n || dk/n<0.7) && gapOk<0.45) return null;
+    // grey "Ctrl + click" hint line: low saturation and dim
+    let sat=0, lum=0, c=0;
+    for(let yy=y0;yy<y1;yy++) for(let x=xs0;x<=xs1;x++){ const i=yy*W+x; if(mx[i]>=110){ const j=i*4; const r=d[j],g=d[j+1],b=d[j+2]; sat+=Math.max(r,g,b)-Math.min(r,g,b); lum+=mx[i]; c++; } }
+    return {box:[xs0,y0,xs1,y1], hint: c && sat/c<25 && lum/c<175};
+  }
+  const all=best.slice();
+  let yy=best[0][1];
+  for(let guard=0;guard<30;guard++){ const b=probe(yy,-1); if(!b) break; const a=accept(b[0],b[1],b[1],yy-1); if(!a) break; all.push(a.box); yy=b[0]; }
+  yy=best[best.length-1][3]-1;
+  for(let guard=0;guard<30;guard++){ const b=probe(yy,1); if(!b) break; const a=accept(b[0],b[1],yy+1,b[0]-1); if(!a||a.hint) break; all.push(a.box); yy=b[1]-1; }
+  const x0=Math.min(...all.map(l=>l[0])), x1=Math.max(...all.map(l=>l[2])), y0=Math.min(...all.map(l=>l[1])), y1=Math.max(...all.map(l=>l[3]));
+  const pad=pitch*0.35;
+  return {x:Math.max(0,x0-pad), y:Math.max(0,y0-pad), w:Math.min(W,x1+1+pad)-Math.max(0,x0-pad), h:Math.min(H,y1+1+pitch*0.04)-Math.max(0,y0-pad), lines:all.length};
+}
+// tiny grayscale signature of a region, to tell whether the tooltip changed
+function regionSig(ctx, b){
+  const c=document.createElement('canvas'); c.width=32; c.height=16;
+  c.getContext('2d').drawImage(ctx.canvas, b.x, b.y, b.w, b.h, 0, 0, 32, 16);
+  const p=c.getContext('2d').getImageData(0,0,32,16).data; const out=new Uint8Array(512);
+  for(let i=0;i<512;i++) out[i]=Math.max(p[i*4],p[i*4+1],p[i*4+2]);
+  return {v:out, w:b.w, h:b.h};
+}
+function sigDiff(a,b){
+  if(!a||!b) return 1e9;
+  if(Math.abs(a.w-b.w)>a.w*0.08 || Math.abs(a.h-b.h)>a.h*0.08) return 1e9;
+  let s=0; for(let i=0;i<512;i++) s+=Math.abs(a.v[i]-b.v[i]); return s/512;
+}
+
+/* ================= capture tray (IndexedDB) ================= */
+const TrayDB = {
+  db:null,
+  open(){ if(this.db) return Promise.resolve(this.db); return new Promise((res,rej)=>{ const r=indexedDB.open('d2r_capture',1); r.onupgradeneeded=()=>r.result.createObjectStore('items',{keyPath:'id'}); r.onsuccess=()=>{ this.db=r.result; res(this.db); }; r.onerror=()=>rej(r.error); }); },
+  async all(){ const db=await this.open(); return new Promise(res=>{ const q=db.transaction('items').objectStore('items').getAll(); q.onsuccess=()=>res(q.result||[]); q.onerror=()=>res([]); }); },
+  async put(it){ const db=await this.open(); return new Promise(res=>{ const t=db.transaction('items','readwrite'); t.objectStore('items').put(it); t.oncomplete=res; t.onerror=res; }); },
+  async del(id){ const db=await this.open(); return new Promise(res=>{ const t=db.transaction('items','readwrite'); t.objectStore('items').delete(id); t.oncomplete=res; t.onerror=res; }); },
+};
+let tray=[];
+(async()=>{ try{ tray=(await TrayDB.all()).sort((a,b)=>b.time-a.time); renderTray(); }catch(e){} })();
+const itemKey = dft => norm((dft.name||'')+'|'+(dft.lines||[]).join('|'));
+function renderTray(){
+  $('#trayCount').textContent = tray.length ? `已擷取 ${tray.length} 件（存在這台電腦的瀏覽器）` : '擷取到的物品會出現在這裡';
+  const nNew = tray.filter(t=>!t.listed).length, nDone = tray.length - nNew;
+  $('#trayFilter').innerHTML = [['all',`全部 ${tray.length}`],['new',`未上架 ${nNew}`],['done',`已上架 ${nDone}`]].map(([k,l])=>`<span class="chip ${trayView===k?'on':''}" data-tv="${k}">${l}</span>`).join('');
+  $('#trayAll').textContent = `全部上架（${nNew}）`; $('#trayAll').disabled = !nNew;
+  const shown = tray.filter(t=> trayView==='all' || (trayView==='new' ? !t.listed : t.listed));
+  if(!shown.length){ $('#tray').innerHTML = `<div class="muted" style="grid-column:1/-1;padding:30px;text-align:center">${tray.length?'這個分類沒有物品':'擷取到並確認的裝備會出現在這裡'}</div>`; if(typeof pipIdleText==='function' && typeof Pip!=='undefined') pipIdleText(); return; }
+  $('#tray').innerHTML = shown.map(t=>`<div class="tcard ${t.listed?'listed':''}" data-tid="${esc(t.id)}">
+      <img src="${t.image}" alt="">
+      <div class="ti">${t.status==='ocr' ? '<span class="spin"></span> 辨識中…' :
+        `<div class="q-${esc(t.draft.quality||'normal')}" style="font-weight:600">${esc(t.draft.name||'(未辨識名稱)')}</div>
+         <div class="muted">${esc(catLabel(t.draft.category)||'其他')} · ${(t.draft.lines||[]).length} 條屬性 · ${esc(fmtAgo(t.time))}</div>
+         ${t.draft.price?`<div class="price" style="font-size:12px">${esc(fmtP(t.draft.price))}</div>`:''}
+         ${t.listed?'<div class="ok" style="font-size:12px">✓ 已上架</div>':''}`}</div>
+      <div class="ta"><button class="btn sm" data-t="view">查看</button>${t.listed?'<button class="btn sm" data-t="relist" title="已上架，再上架一次會新增一筆刊登">已上架</button>':'<button class="btn sm pri" data-t="list">上架</button>'}<a class="btn sm" href="${t.image}" download="${esc((t.draft&&t.draft.name)||'d2r-item')}-${t.id}.png">下載</a><button class="btn sm danger" data-t="del">刪除</button></div>
+    </div>`).join('');
+}
+$('#tray').addEventListener('click', async e=>{
+  const b=e.target.closest('[data-t]'); if(!b) return;
+  const id=b.closest('[data-tid]').dataset.tid, t=tray.find(x=>x.id===id); if(!t) return;
+  if(b.dataset.t==='del'){ tray=tray.filter(x=>x.id!==id); await TrayDB.del(id); renderTray(); }
+  else if(b.dataset.t==='list') publishTray([t]);
+  else if(b.dataset.t==='view') showItem(t);
+  else if(b.dataset.t==='relist'){ if(await askConfirm(`「${t.draft.name}」已經上架過，要再新增一筆刊登嗎？`)) publishTray([t], true); }
+});
+$('#tray').addEventListener('click', e=>{ const img=e.target.closest('.tcard img'); if(img){ const t=tray.find(x=>x.id===img.closest('[data-tid]').dataset.tid); if(t) showItem(t); } });
+let trayView='new';
+$('#trayFilter').addEventListener('click', e=>{ const k=e.target.dataset && e.target.dataset.tv; if(k){ trayView=k; renderTray(); } });
+$('#trayAll').onclick=async()=>{
+  const ts=tray.filter(t=>!t.listed); if(!ts.length){ toast('沒有尚未上架的物品'); return; }
+  const bad = ts.filter(t=>publishCheck(t.draft));
+  if(bad.length===ts.length){ toast(`這 ${ts.length} 件都還缺資料（${publishCheck(bad[0].draft)}），請先按「查看」補上`, true); return; }
+  if(!await askConfirm(`上架 ${ts.length-bad.length} 件物品？${bad.length?`\n另有 ${bad.length} 件缺少資料（例如價格或類別），會先略過。`:''}`)) return;
+  publishTray(ts.filter(t=>!publishCheck(t.draft)));
+};
+$('#trayClear').onclick=async()=>{ if(!tray.length) return; if(!await askConfirm(`清空全部 ${tray.length} 件擷取？`)) return; for(const t of tray) await TrayDB.del(t.id); tray=[]; renderTray(); };
+/* ---------- publish captures straight to the market ---------- */
+function listingDefaults(){
+  return { ladder:$('#dLadder').value, hc:$('#dHc').value, platform:$('#dPlat').value, region:$('#dRegion').value, contact:$('#dContact').value.trim().slice(0,40) };
+}
+function publishCheck(d){
+  if(!Store.admin) return '請先登入管理後台';
+  if(!d.name) return '缺少名稱';
+  if(!(d.lines||[]).length) return '缺少屬性';
+  if(!d.category || !catLabel(d.category)) return '請選擇類別（不能是「其他」）';
+  const p = normPrice(d.price);
+  if(!p) return '請先設定價格';
+  if(p.type==='trade' ? !p.want : !(p.runes||[]).length) return '請先設定價格';
+  if(!$('#dContact').value.trim()) return '請在「上架預設值」填寫聯絡方式';
+  return '';
+}
+function toJpeg(dataUrl){
+  return new Promise(res=>{ const im=new Image(); im.onload=()=>{ const c=document.createElement('canvas'); c.width=im.naturalWidth; c.height=im.naturalHeight; c.getContext('2d').drawImage(im,0,0); res(c.toDataURL('image/jpeg',0.9)); }; im.onerror=()=>res(dataUrl); im.src=dataUrl; });
+}
+let publishing=false;
+async function publishTray(ts, force){
+  if(publishing){ toast('正在上架中，請稍候'); return; }
+  const def = listingDefaults();
+  for(const t of ts){ const e=publishCheck(t.draft); if(e){ toast(`「${t.draft.name||'物品'}」${e}`, true); if(ts.length===1) showItem(t); return; } }
+  publishing=true;
+  ls.set('d2r_seller', {ladder:def.ladder, hc:def.hc, platform:def.platform, region:def.region});
+  const items=[];
+  try{
+    for(let i=0;i<ts.length;i++){
+      const t=ts[i], d=t.draft;
+      monStatus(`上架中 ${i+1} / ${ts.length}：${d.name}`); setSync(`上架中 ${i+1}/${ts.length}…`);
+      const lines=(d.lines||[]).filter(l=>{ const r=parseLine(l); return !(r && (r.key==='reqLevel'||r.key==='ilvl')); }).slice(0,20);
+      const parsed=parseProps(lines); const price=normPrice(d.price);
+      const id=newId();
+      const item={id, category:d.category, quality:d.quality||'normal', name:d.name.slice(0,40), base:(d.base||'').slice(0,20), lines,
+        props:parsed.props, cls:parsed.cls, reqLevel:d.reqLevel||parsed.reqLevel||null, ilvl:d.ilvl||null, eth:!!(d.eth||parsed.eth),
+        ladder:def.ladder, hc:def.hc, platform:def.platform, region:def.region, price, negotiable:!!price.negotiable,
+        contact:def.contact, note:'', createdAt:Date.now(), status:'active', image:null};
+      try{ item.image = await Store.putImage(id, await toJpeg(t.image)); }catch(e){ toast('截圖上傳失敗，物品仍會上架：'+(e.message||e), true); }
+      items.push([t,item]);
+    }
+    await Store.addMany(items.map(x=>x[1]));
+    for(const [t,item] of items){ t.listed=true; t.listingId=item.id; await TrayDB.put(t); }
+    renderTray();
+    toast(items.length>1 ? `已上架 ${items.length} 件` : `已上架：${items[0][1].name}`);
+    monStatus(items.length>1 ? `已上架 ${items.length} 件` : `已上架：${items[0][1].name}`);
+  }catch(e){ /* toast already shown by Store */ }
+  finally{ publishing=false; }
+}
+function listFromTray(ts){
+  const drafts = ts.map(t=>Object.assign({}, t.draft, {image:t.image, _newImage:true, _trayId:t.id}));
+  startQueue(drafts);
+}
+
+/* ================= game window monitor ================= */
+const Mon = { stream:null, track:null, ic:null, video:null, worker:null, busy:false, pending:null, stable:0, lastSig:null, lastSeen:0, blackFrames:0, queue:Promise.resolve() };
+const monCv = document.createElement('canvas'), monCtx = monCv.getContext('2d', {willReadFrequently:true});
+const pv = $('#monPreview'), pvCtx = pv.getContext('2d');
+function monStatus(t){ $('#monStatus').textContent=t; if(typeof pipIdleText==='function') pipIdleText(); }
+$('#monStart').onclick = async()=>{
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia){ toast('這個瀏覽器不支援畫面擷取，請用電腦版 Chrome 或 Edge', true); return; }
+  try{
+    Mon.stream = await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:5,max:10}, cursor:'never'}, audio:false});
+  }catch(e){ monStatus('未選取視窗'); return; }
+  try{ if(window.Notification && Notification.permission==='default') Notification.requestPermission(); }catch(e){}
+  Mon.track = Mon.stream.getVideoTracks()[0];
+  Mon.track.addEventListener('ended', stopMonitor);
+  if(window.ImageCapture){ try{ Mon.ic = new ImageCapture(Mon.track); }catch(e){ Mon.ic=null; } }
+  Mon.video = document.createElement('video'); Mon.video.muted=true; Mon.video.playsInline=true; Mon.video.srcObject=Mon.stream;
+  try{ await Mon.video.play(); }catch(e){}
+  // a worker-driven clock keeps ticking while this tab is in the background
+  const blob = new Blob(['setInterval(()=>postMessage(0),350)'], {type:'text/javascript'});
+  Mon.worker = new Worker(URL.createObjectURL(blob));
+  Mon.worker.onmessage = monTick;
+  Mon.pending=null; Mon.stable=0; Mon.lastSig=null; Mon.blackFrames=0;
+  $('#monStart').style.display='none'; $('#monStop').style.display='';
+  monStatus('監控中…把滑鼠移到裝備上');
+  if(SET.engine==='tesseract') getTess().catch(()=>{});  // warm up OCR
+};
+$('#monStop').onclick = stopMonitor;
+function stopMonitor(){
+  if(Mon.worker){ Mon.worker.terminate(); Mon.worker=null; }
+  if(Mon.stream){ Mon.stream.getTracks().forEach(t=>t.stop()); Mon.stream=null; }
+  Mon.ic=null; Mon.video=null;
+  $('#monStart').style.display=''; $('#monStop').style.display='none';
+  monStatus('已停止');
+}
+async function grabFrame(){
+  if(Mon.ic){ try{ return await Mon.ic.grabFrame(); }catch(e){ Mon.ic=null; } }
+  const v=Mon.video; if(!v || !v.videoWidth) return null;
+  return v;
+}
+async function monTick(){
+  if(Mon.busy || !Mon.stream) return;
+  Mon.busy=true;
+  try{
+    const frame = await grabFrame(); if(!frame) return;
+    const FW = frame.videoWidth || frame.width, FH = frame.videoHeight || frame.height;
+    const s = Math.min(1, 960/FW);
+    monCv.width = Math.round(FW*s); monCv.height = Math.round(FH*s);
+    monCtx.drawImage(frame, 0, 0, monCv.width, monCv.height);
+    const img = monCtx.getImageData(0,0,monCv.width,monCv.height);
+    // preview
+    pv.height = Math.round(pv.width*monCv.height/monCv.width);
+    pvCtx.drawImage(monCv, 0, 0, pv.width, pv.height);
+    // black-frame hint (some games can't be captured as a window)
+    let sum=0; for(let i=0;i<img.data.length;i+=4*97) sum+=img.data[i]+img.data[i+1]+img.data[i+2];
+    Mon.blackFrames = sum<50 ? Mon.blackFrames+1 : 0;
+    if(Mon.blackFrames===8) monStatus('擷取到的畫面是全黑的：請停止後重新選取，改選「整個螢幕」，或把遊戲改成視窗化');
+    const box = detectTooltip(img);
+    if(!box){ Mon.pending=null; Mon.stable=0; if(frame.close) frame.close(); return; }
+    const k = pv.width/monCv.width;
+    pvCtx.strokeStyle='#e8c87e'; pvCtx.lineWidth=2; pvCtx.strokeRect(box.x*k, box.y*k, box.w*k, box.h*k);
+    const sig = regionSig(monCtx, box);
+    if(sigDiff(sig, Mon.pending) < 6) Mon.stable++; else { Mon.pending=sig; Mon.stable=1; }
+    // capture once the tooltip has been steady for 2 ticks and differs from the last capture
+    if(Mon.stable===2 && sigDiff(sig, Mon.lastSig) >= 6){
+      Mon.lastSig = sig;
+      const c=document.createElement('canvas'); c.width=Math.round(box.w/s); c.height=Math.round(box.h/s);
+      c.getContext('2d').drawImage(frame, box.x/s, box.y/s, box.w/s, box.h/s, 0, 0, c.width, c.height);
+      capture(c);
+    }
+    if(frame.close) frame.close();
+  }catch(e){ /* keep monitoring */ }
+  finally{ Mon.busy=false; }
+}
+/* ---------- capture -> OCR -> review dialog (multi-item) -> save ---------- */
+const _rvCache={};
+const rvEl = sel => _rvCache[sel] || (_rvCache[sel]=document.querySelector(sel));
+['#rvImg','#rvName','#rvBase','#rvQual','#rvCat','#rvReq','#rvLines','#rvRaw','#rvWarn','#rvTip','#rvChips','#rvSave','#rvSaveList','#rvSkip','#rvPrice','#rvPriceSum',
+ '#rvPrev','#rvNext','#rvPos','#rvThumbs','#rvSaveAll'].forEach(rvEl);
+bindCatSelect(rvEl('#rvCat'), true);
+const rvPE = new PriceEditor(rvEl('#rvPrice'));
+function rvTab(name){
+  const m = rvEl('#rvPrice').closest('.modal');
+  m.querySelectorAll('[data-rvtab]').forEach(b=>b.classList.toggle('on', b.dataset.rvtab===name));
+  m.querySelectorAll('[data-rvpane]').forEach(p=>p.style.display = p.dataset.rvpane===name ? '' : 'none');
+}
+rvEl('#rvPrice').closest('.modal').addEventListener('click', e=>{ const b=e.target.closest('[data-rvtab]'); if(b) rvTab(b.dataset.rvtab); });
+let pending = [];          // recognised captures waiting for confirmation
+let rvIdx = 0;             // which one the dialog shows
+let rvOpen = false;        // dialog currently displayed
+let ocrRunning = 0;
+const baseTitle = document.title;
+const curItem = () => pending[rvIdx] || null;
+function updatePending(){
+  const n = pending.length;
+  const b = $('#pendBtn'); b.style.display = n ? '' : 'none'; b.textContent = `待確認 ${n} 件`;
+  document.title = n ? `(${n}) 待確認 · ${baseTitle}` : baseTitle;
+  rvEl('#rvPos').textContent = n ? `第 ${rvIdx+1} / ${n} 件` : '';
+  rvEl('#rvPrev').disabled = rvIdx<=0; rvEl('#rvNext').disabled = rvIdx>=n-1;
+  rvEl('#rvSaveAll').style.display = n>1 ? '' : 'none';
+  rvEl('#rvSaveAll').textContent = `全部儲存（${n}）`;
+  rvEl('#rvThumbs').innerHTML = n>1 ? pending.map((t,i)=>`<img src="${t.image}" data-i="${i}" class="${i===rvIdx?'on':''}" title="${esc((t.edit||t.draft).name||'')}">`).join('') : '';
+  if(typeof pipIdleText==='function' && typeof Pip!=='undefined') pipIdleText();
+}
+function notifyCapture(name){
+  try{ if(window.Notification && Notification.permission==='granted' && document.hidden) new Notification('擷取到裝備，請確認', {body:name||'', tag:'d2r-capture'}); }catch(e){}
+}
+function capture(canvas){
+  const item = {id:newId(), time:Date.now(), image:canvas.toDataURL('image/png'), draft:{lines:[]}};
+  ocrRunning++; monStatus('擷取到素質方塊，辨識中…');
+  Mon.queue = Mon.queue.then(async()=>{
+    let draft;
+    try{ draft = SET.engine==='claude' ? await ocrClaude(canvas) : await ocrTesseract(canvas, t=>monStatus('擷取到素質方塊，'+t)); }
+    catch(e){ draft = {lines:[], _noOcr:true, _err:e.message||String(e)}; }
+    ocrRunning--;
+    const others = [...tray.map(t=>t.draft), ...pending.map(t=>t.edit||t.draft)];
+    const dup = !draft._noOcr && others.find(o=>sameItem(o, draft));
+    const skipCat = $('#monOnly').checked && !draft._noOcr && !['ring','amulet','circlet'].includes(draft.category);
+    if(dup){ monStatus(`「${dup.name||draft.name}」已經擷取過，略過`); return; }
+    if(skipCat){ monStatus(`「${draft.name||'此物品'}」不是戒指 / 護身符 / 頭環，略過`); return; }
+    item.draft = draft;
+    pending.push(item);
+    monStatus(draft._noOcr ? `辨識失敗（${draft._err}），請手動輸入` : `辨識完成：${draft.name||'(未辨識名稱)'}，待確認 ${pending.length} 件`);
+    notifyCapture(draft.name);
+    if(!rvOpen){ rvIdx = pending.length-1; showCurrent(); }
+    else updatePending();          // keep the item the user is editing; just update the counter
+  });
+}
+// remember unsaved edits of the item on screen
+function stash(){ const t=curItem(); if(t && rvOpen) t.edit = rvCollect(); }
+function showCurrent(){
+  if(!pending.length){ rvOpen=false; hideReview(); updatePending(); return; }
+  rvIdx = Math.max(0, Math.min(rvIdx, pending.length-1));
+  const t = curItem(), d = t.edit || t.draft;
+  rvEl('#rvImg').src = t.image;
+  rvEl('#rvName').value = d.name||''; rvEl('#rvBase').value = d.base||'';
+  rvEl('#rvQual').value = d.quality||'normal'; rvEl('#rvCat').value = d.category||'other';
+  rvEl('#rvReq').value = d.reqLevel||'';
+  rvEl('#rvLines').value = (d.lines||[]).join('\n');
+  rvPE.set(d.price || null);
+  rvEl('#rvRaw').textContent = t.draft._raw || '（無）';
+  rvEl('#rvWarn').innerHTML = t.draft._noOcr ? `<div class="warn">⚠ 辨識失敗：${esc(t.draft._err||'')}，請手動輸入</div>` : '';
+  rvPreview(); updatePending();
+  if(!rvOpen){ rvOpen=true; showReview(); if(!Pip.win) setTimeout(()=>rvEl('#rvName').focus(), 50); }
+}
+function go(i){ stash(); rvIdx=i; showCurrent(); }
+function rvCollect(){
+  return { name:norm(rvEl('#rvName').value), base:norm(rvEl('#rvBase').value), quality:rvEl('#rvQual').value,
+    category: ['other','__add'].includes(rvEl('#rvCat').value) ? null : rvEl('#rvCat').value, reqLevel: +rvEl('#rvReq').value || null,
+    lines: rvEl('#rvLines').value.split('\n').map(norm).filter(Boolean),
+    price: rvPE.get(), negotiable: rvPE.get().negotiable };
+}
+function rvPreview(){
+  const a = rvCollect(); const pp = parseProps(a.lines);
+  rvEl('#rvPriceSum').textContent = '（'+fmtP(a.price)+'）';
+  rvEl('#rvTip').innerHTML = tooltipLite(a);
+  rvEl('#rvChips').innerHTML = Object.entries(pp.props).map(([k,v])=>`<span class="pchip">${esc(PROP_LABEL[k]||k)} ${v}${(k==='classSkills'||k==='treeSkills')&&pp.cls?' ('+esc(pp.cls)+')':''}</span>`).join('') || '<span class="muted">沒有可篩選的數值</span>';
+}
+function tooltipLite(l){
+  const q='q-'+(l.quality||'normal');
+  let h = `<div class="name ${q}" style="font-weight:600">${esc(l.name||'(未命名)')}</div>`;
+  if(l.base) h += `<div class="${q}">${esc(l.base)}</div>`;
+  if(l.reqLevel) h += `<div class="req">需要等級: ${esc(l.reqLevel)}</div>`;
+  for(const ln of l.lines) h += `<div class="stat">${esc(ln)}</div>`;
+  return h;
+}
+async function saveItem(t, a){
+  const learned = t.draft._ocr ? Learn.record(t.draft._ocr, a) : 0;
+  Object.assign(t.draft, a); delete t.edit; t.status='done';
+  tray.unshift(t); await TrayDB.put(t);
+  return learned;
+}
+rvModal_init: {
+  const m = document.querySelector('#ovReview .modal');
+  m.addEventListener('input', rvPreview);
+  m.addEventListener('change', rvPreview);
+  m.addEventListener('keydown', e=>{
+    if(e.key==='Enter' && (e.ctrlKey||e.metaKey)){ e.preventDefault(); rvEl('#rvSave').click(); }
+    else if(e.altKey && e.key==='ArrowLeft'){ e.preventDefault(); rvEl('#rvPrev').click(); }
+    else if(e.altKey && e.key==='ArrowRight'){ e.preventDefault(); rvEl('#rvNext').click(); }
+  });
+}
+rvEl('#rvPrev').onclick = ()=>{ if(rvIdx>0) go(rvIdx-1); };
+rvEl('#rvNext').onclick = ()=>{ if(rvIdx<pending.length-1) go(rvIdx+1); };
+rvEl('#rvThumbs').onclick = e=>{ const i=e.target.dataset && e.target.dataset.i; if(i!=null) go(+i); };
+async function rvSaveCurrent(andList){
+  const t=curItem(); if(!t) return;
+  const a = rvCollect();
+  if(!a.name && !a.lines.length){ toast('請至少輸入名稱或屬性', true); return; }
+  if(andList){ const err = publishCheck(a); if(err){ toast(err, true); if(/價格/.test(err)) rvTab('price'); return; } }
+  rvPE.remember();
+  const learned = await saveItem(t, a);
+  pending.splice(rvIdx,1);
+  renderTray(); if(typeof renderLearn==='function') renderLearn();
+  toast(`已儲存：${a.name||'物品'}${learned?`（學會 ${learned} 條修正）`:''}`);
+  monStatus(`已儲存：${a.name||'物品'}${pending.length?`，還有 ${pending.length} 件待確認`:''}`);
+  showCurrent();
+  if(andList) publishTray([t]);
+}
+rvEl('#rvSave').onclick = ()=>rvSaveCurrent(false);
+rvEl('#rvSaveList').onclick = ()=>rvSaveCurrent(true);
+rvEl('#rvSkip').onclick = ()=>{
+  const t=curItem(); if(!t) return;
+  pending.splice(rvIdx,1);
+  monStatus(`已略過：${(t.edit||t.draft).name||'物品'}`);
+  showCurrent();
+};
+rvEl('#rvSaveAll').onclick = async()=>{
+  stash();
+  const n=pending.length; let learned=0;
+  for(const t of pending){ const a=t.edit||t.draft; learned += await saveItem(t, {name:a.name, base:a.base, quality:a.quality, category:a.category, reqLevel:a.reqLevel, lines:a.lines, price:a.price||rvPE.get(), negotiable:(a.price||rvPE.get()).negotiable}); }
+  pending=[]; renderTray(); if(typeof renderLearn==='function') renderLearn();
+  toast(`已儲存 ${n} 件${learned?`（學會 ${learned} 條修正）`:''}`); monStatus(`已儲存 ${n} 件`);
+  showCurrent();
+};
+$('#pendBtn').onclick = ()=>{ if(rvOpen) showReview(); else showCurrent(); };
+// closing the in-page dialog with ✕ keeps everything pending
+new MutationObserver(()=>{ if(!Pip.win && !$('#ovReview').classList.contains('on') && rvOpen){ stash(); rvOpen=false; } }).observe($('#ovReview'), {attributes:true, attributeFilter:['class']});
+/* ---------- always-on-top window (Document Picture-in-Picture) ---------- */
+const rvModal = document.querySelector('#ovReview .modal');
+const Pip = { win:null, idle:null };
+const pipSupported = 'documentPictureInPicture' in window;
+function showReview(){
+  if(Pip.win){ rvModal.style.display=''; Pip.idle.style.display='none'; }
+  else openOv('ovReview');
+}
+function hideReview(){
+  if(Pip.win){ rvModal.style.display='none'; Pip.idle.style.display=''; }
+  else closeOv('ovReview');
+}
+function pipIdleText(){
+  if(!Pip.idle) return;
+  const live = !!Mon.stream;
+  Pip.idle.querySelector('.pi-st').textContent = $('#monStatus').textContent;
+  Pip.idle.querySelector('.pi-dot').style.background = live ? 'var(--green)' : 'var(--muted)';
+  Pip.idle.querySelector('.pi-n').textContent = `已儲存 ${tray.length} 件` + (pending.length?` · 待確認 ${pending.length} 件`:'');
+}
+async function openPip(){
+  if(Pip.win){ Pip.win.focus(); return; }
+  if(!pipSupported){ toast('這個瀏覽器不支援置頂視窗，請用電腦版 Chrome 或 Edge（116 版以上）', true); return; }
+  let w;
+  try{ w = await documentPictureInPicture.requestWindow({width:470, height:660}); }
+  catch(e){ toast('無法開啟置頂視窗：'+(e.message||e), true); return; }
+  // bring the page's styles along
+  for(const ss of document.styleSheets){
+    try{ const st=w.document.createElement('style'); st.textContent=[...ss.cssRules].map(r=>r.cssText).join('\n'); w.document.head.appendChild(st); }
+    catch(e){ if(ss.href){ const l=w.document.createElement('link'); l.rel='stylesheet'; l.href=ss.href; w.document.head.appendChild(l); } }
+  }
+  w.document.title = 'D2R 擷取確認';
+  w.document.body.className = 'pip';
+  const idle = w.document.createElement('div'); idle.className='pip-idle';
+  idle.innerHTML = `<div class="pi-h"><span class="pi-dot"></span>D2R 擷取</div><div class="pi-st"></div><div class="pi-n muted"></div>
+    <div class="muted" style="margin-top:10px;font-size:12px;line-height:1.6">這個視窗會一直浮在遊戲上面。<br>擷取到裝備時，確認表單會出現在這裡。</div>`;
+  w.document.body.append(idle, rvModal);
+  Pip.win = w; Pip.idle = idle;
+  w.addEventListener('pagehide', ()=>{
+    $('#ovReview').appendChild(rvModal); rvModal.style.display='';
+    Pip.win=null; Pip.idle=null; updatePipBtn();
+    if(rvOpen) openOv('ovReview');
+  });
+  closeOv('ovReview');
+  if(rvOpen) showReview(); else if(pending.length) showCurrent(); else hideReview();
+  pipIdleText(); updatePipBtn();
+}
+function updatePipBtn(){ const b=$('#pipBtn'); if(b) b.textContent = Pip.win ? '置頂視窗已開啟' : '開啟置頂視窗'; }
+$('#pipBtn').onclick = openPip;
+if(!pipSupported) $('#pipBtn').title='需要電腦版 Chrome 或 Edge 116 以上';
+
+function renderLearn(){ $('#learnInfo').textContent = `已學會 ${Learn.count()} 條辨識修正（上架前改過的錯字，下次會自動套用）`; }
+$('#learnClear').onclick=async()=>{ if(!Learn.count()) return; if(!await askConfirm('清除所有學到的辨識修正？')) return; Learn.clear(); renderLearn(); toast('已清除'); };
+renderLearn();
+
+
+/* ---------- capture page: viewer, defaults, whole-screenshot upload ---------- */
+bindCatSelect($('#iCat'), true);
+const iPE = new PriceEditor($('#iPrice'));
+function showItem(t){
+  const d=t.draft||{};
+  $('#iTitle').innerHTML = `<span class="q-${esc(d.quality||'normal')}">${esc(d.name||'(未辨識名稱)')}</span>`;
+  $('#iImg').src=t.image; $('#iDl').href=t.image; $('#iDl').download=`${d.name||'d2r-item'}-${t.id}.png`;
+  $('#iListed').innerHTML = t.listed ? '<div class="ok" style="font-size:13px">✓ 已上架。這裡的修改不會改到已上架的刊登，要改請到「管理後台 → 刊登管理」。</div>' : '';
+  $('#iName').value = d.name||''; $('#iBase').value = d.base||''; $('#iLinesEd').value = (d.lines||[]).join('\n');
+  $('#iQual').value = d.quality||'normal'; $('#iCat').value = d.category && catLabel(d.category) ? d.category : 'other'; $('#iReq').value = d.reqLevel||'';
+  iPE.set(d.price || null);
+  $('#iRaw').textContent = d._raw || '（無）';
+  const chips = ()=>{ const pp=parseProps($('#iLinesEd').value.split('\n')); $('#iChips').innerHTML = Object.entries(pp.props).map(([k,v])=>`<span class="pchip">${esc(PROP_LABEL[k]||k)} ${v}${(k==='classSkills'||k==='treeSkills')&&pp.cls?' ('+esc(pp.cls)+')':''}</span>`).join('') || '<span class="muted">沒有可篩選的數值</span>'; };
+  chips(); $('#iLinesEd').oninput = chips;
+  const save = async (andList)=>{
+    const pv = iPE.valid(); if(pv && andList){ toast(pv, true); return; }
+    const after = {name:norm($('#iName').value), base:norm($('#iBase').value), lines:$('#iLinesEd').value.split('\n').map(norm).filter(Boolean)};
+    const n = Learn.record(d._ocr || d, after);
+    const cat = $('#iCat').value;
+    Object.assign(d, after, {quality:$('#iQual').value, category: ['other','__add'].includes(cat) ? null : cat, reqLevel: +$('#iReq').value || null, price: iPE.get(), negotiable: iPE.get().negotiable});
+    if(!pv) iPE.remember();
+    await TrayDB.put(t); renderTray(); renderLearn();
+    if(andList){ const e=publishCheck(d); if(e){ toast(e, true); return; } closeOv('ovItem'); publishTray([t], true); }
+    else { toast(n ? `已儲存，學會 ${n} 條修正` : '已儲存'); closeOv('ovItem'); }
+  };
+  $('#iSave').onclick = ()=>save(false);
+  $('#iSaveList').onclick = ()=>save(true);
+  $('#iSaveList').style.display = t.listed ? 'none' : '';
+  openOv('ovItem');
+}
+// listing defaults (shared with the manual editor's remembered values)
+fillSelect($('#dPlat'), PLATS); fillSelect($('#dRegion'), REGIONS);
+{ const m=ls.get('d2r_seller',{}); $('#dLadder').value=m.ladder||'ladder'; $('#dHc').value=m.hc||'sc'; $('#dPlat').value=m.platform||'PC'; $('#dRegion').value=m.region||'Asia'; $('#dContact').value=SET.contact||''; }
+['#dLadder','#dHc','#dPlat','#dRegion'].forEach(id=>$(id).addEventListener('change', ()=>{ const d=listingDefaults(); ls.set('d2r_seller',{ladder:d.ladder,hc:d.hc,platform:d.platform,region:d.region}); }));
+$('#dContact').addEventListener('change', e=>{ SET.contact=e.target.value.trim(); saveSet(); $('#sContact').value=SET.contact; });
+$('#sContact').addEventListener('change', e=>{ $('#dContact').value=e.target.value.trim(); });
+// whole screenshot -> detect -> crop -> same review flow
+$('#shotBtn').onclick=()=>$('#shot').click();
+$('#shot').onchange=async e=>{
+  const files=[...e.target.files]; e.target.value='';
+  for(const f of files){
+    let im; try{ im=await loadImg(f); }catch(err){ toast('無法讀取圖片', true); continue; }
+    const FW=im.naturalWidth, FH=im.naturalHeight, s=Math.min(1,960/FW);
+    monCv.width=Math.round(FW*s); monCv.height=Math.round(FH*s);
+    monCtx.drawImage(im,0,0,monCv.width,monCv.height);
+    const box=detectTooltip(monCtx.getImageData(0,0,monCv.width,monCv.height));
+    pv.height=Math.round(pv.width*monCv.height/monCv.width); pvCtx.drawImage(monCv,0,0,pv.width,pv.height);
+    if(!box){ monStatus(`「${f.name}」中沒有偵測到素質方塊`); toast('沒有偵測到素質方塊', true); continue; }
+    const k=pv.width/monCv.width; pvCtx.strokeStyle='#e8c87e'; pvCtx.lineWidth=2; pvCtx.strokeRect(box.x*k,box.y*k,box.w*k,box.h*k);
+    const c=document.createElement('canvas'); c.width=Math.round(box.w/s); c.height=Math.round(box.h/s);
+    c.getContext('2d').drawImage(im, box.x/s, box.y/s, box.w/s, box.h/s, 0, 0, c.width, c.height);
+    capture(c);
+  }
+};
+onCatsChanged = ()=>render();
+/* ================= boot ================= */
+fromHash();
+Store.load();
+</script>
+</body>
+</html>
