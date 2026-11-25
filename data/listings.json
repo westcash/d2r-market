@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795620100491,
+ "updatedAt": 1795620266379,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -18,6 +18,58 @@
  },
  "styleImgs": {},
  "listings": [
+  {
+   "id": "mww9xzgdeovsz",
+   "categories": [
+    "cmww9nm94"
+   ],
+   "category": "cmww9nm94",
+   "style": null,
+   "quality": "unique",
+   "name": "盜賊皇冠",
+   "base": "莊嚴王冠 進階",
+   "lines": [
+    "擊中竊取 12% 生命",
+    "+200% 防禦強化",
+    "+25 敏捷",
+    "+50 生命",
+    "+35 法力",
+    "火焰抗性 +33%",
+    "怪物金幣掉落量提高 100%",
+    "有形"
+   ],
+   "props": {
+    "dex": 25,
+    "life": 50,
+    "mana": 35,
+    "fireRes": 33,
+    "gf": 100
+   },
+   "cls": null,
+   "reqLevel": 49,
+   "ilvl": null,
+   "eth": false,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 4
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795620264637,
+   "status": "active",
+   "image": "images/mww9xzgdeovsz.jpg"
+  },
   {
    "id": "mww9ufddaywlz",
    "categories": [
