@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795620786085,
+ "updatedAt": 1795621041945,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -18,6 +18,49 @@
  },
  "styleImgs": {},
  "listings": [
+  {
+   "id": "mwwaelv44l9wy",
+   "categories": [
+    "charm"
+   ],
+   "category": "charm",
+   "style": "cg2",
+   "quality": "magic",
+   "name": "特大咒符",
+   "base": "特大咒符",
+   "lines": [
+    "+1 火焰技能(只限魔法使)",
+    "+41 生命"
+   ],
+   "props": {
+    "treeSkills": 1,
+    "life": 41
+   },
+   "cls": "法師",
+   "reqLevel": 86,
+   "ilvl": null,
+   "eth": false,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 2
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795621040176,
+   "status": "active",
+   "image": "images/mwwaelv44l9wy.jpg"
+  },
   {
    "id": "mwwa5ges8t7o4",
    "categories": [
