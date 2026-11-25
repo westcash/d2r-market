@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795620418775,
+ "updatedAt": 1795620475458,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -18,6 +18,53 @@
  },
  "styleImgs": {},
  "listings": [
+  {
+   "id": "mwwa2gkkh3yoy",
+   "categories": [
+    "cmww9nm94"
+   ],
+   "category": "cmww9nm94",
+   "style": null,
+   "quality": "unique",
+   "name": "蛇魔法師之皮",
+   "base": "海蛇皮甲 進階 輕",
+   "lines": [
+    "+1 所有技能",
+    "+30% 施法速度",
+    "+120% 防禦強化",
+    "所有抗性 +35",
+    "魔法傷害降低 13"
+   ],
+   "props": {
+    "allSkills": 1,
+    "fcr": 30,
+    "allRes": 35
+   },
+   "cls": null,
+   "reqLevel": 29,
+   "ilvl": null,
+   "eth": false,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 1
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795620473444,
+   "status": "active",
+   "image": "images/mwwa2gkkh3yoy.jpg"
+  },
   {
    "id": "mwwa191m38qlx",
    "categories": [
