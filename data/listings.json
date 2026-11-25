@@ -1,10 +1,14 @@
 {
  "version": 2,
- "updatedAt": 1795619842810,
+ "updatedAt": 1795620100491,
  "categories": [
   {
    "id": "cmww9nm94",
    "label": "暗金"
+  },
+  {
+   "id": "cmww9tf4b",
+   "label": "鑲材"
   }
  ],
  "rangeFix": {},
@@ -14,6 +18,49 @@
  },
  "styleImgs": {},
  "listings": [
+  {
+   "id": "mww9ufddaywlz",
+   "categories": [
+    "cmww9tf4b"
+   ],
+   "category": "cmww9tf4b",
+   "style": null,
+   "quality": "normal",
+   "name": "神聖輕圓盾",
+   "base": "",
+   "lines": [
+    "所有抗性 +45",
+    "防禦:232",
+    "無形(無法修復)"
+   ],
+   "props": {
+    "allRes": 45
+   },
+   "cls": null,
+   "reqLevel": 52,
+   "ilvl": null,
+   "eth": true,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 4
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795620098641,
+   "status": "active",
+   "image": "images/mww9ufddaywlz.jpg"
+  },
   {
    "id": "mww9okwh2m93l",
    "categories": [
