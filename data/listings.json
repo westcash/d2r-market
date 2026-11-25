@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795620653948,
+ "updatedAt": 1795620709164,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -260,7 +260,11 @@
    "createdAt": 1795620264637,
    "status": "active",
    "image": "images/mww9xzgdeovsz.jpg",
-   "updatedAt": 1795620653926
+   "updatedAt": 1795620653926,
+   "rv": {
+    "lifesteal": 12
+   },
+   "dbItem": null
   },
   {
    "id": "mww9ufddaywlz",
