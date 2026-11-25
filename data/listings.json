@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795620549043,
+ "updatedAt": 1795620615166,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -18,6 +18,54 @@
  },
  "styleImgs": {},
  "listings": [
+  {
+   "id": "mwwa5ges8t7o4",
+   "categories": [
+    "ring",
+    "cmww9nm94"
+   ],
+   "category": "ring",
+   "style": "ring4",
+   "quality": "unique",
+   "name": "蛋白石脈",
+   "base": "",
+   "lines": [
+    "攻擊時有 2% 機率施展等級 15 烈焰漲浪",
+    "+10% 施法速度",
+    "+31% 傷害強化",
+    "所有抗性 +6",
+    "+1 擊殺生命恢復",
+    "+1 擊殺法力恢復"
+   ],
+   "props": {
+    "fcr": 10,
+    "allRes": 6
+   },
+   "cls": null,
+   "reqLevel": 50,
+   "ilvl": null,
+   "eth": false,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 1
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795620613204,
+   "status": "active",
+   "image": "images/mwwa5ges8t7o4.jpg"
+  },
   {
    "id": "mwwa41gig1ib5",
    "categories": [
