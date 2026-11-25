@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795620766326,
+ "updatedAt": 1795620778589,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -103,7 +103,7 @@
     "runes": [
      {
       "n": 31,
-      "qty": 1
+      "qty": 3
      }
     ],
     "negotiable": false
@@ -113,7 +113,8 @@
    "note": "",
    "createdAt": 1795620547170,
    "status": "active",
-   "image": "images/mwwa41gig1ib5.jpg"
+   "image": "images/mwwa41gig1ib5.jpg",
+   "updatedAt": 1795620778563
   },
   {
    "id": "mwwa2gkkh3yoy",
