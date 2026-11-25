@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795619828032,
+ "updatedAt": 1795619842810,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -29,9 +29,7 @@
     "+20% 施法速度",
     "+30% 冰寒技能傷害",
     "電擊抗性 +35%",
-    "火焰抗性 +32%",
-    "(只限魔法使)",
-    "法杖類武器 - 一般的攻擊速度"
+    "火焰抗性 +32%"
    ],
    "props": {
     "classSkills": 3,
@@ -66,7 +64,8 @@
    "note": "",
    "createdAt": 1795619825873,
    "status": "active",
-   "image": "images/mww9okwh2m93l.jpg"
+   "image": "images/mww9okwh2m93l.jpg",
+   "updatedAt": 1795619842809
   }
  ]
 }
