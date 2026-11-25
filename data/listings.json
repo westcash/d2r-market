@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795620266379,
+ "updatedAt": 1795620418775,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -18,6 +18,54 @@
  },
  "styleImgs": {},
  "listings": [
+  {
+   "id": "mwwa191m38qlx",
+   "categories": [
+    "cmww9nm94"
+   ],
+   "category": "cmww9nm94",
+   "style": null,
+   "quality": "unique",
+   "name": "蝕肉騎士",
+   "base": "",
+   "lines": [
+    "+30% 跑步 / 行走速度",
+    "+15% 機率造成粉碎打擊",
+    "+15% 致命打擊",
+    "+10% 機率造成開放傷口",
+    "+200% 防禦強化",
+    "+20 精力上限",
+    "需求 -25%"
+   ],
+   "props": {
+    "frw": 30,
+    "ene": 20
+   },
+   "cls": null,
+   "reqLevel": 47,
+   "ilvl": null,
+   "eth": false,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 28,
+      "qty": 1
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795620417034,
+   "status": "active",
+   "image": "images/mwwa191m38qlx.jpg"
+  },
   {
    "id": "mww9xzgdeovsz",
    "categories": [
