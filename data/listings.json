@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795621203949,
+ "updatedAt": 1795648698887,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -80,7 +80,7 @@
     "life": 41
    },
    "cls": "法師",
-   "reqLevel": 86,
+   "reqLevel": 83,
    "ilvl": null,
    "eth": false,
    "ladder": "nonladder",
@@ -102,7 +102,8 @@
    "note": "",
    "createdAt": 1795621040176,
    "status": "active",
-   "image": "images/mwwaelv44l9wy.jpg"
+   "image": "images/mwwaelv44l9wy.jpg",
+   "updatedAt": 1795648698886
   },
   {
    "id": "mwwa5ges8t7o4",
