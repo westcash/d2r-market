@@ -1,12 +1,72 @@
 {
  "version": 2,
- "updatedAt": 1795619524071,
- "categories": [],
+ "updatedAt": 1795619828032,
+ "categories": [
+  {
+   "id": "cmww9nm94",
+   "label": "暗金"
+  }
+ ],
  "rangeFix": {},
  "labelFix": {},
  "chat": {
   "tawk": "6b06cfff2181993ca7c9b34a/1k899ovlu"
  },
  "styleImgs": {},
- "listings": []
+ "listings": [
+  {
+   "id": "mww9okwh2m93l",
+   "categories": [
+    "cmww9nm94"
+   ],
+   "category": "cmww9nm94",
+   "style": null,
+   "quality": "unique",
+   "name": "死亡深度",
+   "base": "次元法珠 精英",
+   "lines": [
+    "+3 魔法使技能等級",
+    "+20% 施法速度",
+    "+30% 冰寒技能傷害",
+    "電擊抗性 +35%",
+    "火焰抗性 +32%",
+    "(只限魔法使)",
+    "法杖類武器 - 一般的攻擊速度"
+   ],
+   "props": {
+    "classSkills": 3,
+    "fcr": 20,
+    "lightRes": 35,
+    "fireRes": 32
+   },
+   "cls": "法師",
+   "reqLevel": 73,
+   "ilvl": null,
+   "eth": false,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 1
+     },
+     {
+      "n": 28,
+      "qty": 1
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795619825873,
+   "status": "active",
+   "image": "images/mww9okwh2m93l.jpg"
+  }
+ ]
 }
