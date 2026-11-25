@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795621041945,
+ "updatedAt": 1795621203949,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -18,6 +18,49 @@
  },
  "styleImgs": {},
  "listings": [
+  {
+   "id": "mwwai2yscdcex",
+   "categories": [
+    "charm"
+   ],
+   "category": "charm",
+   "style": "cg3",
+   "quality": "magic",
+   "name": "特大咒符",
+   "base": "特大咒符",
+   "lines": [
+    "所有抗性 +15",
+    "怪物金幣掉落量提高 40%"
+   ],
+   "props": {
+    "allRes": 15,
+    "gf": 40
+   },
+   "cls": null,
+   "reqLevel": 27,
+   "ilvl": null,
+   "eth": false,
+   "ladder": "nonladder",
+   "hc": "sc",
+   "platform": "PC",
+   "region": "Asia",
+   "price": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 1
+     }
+    ],
+    "negotiable": false
+   },
+   "negotiable": false,
+   "contact": "GoldenPika#3811",
+   "note": "",
+   "createdAt": 1795621202308,
+   "status": "active",
+   "image": "images/mwwai2yscdcex.jpg"
+  },
   {
    "id": "mwwaelv44l9wy",
    "categories": [
