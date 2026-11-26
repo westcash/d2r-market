@@ -226,7 +226,7 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 .vtoggle button+button{border-left:1px solid var(--line2)}
 .vtoggle button.on{background:#2a1e0c;color:var(--gold2)}
 .grid.list{display:flex;flex-direction:column;gap:6px}
-.grid.list .lhead,.grid.list .lrow{display:grid;grid-template-columns:56px minmax(190px,1.2fr) 2fr 150px 80px 30px;gap:12px;align-items:center}
+.grid.list .lhead,.grid.list .lrow{display:grid;grid-template-columns:56px minmax(190px,1.2fr) 2fr 150px 80px;gap:12px;align-items:center}
 .grid.list .lhead{font-size:12px;color:var(--muted);padding:0 12px}
 .grid.list .lrow{flex-direction:row;padding:8px 12px;background:#000c}
 .lthumb img{width:56px;height:56px;object-fit:cover;border:1px solid var(--line);display:block}
@@ -238,9 +238,9 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 .ltime{font-size:12px}
 @media (max-width:860px){
   .grid.list .lhead{display:none}
-  .grid.list .lrow{grid-template-columns:1fr auto;grid-template-areas:"name price" "stats stats" "time star";gap:6px 10px}
+  .grid.list .lrow{grid-template-columns:1fr auto;grid-template-areas:"name price" "stats stats" "time time";gap:6px 10px}
   .grid.list .lthumb{display:none}
-  .lname{grid-area:name}.lprice{grid-area:price;text-align:right}.lstats{grid-area:stats}.ltime{grid-area:time}.grid.list .lrow .star{grid-area:star}
+  .lname{grid-area:name}.lprice{grid-area:price;text-align:right}.lstats{grid-area:stats}.ltime{grid-area:time}
   .tabs{overflow-x:auto;scrollbar-width:none}.tab{flex:0 0 auto;white-space:nowrap}
 }
 .qwrap{position:relative;flex:1;min-width:200px}
@@ -254,6 +254,25 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 .achips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:-4px 0 12px}
 .achips:empty{display:none}
 .nsugwrap{position:relative}
+.pe-stockrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);font-size:13px}
+.pe-lotopt{display:flex;gap:12px;flex-wrap:wrap}.pe-lotopt label{font-weight:400}
+.stock.lot{color:#f0c674;background:#2a1e0c;border-color:#7a5a20}
+.pe-stockrow label{display:flex;align-items:center;gap:6px;margin:0;white-space:nowrap}.pe-stockrow input{width:80px}.pe-stockrow .muted{font-size:12px}
+#sPrice .pe-stockrow{display:none}
+.stock{display:inline-block;font-size:12px;font-weight:600;color:#9fd08a;background:#13230f;border:1px solid #3b6b2c;border-radius:3px;padding:0 6px;white-space:nowrap}
+.card .cstock{position:absolute;top:8px;left:8px;pointer-events:none}
+.price .worth{display:inline-block;margin-left:8px;font-size:12px;font-weight:500;color:#c9b27a;background:#2a1e0c;border:1px solid #5a4520;border-radius:3px;padding:0 6px;vertical-align:2px;white-space:nowrap}
+.grid.list .lprice .worth{margin:2px 0 0 6px}
+#infoBtns .btn{font-size:13px}
+@media (max-width:700px){ #infoBtns{order:5;width:100%} #infoBtns .btn{flex:1} }
+.runetab td{padding:5px 8px}.runetab td.num{color:var(--gold2);font-weight:600;text-align:right}.runetab tr.base td{background:#2a1e0c}
+.about h3{color:var(--gold2);margin:16px 0 6px;font-size:16px}.about h3:first-child{margin-top:0}.about p{margin:4px 0;line-height:1.7}.about ul,.about ol{margin:4px 0;padding-left:22px;line-height:1.7}
+.rvgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.rvset{display:flex;align-items:center;gap:6px;font-size:13px;margin:0}.rvset span{flex:0 0 74px;color:var(--gold2)}.rvset input{min-width:0}
+.rvset.base span{font-weight:700}
+.dnav{display:flex;align-items:center;gap:6px;margin-left:auto;margin-right:8px;font-size:12.5px;white-space:nowrap}
+.dnav .btn[disabled]{opacity:.35;cursor:default}
+@media (max-width:600px){.dnav .muted{display:none}.dnav .btn{padding:4px 8px}}
 .fulldata{border:1px solid var(--line);border-radius:3px;padding:8px 10px;background:#0b0906;margin-bottom:8px;max-height:420px;overflow:auto}
 .fulldata .fdh{color:var(--gold2);font-weight:600;margin-bottom:6px}
 .fdrow{display:flex;gap:8px;align-items:flex-start;padding:3px 0;border-bottom:1px solid #1d1710}
@@ -327,6 +346,7 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
       <div class="logo">D2R 非天梯拍賣所<small>暗黑破壞神 II 獄火重生 · 非天梯物品交易</small></div>
       <div class="sp"></div>
       <span class="sync" id="sync"></span>
+      <span class="nav" id="infoBtns"><button class="btn" id="bRunes">💎 符文價值參考</button><button class="btn" id="bAbout">ℹ 網站說明</button></span>
       <span class="nav" id="navBtns"></span>
     </div>
     <nav class="tabs" id="tabs"></nav>
@@ -395,6 +415,7 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
           <h3 style="flex:0 0 auto;margin:0 12px 0 0">刊登管理</h3>
           <div class="chips" id="aStatus" style="flex:1"></div>
           <input type="search" id="aQ" placeholder="搜尋名稱、屬性…" style="max-width:240px">
+          <button class="btn sm" id="aExport" title="把販售中的裝備存成文字檔">⬇ 匯出上架清單（.txt）</button>
         </div>
         <div style="overflow:auto"><table class="atable" id="aTable"></table></div>
       </div>
@@ -415,6 +436,12 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
               <div class="fld" style="flex:0 0 200px"><label>模型</label><input type="text" id="sModel" value="claude-sonnet-5-5"></div>
             </div>
           </div>
+          <div class="fld"><label>符文價值（以 #31 喬 = 1）· 拍賣所的價格排序與「符文價值參考」都依這個比值；留空 = 使用灰字的預設值</label>
+            <div id="sRunes" class="rvgrid"></div>
+            <div class="row" style="gap:6px;margin-top:6px"><button class="btn sm pri" id="sRunesSave">儲存符文價值</button><button class="btn sm" id="sRunesReset">全部恢復預設</button></div></div>
+          <div class="fld"><label>網站說明（拍賣所上方「ℹ 網站說明」的內容）· 「## 」開頭是標題，「- 」或「1. 」開頭是清單</label>
+            <textarea id="sAbout" rows="12" style="width:100%"></textarea>
+            <div class="row" style="gap:6px;margin-top:6px"><button class="btn sm pri" id="sAboutSave">儲存網站說明</button><button class="btn sm" id="sAboutPreview">預覽</button><button class="btn sm" id="sAboutReset">填回預設文字</button></div></div>
           <div class="fld"><label>截圖等待秒數 · 素質方塊停住多久才自動擷取（0.2–5 秒）</label>
             <div class="row" style="gap:6px;align-items:center"><input type="number" id="sCapDelay" min="0.2" max="5" step="0.1" style="max-width:120px"><span class="muted" style="font-size:12.5px">秒。太短容易截到還沒出現完整的方塊，太長則要停在裝備上比較久。</span></div></div>
           <div class="fld"><label>戒指 / 咒符樣式圖片 · 可以換成你自己截的高畫質圖（點圖片上傳，建議去背 PNG）</label>
@@ -551,8 +578,16 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 </div></div>
 
 <!-- Detail -->
+<div class="ov" id="ovRunes"><div class="modal" style="max-width:560px">
+  <div class="mh"><h2>💎 符文價值參考</h2><button class="x" data-close>✕</button></div>
+  <div class="mb" id="runesBody"></div>
+</div></div>
+<div class="ov" id="ovAbout"><div class="modal" style="max-width:680px">
+  <div class="mh"><h2>ℹ 網站說明</h2><button class="x" data-close>✕</button></div>
+  <div class="mb about" id="aboutBody"></div>
+</div></div>
 <div class="ov" id="ovDetail"><div class="modal">
-  <div class="mh"><h2 id="dTitle"></h2><button class="x" data-close>✕</button></div>
+  <div class="mh"><h2 id="dTitle"></h2><div class="dnav" id="dNav"></div><button class="x" data-close>✕</button></div>
   <div class="mb cols" id="dBody"></div>
   <div class="mf" id="dFoot"></div>
 </div></div>
@@ -562,7 +597,9 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
   <div class="mh"><h2>標記已售出</h2><button class="x" data-close>✕</button></div>
   <div class="mb">
     <div class="muted" id="sName" style="margin-bottom:8px"></div>
-    <div class="fld"><label>成交價</label><div id="sPrice"></div></div>
+    <div class="fld" id="sQtyRow"><label>這次賣出幾件（目前庫存 <b id="sStock">1</b> 件）</label><input type="number" id="sQty" min="1" value="1" style="max-width:120px"></div>
+    <div class="muted" id="sLotNote" style="display:none;margin-bottom:8px"></div>
+    <div class="fld"><label id="sPriceLbl">成交價</label><div id="sPrice"></div></div>
   </div>
   <div class="mf"><button class="btn" data-close>取消</button><button class="btn pri" id="sOk">確定售出</button></div>
 </div></div>
@@ -670,9 +707,57 @@ const ls = {
 let toastT;
 function toast(msg, err){ const t=$('#toast'); t.textContent=msg; t.className='toast on'+(err?' err':''); clearTimeout(toastT); toastT=setTimeout(()=>t.className='toast',3200); }
 function openOv(id){ $('#'+id).classList.add('on'); }
+const ABOUT_DEFAULT = `## 關於本站
+這個網站由 Claude AI 協助製作。物品名稱、屬性與數值範圍等資料，是從網路上的遊戲資料與玩家社群網站整理而來，可能有錯誤或沒更新到的地方，如有誤還請多多包涵，也歡迎告訴我。
+本站只賣「非天梯」物品，所有物品都由站長本人持有、親自交易。
+
+## 怎麼使用
+- 上方分頁可以依類別瀏覽：戒指、護身符、頭環、咒符等。
+- 搜尋框可以打名稱或屬性，例如「火」「施法」「喬丹」；選了屬性後可以設定數值範圍。
+- 排序可以依價格，或依任何一個屬性由高到低、由低到高排列。
+- 點開物品可以看詳細屬性、同名物品比較；暗金、套裝、符文之語可以按「顯示完整資料」看全部數值範圍。
+- 價格以符文計算，按上方「💎 符文價值參考」可以看各符文的換算比值，價格排序也是依這個比值。
+- 售價旁邊框起來的小數字是這件的「符文價值」：把售價換算成幾個 #31 喬，例如 1 = 一個喬、0.5 = 約半個喬、2 = 約兩個喬，方便比較不同符文組合的價格。換算比值由站長設定，僅供參考。
+
+## 上線時間
+通常為平日晚上 19:00～23:00，假日不定。
+
+## 交易說明
+1. 看到喜歡的物品，請在物品頁按「💬 詢問這件」留言，或按「複製交易訊息」後用聯絡方式私訊我。
+2. 我不一定隨時在線上，看到訊息後會盡快回覆，請耐心等候，不用重複留言。
+3. 回覆後我們約好時間，在遊戲裡開房間當面交易。
+4. 標示「可議」的物品可以議價，也接受以物易物，歡迎提出。
+5. 交易一律在遊戲內當面進行，請不要相信任何自稱站長、要求先付款或先給東西的訊息。
+6. 物品賣出後會標示為「已售出」，謝謝大家支持！`;
+// very small formatter for the about text: "## title", "- item", "1. item", plain lines
+function aboutHTML(t){
+  const out=[]; let list=null;
+  const close=()=>{ if(list){ out.push(`</${list}>`); list=null; } };
+  for(const raw of String(t||'').split(/\r?\n/)){
+    const line=raw.trim();
+    if(!line){ close(); continue; }
+    let m;
+    if((m=line.match(/^##\s+(.*)$/))){ close(); out.push(`<h3>${esc(m[1])}</h3>`); }
+    else if((m=line.match(/^[-•]\s+(.*)$/))){ if(list!=='ul'){ close(); out.push('<ul>'); list='ul'; } out.push(`<li>${esc(m[1])}</li>`); }
+    else if((m=line.match(/^\d+[.、]\s*(.*)$/))){ if(list!=='ol'){ close(); out.push('<ol>'); list='ol'; } out.push(`<li>${esc(m[1])}</li>`); }
+    else { close(); out.push(`<p>${esc(line)}</p>`); }
+  }
+  close(); return out.join('');
+}
+function showAbout(){ $('#aboutBody').innerHTML = aboutHTML(Store.about || ABOUT_DEFAULT); openOv('ovAbout'); }
+function showRunes(){
+  const rows = RUNES.slice().reverse().map(({n,zh})=>{ const v=runeWorth(n);
+    return `<tr class="${n===RUNE_BASE?'base':''}"><td>#${n}</td><td>${esc(zh)}</td><td class="num">${fmtWorth(v)}</td><td class="muted">${v>0&&n!==RUNE_BASE ? (v>=1 ? `1 個 = ${fmtWorth(v)} 個 ${esc(RUNES[RUNE_BASE-1].zh)}` : `約 ${fmtWorth(1/v)} 個 = 1 個 ${esc(RUNES[RUNE_BASE-1].zh)}`) : n===RUNE_BASE?'基準':''}</td></tr>`; }).join('');
+  $('#runesBody').innerHTML = `<p class="muted" style="margin-top:0">以 #${RUNE_BASE} ${esc(RUNES[RUNE_BASE-1].zh)} = 1 為基準的參考比值，由站長設定，僅供參考，實際交易可以再討論。拍賣所的「價格」排序也是依這個比值換算。</p>
+    <table class="rtable runetab"><tr><th>編號</th><th>符文</th><th>比值</th><th>換算</th></tr>${rows}</table>`;
+  openOv('ovRunes');
+}
 function closeOv(id){ $('#'+id).classList.remove('on'); }
 document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click', ()=>b.closest('.ov').classList.remove('on')));
 document.querySelectorAll('.ov').forEach(o=>o.addEventListener('mousedown', e=>{ if(e.target===o && o.id!=='ovEdit' && o.id!=='ovReview') o.classList.remove('on'); }));
+document.addEventListener('keydown', e=>{
+  if((e.key==='ArrowLeft'||e.key==='ArrowRight') && $('#ovDetail').classList.contains('on') && !e.target.closest('input,textarea,select,[contenteditable]') && [...document.querySelectorAll('.ov.on')].pop()?.id==='ovDetail'){ e.preventDefault(); stepDetail(e.key==='ArrowLeft'?-1:1); }
+});
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ const open=[...document.querySelectorAll('.ov.on')].pop(); if(open) open.classList.remove('on'); }});
 function askConfirm(msg){
   return new Promise(res=>{
@@ -836,7 +921,15 @@ function fmtPzh(p){
 }
 // rough rune worth (3 lower = 1 higher up to #20, 2 = 1 above) – only used to order prices
 const runeVal = n => n<=20 ? Math.pow(3,n-1) : Math.pow(3,19)*Math.pow(2,n-20);
-function pKey(p){ p=normPrice(p); if(!p || p.type!=='rune') return -1; return (p.runes||[]).reduce((a,r)=>a+(+r.qty||0)*runeVal(r.n),0); }
+// rune worth relative to #31 喬 = 1; the seller sets these in 管理後台, unset runes use the old 3:1 / 2:1 rule
+const RUNE_BASE = 31;
+const runeDefault = n => runeVal(n)/runeVal(RUNE_BASE);
+const runeWorth = n => { const v = Store.runeValues && Store.runeValues[n]; return (typeof v==='number' && v>=0) ? v : runeDefault(n); };
+function priceWorth(p){ p=normPrice(p); if(!p || p.type!=='rune') return null; return (p.runes||[]).reduce((a,r)=>a+(+r.qty||0)*runeWorth(r.n),0); }
+const fmtWorth = v => v==null ? '' : v>=100 ? String(Math.round(v)) : v>=1 ? String(+v.toFixed(2)) : v>=0.001 ? String(+v.toPrecision(2)) : v.toExponential(1);
+function pKey(p){ const w=priceWorth(p); return w==null ? -1 : w; }
+// "≈ 0.25 喬" next to a rune price (worth in #31 喬, set in 管理後台)
+const worthTag = p => { const w=priceWorth(p); return w!=null && w>0 ? `<span class="worth" title="符文價值（以 #${RUNE_BASE} ${esc(RUNES[RUNE_BASE-1].zh)} = 1 換算）">${fmtWorth(w)}</span>` : ''; };
 
 let peSeq = 0;
 // price editor: rune combination or barter; works inside the PiP window too (only touches its own box)
@@ -850,7 +943,10 @@ function PriceEditor(box){
       <label style="margin-left:auto"><input type="checkbox" class="pe-neg"> 可議價</label></div>
     <div class="pe-rune"><div class="pe-rows"></div>
       <div class="row" style="gap:6px;margin-top:6px"><button type="button" class="btn sm pe-add" style="flex:0 0 auto">＋ 新增符文</button><span class="muted pe-sum" style="flex:1;font-size:12px"></span></div></div>
-    <div class="pe-trade" style="display:none"><textarea class="pe-want" rows="4" placeholder="想交換的物品，例如：+2 法師技能 / 20 FCR 頭環，或 2 顆完美寶石…"></textarea></div>`;
+    <div class="pe-trade" style="display:none"><textarea class="pe-want" rows="4" placeholder="想交換的物品，例如：+2 法師技能 / 20 FCR 頭環，或 2 顆完美寶石…"></textarea></div>
+    <div class="pe-stockrow"><label>庫存數量 <input type="number" class="pe-stock" min="1" max="999" step="1" value="1"></label>
+      <span class="pe-lotopt" style="display:none"><label><input type="radio" name="pel${id}" value="each" checked> 一件一件賣（上面是每件價格）</label><label><input type="radio" name="pel${id}" value="lot"> 整批賣（上面是全部的價格）</label></span>
+      <span class="muted pe-stockhint">相同的物品有幾件；賣出一件會自動減一，賣完才變成「已售出」</span></div>`;
   const q = s => box.querySelector(s);
   const addRow = (n=30, qty=1) => {
     const d = box.ownerDocument.createElement('div'); d.className='pe-row';
@@ -882,6 +978,12 @@ function PriceEditor(box){
   };
   this.valid = () => { const p=this.get(); return p.type==='trade' ? (p.want ? '' : '請填寫想交換的物品') : (p.runes.length ? '' : '請至少填一個符文數量'); };
   this.remember = () => { const p=this.get(); ls.set('d2r_lastprice', p); };
+  this.getQty = () => Math.min(999, Math.max(1, Math.round(+q('.pe-stock').value || 1)));
+  // more than one piece: sell them one by one (price = each) or only as a whole lot (price = all of them)
+  this.getLot = () => this.getQty()>1 && (box.querySelector(`input[name=pel${id}]:checked`)||{}).value==='lot';
+  const lotSync = () => { const many=this.getQty()>1; q('.pe-lotopt').style.display = many?'':'none'; q('.pe-stockhint').style.display = many?'none':''; };
+  this.setQty = (n, lot) => { q('.pe-stock').value = Math.max(1, Math.round(+n || 1)); box.querySelector(`input[name=pel${id}][value=${lot?'lot':'each'}]`).checked=true; lotSync(); };
+  q('.pe-stock').addEventListener('input', lotSync);
   this.set(null);
 }
 
@@ -1664,7 +1766,7 @@ function detectRepo(){
 }
 const GH = Object.assign({branch:'main'}, detectRepo(), ls.get('d2r_gh', {}));
 const Store = {
-  listings:[], rangeFix:{}, labelFix:{}, sha:null, loaded:false, watch:new Set(ls.get('d2r_watch', [])), imgCache:{},
+  listings:[], rangeFix:{}, labelFix:{}, sha:null, loaded:false, imgCache:{},
   get admin(){ return !!GH.token; },
   api(path, opts={}){
     const url = `https://api.github.com/repos/${encodeURIComponent(GH.owner)}/${encodeURIComponent(GH.repo)}/contents/${path}`;
@@ -1706,7 +1808,7 @@ const Store = {
     const job = this.q.then(async()=>{
       setSync('儲存中…');
       const used = new Set(this.listings.flatMap(lcats));
-      const body = JSON.stringify({version:2, updatedAt:Date.now(), categories:customCats.filter(c=>used.has(c.id)), rangeFix:this.rangeFix, labelFix:this.labelFix, chat:this.chat||null, styleImgs:this.styleImgs||{}, listings:this.listings}, null, 1);
+      const body = JSON.stringify({version:2, updatedAt:Date.now(), categories:customCats.filter(c=>used.has(c.id)), rangeFix:this.rangeFix, labelFix:this.labelFix, chat:this.chat||null, styleImgs:this.styleImgs||{}, runeValues:this.runeValues||{}, about:this.about||'', listings:this.listings}, null, 1);
       for(let attempt=0; attempt<2; attempt++){
         const r = await this.api(DATA_PATH, {method:'PUT', body:{message:msg, content:b64encUtf8(body), branch:GH.branch, ...(this.sha?{sha:this.sha}:{})}});
         if(r.ok){ const j=await r.json(); this.sha=j.content.sha; setSync('已儲存 · 網站約 1 分鐘後更新'); setTimeout(()=>setSync(''),6000); return; }
@@ -1732,10 +1834,6 @@ const Store = {
       await this.api(path, {method:'DELETE', body:{message:'remove '+path, sha, branch:GH.branch}});
     }catch(e){}
   },
-  toggleWatch(id){
-    if(this.watch.has(id)) this.watch.delete(id); else this.watch.add(id);
-    ls.set('d2r_watch', [...this.watch]); render();
-  },
   async add(item){ this.listings.unshift(item); render(); await this.commit('add '+item.name); },
   async addMany(items){ if(!items.length) return; this.listings.unshift(...items.slice().reverse()); render(); await this.commit(items.length>1 ? `add ${items.length} items` : 'add '+items[0].name); },
   async update(id, patch, msg){ const l=this.listings.find(x=>x.id===id); if(!l) return; Object.assign(l, patch); render(); await this.commit(msg||('update '+l.name)); },
@@ -1748,6 +1846,8 @@ function parseData(text){
     Store.rangeFix = (j && j.rangeFix && typeof j.rangeFix==='object') ? j.rangeFix : {};
     Store.labelFix = (j && j.labelFix && typeof j.labelFix==='object') ? j.labelFix : {};
     Store.styleImgs = (j && j.styleImgs && typeof j.styleImgs==='object') ? Object.fromEntries(Object.entries(j.styleImgs).filter(([k,v])=>STYLE_BY_ID[k] && typeof v==='string' && /^(images\/|data:image\/)/.test(v))) : {};
+    Store.runeValues = {}; if(j && j.runeValues && typeof j.runeValues==='object') for(const [k,v] of Object.entries(j.runeValues)){ const n=+k; if(n>=1 && n<=33 && typeof v==='number' && isFinite(v) && v>=0) Store.runeValues[n]=v; }
+    Store.about = (j && typeof j.about==='string') ? j.about.slice(0,8000) : '';
     Store.chat = (j && j.chat && typeof j.chat==='object' && parseTawk(j.chat.tawk)) ? {tawk:parseTawk(j.chat.tawk)} : null;
     return Array.isArray(j) ? j : (Array.isArray(j.listings)?j.listings:[]);
   }catch(e){ return []; }
@@ -1765,10 +1865,15 @@ function showBanner(t){ const b=$('#banner'); b.textContent=t; b.style.display='
 function hideBanner(){ $('#banner').style.display='none'; }
 
 /* ================= filter state ================= */
-const F0 = () => ({cat:'all', attrs:[], q:'', quals:[], status:'active', watched:false, stats:[], cls:'any', req:'', rune:'any', pmin:'', pmax:'', nego:false, ladder:'any', hc:'any', plat:'any', region:'any', sort:'new'});
+try{ localStorage.removeItem('d2r_watch'); }catch(e){}   // old bookmark list, no longer used
+const F0 = () => ({cat:'all', attrs:[], q:'', quals:[], status:'active', stats:[], cls:'any', req:'', rune:'any', pmin:'', pmax:'', nego:false, ladder:'any', hc:'any', plat:'any', region:'any', sort:'new'});
 let F = (()=>{ const o=ls.get('d2r_filters2', {}); return Object.assign(F0(), {q:o.q||'', sort:(o.sort&&!String(o.sort).startsWith('stat:'))?o.sort:'new', view:o.view==='list'?'list':'card', attrs:Array.isArray(o.attrs)?o.attrs.map(x=>typeof x==='string'?{id:x,min:'',max:''}:{id:x.id,min:x.min??'',max:x.max??''}):[]}); })();
 function saveF(){ const {cat, ...rest} = F; ls.set('d2r_filters2', rest); }
 const status = l => l.status==='sold' ? 'sold' : l.status==='cancelled' ? 'cancelled' : 'active';
+const stockOf = l => Math.max(0, Math.round(l.qty==null ? 1 : +l.qty || 0));
+const soldUnits = l => (l.sales||[]).reduce((a,x)=>a+(+x.n||1),0);
+const isLot = l => !!l.lot && stockOf(l)>1;
+const stockTag = l => status(l)==='active' && stockOf(l)>1 ? (isLot(l) ? `<span class="stock lot" title="這個價格是全部 ${stockOf(l)} 件一起賣">整批 ${stockOf(l)} 件</span>` : `<span class="stock" title="相同物品的庫存，價格是每件">庫存 ${stockOf(l)}</span>`) : '';
 
 function applyFilters(list, ignoreCat){
   const q = norm(F.q).toLowerCase();
@@ -1778,7 +1883,6 @@ function applyFilters(list, ignoreCat){
     const st = status(l);
     if(st==='cancelled') return false;
     if(F.status!=='all' && st!==F.status) return false;
-    if(F.watched && !Store.watch.has(l.id)) return false;
     if(F.quals.length && !F.quals.includes(l.quality)) return false;
     if(F.hc!=='any' && l.hc!==F.hc) return false;
     if(F.plat!=='any' && l.platform!==F.plat) return false;
@@ -1900,7 +2004,7 @@ function cardHTML(l){
   const st=status(l);
   const p = st==='sold' && l.finalPrice ? l.finalPrice : l.price;
   return `<article class="card ${st!=='active'?'dim':''}" data-id="${esc(l.id)}">
-    ${st==='sold'?'<span class="badge sold">已售出</span>':''}
+    ${st==='sold'?'<span class="badge sold">已售出</span>':''}${stockTag(l)?`<div class="cstock">${stockTag(l)}</div>`:''}
     ${l.style?`<div class="cstyle">${styleImg(l.style)}</div>`:''}
     <div class="tt">${tooltipHTML(l)}</div>
     <div class="tags">
@@ -1910,16 +2014,17 @@ function cardHTML(l){
       ${l.image?'<span class="tag">截圖</span>':''}
     </div>
     <div class="cfoot">
-      <div class="price">${esc(fmtP(p))}<small>${st==='sold'?'成交價':(l.negotiable?'售價 · 可議':'售價')}</small></div>
+      <div class="price">${esc(fmtP(p))}${worthTag(p)}<small>${st==='sold'?'成交價':(isLot(l)?`整批 ${stockOf(l)} 件`:stockOf(l)>1?'每件':'售價')+(l.negotiable?' · 可議':'')}</small></div>
       <div class="time">${esc(fmtAgo(l.createdAt))}</div>
-      <button class="star ${Store.watch.has(l.id)?'on':''}" data-star="${esc(l.id)}" title="收藏">★</button>
     </div>
   </article>`;
 }
 function renderTabs(){
   const base = applyFilters(Store.listings, true);
   const n = {all:base.length}; for(const l of base) for(const c of lcats(l)) n[c]=(n[c]||0)+1;
-  $('#tabs').innerHTML = getCats().map(c=>`<button class="tab ${view==='shop'&&F.cat===c.id?'on':''}" data-cat="${c.id}">${c.icon||''}${c.label}<span class="n">${n[c.id]||0}</span></button>`).join('');
+  // only categories that have something on sale (plus 全部 and the one you are looking at)
+  const has = new Set(Store.listings.filter(l=>status(l)==='active').flatMap(lcats));
+  $('#tabs').innerHTML = getCats().filter(c=>c.id==='all' || has.has(c.id) || (view==='shop' && F.cat===c.id)).map(c=>`<button class="tab ${view==='shop'&&F.cat===c.id?'on':''}" data-cat="${c.id}">${c.icon||''}${c.label}<span class="n">${n[c.id]||0}</span></button>`).join('');
 }
 function renderGrid(){
   const list = sortList(applyFilters(Store.listings));
@@ -1931,7 +2036,7 @@ function renderGrid(){
   }
   const g=$('#grid'); g.classList.toggle('list', F.view==='list');
   g.innerHTML = F.view==='list'
-    ? `<div class="lhead"><span></span><span>物品</span><span>屬性</span><span>價格</span><span>上架</span><span></span></div>` + list.map(rowHTML).join('')
+    ? `<div class="lhead"><span></span><span>物品</span><span>屬性</span><span>價格</span><span>上架</span></div>` + list.map(rowHTML).join('')
     : list.map(cardHTML).join('');
 }
 function sortLabel(v){ const o=sortOptions().find(x=>x[0]===v); return o?o[1]:'最新上架'; }
@@ -1959,13 +2064,12 @@ function rowHTML(l){
   const tags = [...lcats(l).map(catLabel).filter(Boolean), ...(l.hc==='hc'?['專家']:[]), l.platform, REGION_LABEL[l.region]||l.region];
   return `<div class="lrow card ${st!=='active'?'dim':''}" data-id="${esc(l.id)}">
     <div class="lthumb">${l.image?`<img src="${esc(imgSrc(l.image))}" alt="">`:(l.style?styleImg(l.style,'lst'):'')}</div>
-    <div class="lname"><div class="${q}" style="font-weight:600">${esc(l.name||'(未命名)')}${st==='sold'?' <span class="badge sold" style="position:static">已售出</span>':''}</div>
+    <div class="lname"><div class="${q}" style="font-weight:600">${esc(l.name||'(未命名)')}${st==='sold'?' <span class="badge sold" style="position:static">已售出</span>':''} ${stockTag(l)}</div>
       <div class="${q}" style="font-size:12.5px">${esc(l.base&&l.base!==l.name?l.base:'')}${l.reqLevel?` <span class="muted">· 需要等級 ${esc(l.reqLevel)}</span>`:''}</div>
       <div class="ltags">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div></div>
     <div class="lstats">${(l.lines||[]).slice(0,6).map(x=>`<span>${esc(x)}</span>`).join('')}${(l.lines||[]).length>6?'<span class="muted">…</span>':''}</div>
-    <div class="lprice price">${esc(fmtP(p))}<small>${st==='sold'?'成交價':(l.negotiable?'售價 · 可議':'售價')}</small></div>
+    <div class="lprice price">${esc(fmtP(p))}${worthTag(p)}<small>${st==='sold'?'成交價':(isLot(l)?`整批 ${stockOf(l)} 件`:stockOf(l)>1?'每件':'售價')+(l.negotiable?' · 可議':'')}</small></div>
     <div class="ltime muted">${esc(fmtAgo(l.createdAt))}</div>
-    <button class="star ${Store.watch.has(l.id)?'on':''}" data-star="${esc(l.id)}" title="收藏">★</button>
   </div>`;
 }
 let view='shop';
@@ -2054,7 +2158,6 @@ $('#aChips').addEventListener('input', e=>{ const inp=e.target.closest('input[da
   fa[inp.dataset.k]=inp.value.trim(); saveF(); clearTimeout(rT); rT=setTimeout(()=>{ renderTabs(); renderGrid(); },200); });
 $('#fClear').onclick=()=>{ F.q=''; F.attrs=[]; F.sort='new'; $('#fQ').value=''; saveF(); render(); };
 $('#grid').addEventListener('click', e=>{
-  const s=e.target.closest('[data-star]'); if(s){ e.stopPropagation(); Store.toggleWatch(s.dataset.star); return; }
   const c=e.target.closest('.card'); if(c) openDetail(c.dataset.id);
 });
 $('#navBtns').addEventListener('click', e=>{ const k=e.target.dataset && e.target.dataset.nav; if(!k) return; location.hash = k==='shop' ? (getCats().find(c=>c.id===F.cat)||getCats()[0]).hash : k; });
@@ -2304,9 +2407,15 @@ function charmAffixHTML(l){
 let detailShot=false, detailFull=false;
 function openDetail(id){ if(rangeEditId!==id) rangeEditId=null; if(openDetailId!==id){ detailShot=false; detailFull=false; } openDetailId=id; renderDetail(); openOv('ovDetail'); }
 new MutationObserver(()=>{ if(!$('#ovDetail').classList.contains('on')) openDetailId=null; }).observe($('#ovDetail'), {attributes:true, attributeFilter:['class']});
+// previous / next item in the list as it is shown in the shop (same filters and sort)
+function detailNav(){ const list=sortList(applyFilters(Store.listings)); return {list, i:list.findIndex(x=>x.id===openDetailId)}; }
+function stepDetail(d){ const {list,i}=detailNav(); if(i<0) return; const n=list[i+d]; if(n){ openDetail(n.id); $('#dBody').scrollTop=0; } }
 function renderDetail(){
   const l = Store.listings.find(x=>x.id===openDetailId);
   if(!l){ closeOv('ovDetail'); return; }
+  { const {list,i}=detailNav();
+    $('#dNav').innerHTML = i<0 ? '' : `<button class="btn sm" id="dPrev" ${i>0?'':'disabled'} title="上一件（←）">◀ 上一件</button><span class="muted">${i+1} / ${list.length}</span><button class="btn sm" id="dNext" ${i<list.length-1?'':'disabled'} title="下一件（→）">下一件 ▶</button>`;
+    const p=$('#dPrev'), n=$('#dNext'); if(p) p.onclick=()=>stepDetail(-1); if(n) n.onclick=()=>stepDetail(1); }
   const st=status(l);
   $('#dTitle').innerHTML = `<span class="q-${esc(l.quality)}">${esc(l.name)}</span> <span class="muted">· ${esc(catLabels(l))} · ${esc(QUAL_LABEL[l.quality]||'')}</span>`;
   const similar = Store.listings.filter(x=>x.id!==l.id && status(x)==='sold' && x.name===l.name && lcats(x).some(c=>lcats(l).includes(c))).sort((a,b)=>(b.soldAt||0)-(a.soldAt||0)).slice(0,6);
@@ -2319,8 +2428,9 @@ function renderDetail(){
     </div>
     <div>
       <dl class="info">
+        ${stockOf(l)>1||soldUnits(l)?`<dt>庫存</dt><dd>${st==='active'?stockOf(l)+' 件'+(stockOf(l)>1?(isLot(l)?'（整批出售，售價是全部的價格）':'（一件一件賣，售價是每件）'):''):'—'}${soldUnits(l)?` <span class="muted">（已賣出 ${soldUnits(l)} 件）</span>`:''}</dd>`:''}
         <dt>狀態</dt><dd>${{active:'販售中',sold:'已售出',cancelled:'已下架'}[st]}</dd>
-        <dt>${st==='sold'?'成交價':'售價'}</dt><dd class="price" style="font-size:14px">${esc(fmtPzh(st==='sold'&&l.finalPrice?l.finalPrice:l.price))}${l.negotiable&&st==='active'?' <span class="muted">可議價</span>':''}</dd>
+        <dt>${st==='sold'?'成交價':'售價'}</dt><dd class="price" style="font-size:14px">${esc(fmtPzh(st==='sold'&&l.finalPrice?l.finalPrice:l.price))}${l.negotiable&&st==='active'?' <span class="muted">可議價</span>':''}${(()=>{ const w=priceWorth(st==='sold'&&l.finalPrice?l.finalPrice:l.price); return w!=null&&w>0 ? ` <span class="muted" title="依「符文價值參考」換算">≈ ${fmtWorth(w)} 個 #${RUNE_BASE} ${esc(RUNES[RUNE_BASE-1].zh)}</span>` : ''; })()}</dd>
         <dt>伺服器</dt><dd>${l.hc==='hc'?'專家':'普通'} · ${esc(l.platform)} · ${esc(REGION_LABEL[l.region]||l.region)}</dd>
         <dt>聯絡</dt><dd>${esc(l.contact||'—')} ${l.contact?'<button class="btn sm" id="cpContact">複製</button>':''}</dd>
         ${l.note?`<dt>備註</dt><dd>${esc(l.note)}</dd>`:''}
@@ -2332,14 +2442,13 @@ function renderDetail(){
       ${sameItemHTML(l)}
       ${similar.length?`<div class="sec">近期同名成交</div><div class="atable">${similar.map(s=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #241d15"><span class="price" style="font-size:14px">${esc(fmtP(s.finalPrice||s.price))}</span><span class="muted">${esc((s.lines||[]).slice(0,2).join(' / '))}</span></div>`).join('')}</div>`:''}
     </div>`;
-  let f = `<button class="btn" id="dStar">${Store.watch.has(l.id)?'★ 已收藏':'☆ 收藏'}</button><button class="btn" id="dCopy">複製交易訊息</button>${Store.chat&&Store.chat.tawk&&st==='active'?'<button class="btn pri" id="dAsk">💬 詢問這件</button>':''}<span style="flex:1"></span>`;
+  let f = `<button class="btn" id="dCopy">複製交易訊息</button>${Store.chat&&Store.chat.tawk&&st==='active'?'<button class="btn pri" id="dAsk">💬 詢問這件</button>':''}<span style="flex:1"></span>`;
   if(Store.admin){
     f += `<button class="btn" id="dEdit">編輯</button>`;
     if(st==='active') f += `<button class="btn" id="dSold">標記已售出</button>`;
   }
   $('#dFoot').innerHTML = f;
   const on=(id,fn)=>{ const el=$(id); if(el) el.onclick=fn; };
-  on('#dStar', ()=>Store.toggleWatch(l.id));
   $('#dBody').querySelectorAll('[data-goto]').forEach(tr=>tr.onclick=()=>openDetail(tr.dataset.goto));
   bindRangeEdit(l);
   on('#cpContact', ()=>copy(l.contact, '已複製聯絡方式'));
@@ -2371,17 +2480,50 @@ function syncChat(){
   try{ if(view==='shop') Tawk_API.showWidget(); else Tawk_API.hideWidget(); }catch(e){}
 }
 function askAbout(l){
-  copy(tradeText(l), '已複製物品資訊，可以直接貼到聊天視窗');
+  const msg = inquiryText(l);
+  copy(msg, '已把詢問訊息填進聊天視窗，按送出就會傳給賣家');
   if(!chatReady || !window.Tawk_API || !Tawk_API.maximize){ toast('聊天視窗還在載入，請稍候再試', true); return; }
-  try{ Tawk_API.addEvent && Tawk_API.addEvent('詢問物品', {'物品':String(l.name||'').slice(0,40), '價格':fmtPzh(l.price).slice(0,60), '編號':String(l.id)}, ()=>{}); }catch(e){}
-  Tawk_API.maximize();
+  const T = window.Tawk_API;
+  // shown to the seller next to the conversation (keys: letters / digits / dashes only)
+  try{ T.setAttributes && T.setAttributes({'inquiry-item':String(l.name||'').slice(0,80), 'inquiry-price':fmtPzh(l.price).slice(0,120), 'inquiry-id':String(l.id).slice(0,40)}, ()=>{}); }catch(e){}
+  try{ T.addEvent && T.addEvent('item-inquiry', {item:String(l.name||'').slice(0,80), price:fmtPzh(l.price).slice(0,120), id:String(l.id).slice(0,40)}, ()=>{}); }catch(e){}
+  // open the chat with the trade message already typed in; the buyer only presses send
+  const fill = ()=>{ try{ T.setChatInputMessage && T.setChatInputMessage(msg); }catch(e){} };
+  T.maximize(); fill(); setTimeout(fill, 400); setTimeout(fill, 1200);
 }
 async function copy(text, msg){ try{ await navigator.clipboard.writeText(text); toast(msg); }catch(e){ toast('無法複製，請手動選取文字', true); } }
+// what the buyer sends from "💬 詢問這件"
+function inquiryText(l){
+  return `你好，我想詢問這件：${l.name}${l.base&&l.base!==l.name?'（'+l.base+'）':''}\n${(l.lines||[]).join(' / ')}\n價格：${fmtPzh(l.price)}${l.negotiable?'（可議）':''}\n物品編號：${l.id}`;
+}
 function tradeText(l){
   return `【出售】${l.name}${l.base&&l.base!==l.name?'（'+l.base+'）':''}\n${(l.lines||[]).join(' / ')}\n${l.hc==='hc'?'專家':'普通'} ${l.platform} ${REGION_LABEL[l.region]||''}\n價格：${fmtPzh(l.price)}${l.negotiable?'（可議）':''}\n聯絡：${l.contact||''}`;
 }
 
 /* ================= admin ================= */
+// all items on sale as a plain text file (UTF-8 with BOM + CRLF so Windows Notepad shows it correctly)
+function exportListings(){
+  const list = Store.listings.filter(l=>status(l)==='active').sort((a,b)=>b.createdAt-a.createdAt);
+  if(!list.length){ toast('目前沒有販售中的裝備', true); return; }
+  const d2 = n=>String(n).padStart(2,'0');
+  const day = t=>{ const d=new Date(t); return `${d.getFullYear()}/${d2(d.getMonth()+1)}/${d2(d.getDate())}`; };
+  const now=new Date();
+  const out=[`D2R 非天梯拍賣所 · 上架清單`, `匯出時間：${day(now)} ${d2(now.getHours())}:${d2(now.getMinutes())}　共 ${list.length} 項（${list.reduce((a,l)=>a+stockOf(l),0)} 件）`, '='.repeat(40)];
+  list.forEach((l,i)=>{
+    out.push(`${i+1}. ${l.name}${l.base&&l.base!==l.name?'（'+l.base+'）':''}　${QUAL_LABEL[l.quality]||''}　［${catLabels(l)}］${l.style&&STYLE_BY_ID[l.style]?'　樣式：'+(STYLE_BY_ID[l.style].size||STYLES[STYLE_BY_ID[l.style].cat].label)+' '+l.style.replace(/\D/g,''):''}`);
+    if(l.reqLevel) out.push(`   需要等級 ${l.reqLevel}`);
+    for(const ln of (l.lines||[])) out.push('   '+ln);
+    out.push(`   價格：${fmtPzh(l.price)}${l.negotiable?'（可議）':''}${stockOf(l)>1?(isLot(l)?'　整批 '+stockOf(l)+' 件一起賣':'　庫存 '+stockOf(l)+' 件（每件價格）'):''}`);
+    out.push(`   ${l.hc==='hc'?'專家':'普通'} ${l.platform||''} ${REGION_LABEL[l.region]||''}　上架：${day(l.createdAt)}　編號 ${l.id}`);
+    if(l.note) out.push(`   備註：${l.note}`);
+    out.push('-'.repeat(40));
+  });
+  const blob=new Blob(['﻿'+out.join('\r\n')+'\r\n'], {type:'text/plain;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`d2r-上架清單-${now.getFullYear()}${d2(now.getMonth()+1)}${d2(now.getDate())}.txt`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+  toast(`已匯出 ${list.length} 件販售中的裝備`);
+}
 let aStatus='active', aQ='';
 const ST_LABEL={active:'販售中', sold:'已售出', cancelled:'已下架'};
 function sumRunes(list){
@@ -2393,7 +2535,8 @@ function sumRunes(list){
 }
 function renderAdmin(){
   if(typeof tawkInfo==='function' && document.activeElement!==$('#sTawk')) tawkInfo();
-  renderStyleSettings();
+  renderStyleSettings(); renderRuneSettings();
+  if(document.activeElement!==$('#sAbout')) $('#sAbout').value = Store.about || ABOUT_DEFAULT;
   $('#adminSetup').style.display = Store.admin ? 'none':'';
   $('#adminBody').style.display = Store.admin ? '':'none';
   if(!Store.admin){
@@ -2403,12 +2546,14 @@ function renderAdmin(){
   }
   const all=Store.listings, by={active:0,sold:0,cancelled:0};
   for(const l of all) by[status(l)]++;
-  const sold = all.filter(l=>status(l)==='sold');
-  const month = sold.filter(l=>(l.soldAt||0) > Date.now()-30*864e5);
+  // every sale (part of a stock counts too)
+  const sales = all.flatMap(l => (l.sales&&l.sales.length) ? l.sales : (status(l)==='sold' ? [{at:l.soldAt, price:l.finalPrice||l.price, n:1}] : []));
+  const prices = list => list.flatMap(x=>x.lot ? [x.price] : Array(Math.max(1,+x.n||1)).fill(x.price));   // a lot sale is one price for all pieces
+  const sold = sales, month = sales.filter(x=>(x.at||0) > Date.now()-30*864e5);
   $('#aStats').innerHTML = [
     [by.active,'販售中'],[by.sold,'已售出'],[by.cancelled,'已下架'],
-    [sumRunes(month.map(l=>l.finalPrice||l.price)),'近 30 天成交'],
-    [sumRunes(sold.map(l=>l.finalPrice||l.price)),'累計成交'],
+    [sumRunes(prices(month)),'近 30 天成交'],
+    [sumRunes(prices(sold)),'累計成交'],
   ].map(([n,t])=>`<div class="stat-box"><b style="${String(n).length>8?'font-size:15px':''}">${esc(n)}</b><span>${esc(t)}</span></div>`).join('');
   $('#aStatus').innerHTML = [['active','販售中'],['sold','已售出'],['cancelled','已下架'],['all','全部']]
     .map(([k,t])=>`<span class="chip ${aStatus===k?'on':''}" data-ast="${k}">${t} ${k==='all'?all.length:by[k]}</span>`).join('');
@@ -2426,7 +2571,7 @@ function renderAdmin(){
     acts += `<button class="btn sm danger" data-a="del">刪除</button>`;
     return `<tr data-id="${esc(l.id)}">
       <td>${l.image?`<img src="${esc(imgSrc(l.image))}" alt="">`:''}</td>
-      <td><a href="javascript:void 0" data-a="open" class="q-${esc(l.quality)}" style="text-decoration:none">${esc(l.name)}</a></td>
+      <td><a href="javascript:void 0" data-a="open" class="q-${esc(l.quality)}" style="text-decoration:none">${esc(l.name)}</a>${st==='active'&&stockOf(l)>1?` <span class="stock ${isLot(l)?'lot':''}">${isLot(l)?'整批':''}×${stockOf(l)}</span>`:''}${soldUnits(l)?` <span class="muted" style="font-size:12px">已賣 ${soldUnits(l)}</span>`:''}</td>
       <td>${esc(catLabels(l))}</td>
       <td class="muted">${esc((l.lines||[]).slice(0,3).join(' / '))}${(l.lines||[]).length>3?' …':''}</td>
       <td class="price" style="font-size:14px;white-space:nowrap">${esc(fmtP(p))}</td>
@@ -2448,7 +2593,7 @@ $('#aTable').addEventListener('click', async e=>{
     else if(a==='edit') editListing(l);
     else if(a==='sold') openSold(l);
     else if(a==='cancel'){ if(await askConfirm('確定下架「'+l.name+'」？')) await Store.update(id,{status:'cancelled'},'cancel '+l.name); }
-    else if(a==='relist') await Store.update(id,{status:'active', soldAt:null, finalPrice:null, createdAt:Date.now()},'relist '+l.name);
+    else if(a==='relist') await Store.update(id,{status:'active', soldAt:null, finalPrice:null, qty:Math.max(1, stockOf(l)), createdAt:Date.now()},'relist '+l.name);
     else if(a==='del'){ if(await askConfirm('確定刪除「'+l.name+'」？刪除後無法復原。')){ await Store.remove(id); toast('已刪除'); } }
   }catch(err){}
 });
@@ -2481,6 +2626,32 @@ $('#sClaudeWrap').style.display = SET.engine==='claude'?'':'none';
 $('#sEngine').onchange=e=>{ SET.engine=e.target.value; saveSet(); $('#sClaudeWrap').style.display = SET.engine==='claude'?'':'none'; };
 $('#sKey').onchange=e=>{ SET.key=e.target.value.trim(); saveSet(); };
 $('#sModel').onchange=e=>{ SET.model=e.target.value.trim()||'claude-sonnet-5-5'; saveSet(); };
+$('#aExport').onclick = exportListings;
+$('#bRunes').onclick = showRunes;
+$('#bAbout').onclick = showAbout;
+/* admin: rune worth + about text */
+function renderRuneSettings(){
+  const box=$('#sRunes'); if(!box || box.contains(document.activeElement)) return;
+  box.innerHTML = RUNES.slice().reverse().map(({n,zh})=>{ const set=Store.runeValues && typeof Store.runeValues[n]==='number';
+    return `<label class="rvset ${n===RUNE_BASE?'base':''}"><span>#${n} ${esc(zh)}</span><input type="number" min="0" step="any" data-rv="${n}" value="${n===RUNE_BASE?1:(set?Store.runeValues[n]:'')}" placeholder="${fmtWorth(runeDefault(n))}" ${n===RUNE_BASE?'disabled':''}></label>`; }).join('');
+}
+$('#sRunesSave').onclick = async()=>{
+  const m={};
+  for(const inp of $('#sRunes').querySelectorAll('[data-rv]')){ const n=+inp.dataset.rv; if(n===RUNE_BASE || inp.value.trim()==='') continue; const v=+inp.value; if(!isFinite(v) || v<0){ toast(`#${n} 的數值不正確`, true); inp.focus(); return; } m[n]=v; }
+  Store.runeValues=m;
+  try{ await Store.commit('Update rune values'); toast('已儲存符文價值'); render(); }catch(e){ toast('儲存失敗：'+(e.message||e), true); }
+};
+$('#sRunesReset').onclick = async()=>{
+  if(!(await askConfirm('把所有符文價值恢復成預設比值？'))) return;
+  Store.runeValues={}; try{ await Store.commit('Reset rune values'); toast('已恢復預設比值'); $('#sRunes').innerHTML=''; renderRuneSettings(); render(); }catch(e){ toast('儲存失敗：'+(e.message||e), true); }
+};
+$('#sAboutSave').onclick = async()=>{
+  const t=$('#sAbout').value.trim();
+  Store.about = (t===ABOUT_DEFAULT.trim()) ? '' : t.slice(0,8000);
+  try{ await Store.commit('Update about text'); toast('已儲存網站說明'); }catch(e){ toast('儲存失敗：'+(e.message||e), true); }
+};
+$('#sAboutReset').onclick = ()=>{ $('#sAbout').value = ABOUT_DEFAULT; toast('已填回預設文字，按「儲存」才會生效'); };
+$('#sAboutPreview').onclick = ()=>{ $('#aboutBody').innerHTML = aboutHTML($('#sAbout').value); openOv('ovAbout'); };
 $('#sContact').onchange=e=>{ SET.contact=e.target.value.trim(); saveSet(); };
 function showCapDelay(){ $('#sCapDelay').value=capDelay(); document.querySelectorAll('.capSec').forEach(b=>b.textContent=capDelay()); }
 $('#sCapDelay').onchange=e=>{ const v=Math.round(Math.min(5, Math.max(0.2, +e.target.value||0.5))*10)/10; SET.capDelay=v; saveSet(); showCapDelay(); monSetClock(); toast('截圖等待秒數：'+v+' 秒'); };
@@ -2582,7 +2753,7 @@ function loadDraft(){
   v('#eReq', d.reqLevel); v('#eIlvl', d.ilvl);
   v('#eHc', d.hc || mem.hc || 'sc');
   v('#ePlat', d.platform || mem.platform || 'PC'); v('#eRegion', d.region || mem.region || 'Asia');
-  { const pp = normPrice(d.price); ePE.set(pp ? Object.assign({}, pp, {negotiable: pp.negotiable ?? !!d.negotiable}) : null); }
+  { const pp = normPrice(d.price); ePE.set(pp ? Object.assign({}, pp, {negotiable: pp.negotiable ?? !!d.negotiable}) : null); ePE.setQty(d.qty, d.lot); }
   v('#eContact', d.contact || SET.contact || ''); v('#eNote', d.note);
   eImage = d.image || null; eNewImage = !!d._newImage; eEth = !!d.eth;
   $('#eRaw').textContent = d._raw || ''; $('#eRawWrap').style.display = d._raw ? '' : 'none';
@@ -2609,7 +2780,7 @@ function collect(){
     props: parsed.props, cls: parsed.cls,
     reqLevel: +$('#eReq').value || parsed.reqLevel || null, ilvl: +$('#eIlvl').value || parsed.ilvl || null, eth: eEth||parsed.eth,
     ladder:'nonladder', hc: $('#eHc').value, platform: $('#ePlat').value, region: $('#eRegion').value,
-    price: ePE.get(), negotiable: ePE.get().negotiable,
+    price: ePE.get(), negotiable: ePE.get().negotiable, qty: ePE.getQty(), lot: ePE.getLot(),
     contact: $('#eContact').value.trim().slice(0,40), note: $('#eNote').value.trim().slice(0,120),
   };
 }
@@ -2662,11 +2833,21 @@ $('#edSave').onclick=async()=>{
 
 /* ================= sold ================= */
 let soldId=null;
-function openSold(l){ soldId=l.id; $('#sName').textContent=l.name; sPE.set(l.price); openOv('ovSold'); }
+function openSold(l){
+  soldId=l.id; $('#sName').textContent=l.name; sPE.set(l.price);
+  const n=stockOf(l); $('#sQtyRow').style.display = n>1 && !isLot(l) ? '' : 'none';
+  $('#sLotNote').style.display = isLot(l) ? '' : 'none'; $('#sLotNote').textContent = `整批出售：${n} 件一次全部賣出，成交價填全部的價格。`; $('#sStock').textContent=n; $('#sQty').max=n; $('#sQty').value=1; $('#sPriceLbl').textContent = n>1 && !isLot(l) ? '成交價（每件）' : isLot(l) ? '成交價（整批）' : '成交價';
+  openOv('ovSold');
+}
+// selling part of the stock keeps the item on sale; it becomes "已售出" only when the stock reaches 0
 $('#sOk').onclick=async()=>{
   const pv=sPE.valid(); if(pv){ toast(pv, true); return; }
-  closeOv('ovSold'); const l=Store.listings.find(x=>x.id===soldId);
-  try{ await Store.update(soldId,{status:'sold', soldAt:Date.now(), finalPrice:sPE.get()}, 'sold '+(l?l.name:'')); toast('已標記售出'); }catch(e){}
+  const l=Store.listings.find(x=>x.id===soldId); if(!l) return;
+  const have=Math.max(1, stockOf(l)), n=isLot(l) ? have : Math.min(have, Math.max(1, Math.round(+$('#sQty').value||1)));
+  closeOv('ovSold');
+  const now=Date.now(), price=sPE.get(), sales=[...(l.sales||[]), isLot(l) ? {at:now, price, n, lot:true} : {at:now, price, n}], left=have-n;
+  const patch = left>0 ? {qty:left, sales, lastSoldAt:now} : {qty:0, sales, status:'sold', soldAt:now, finalPrice:price};
+  try{ await Store.update(soldId, patch, 'sold '+n+' x '+l.name); toast(left>0 ? `已賣出 ${n} 件，還剩 ${left} 件` : '已標記售出'); }catch(e){}
 };
 
 /* ================= tooltip detector ================= */
@@ -2930,7 +3111,7 @@ async function publishTray(ts, force){
       const cs=lcats(d).filter(catLabel);
       const item={id, categories:cs, category:cs[0], style:(d.style && STYLE_BY_ID[d.style] && cs.includes(STYLE_BY_ID[d.style].cat)) ? d.style : null, quality:d.quality||'normal', name:d.name.slice(0,40), base:(d.base||'').slice(0,20), lines,
         props:parsed.props, cls:parsed.cls, reqLevel:d.reqLevel||parsed.reqLevel||null, ilvl:d.ilvl||null, eth:!!(d.eth||parsed.eth),
-        ladder:def.ladder, hc:def.hc, platform:def.platform, region:def.region, price, negotiable:!!price.negotiable,
+        ladder:def.ladder, hc:def.hc, platform:def.platform, region:def.region, price, negotiable:!!price.negotiable, qty:Math.max(1, Math.round(+d.qty||1)), lot:!!d.lot && (+d.qty||1)>1,
         contact:def.contact, note:'', createdAt:Date.now(), status:'active', image:null};
       try{ item.image = await Store.putImage(id, await toJpeg(t.image)); }catch(e){ toast('截圖上傳失敗，物品仍會上架：'+(e.message||e), true); }
       items.push([t,item]);
@@ -3104,7 +3285,7 @@ function showCurrent(){
   rvEl('#rvQual').value = d.quality||'normal'; rvCats.set(lcats(d)); rvStyle.set(d.style);
   rvEl('#rvReq').value = d.reqLevel||'';
   rvEl('#rvLines').value = (d.lines||[]).join('\n'); autoForm(rvEl('#rvLines'), d.name, d.base);
-  rvPE.set(d.price || null);
+  rvPE.set(d.price || null); rvPE.setQty(d.qty, d.lot);
   rvEl('#rvRaw').textContent = t.draft._raw || '（無）';
   const sn=t.draft._snap||[];
   rvEl('#rvSnap').innerHTML = sn.length ? `<details class="snapbox"><summary>✓ 已自動對應到遊戲用語 ${sn.length} 處（點開查看）</summary>${sn.map(([a,b])=>`<div><s>${esc(a)}</s> → <b>${esc(b)}</b></div>`).join('')}</details>` : '';
@@ -3117,7 +3298,7 @@ function rvCollect(){
   return { name:norm(rvEl('#rvName').value), base:norm(rvEl('#rvBase').value), quality:rvEl('#rvQual').value,
     categories: rvCats.get(), category: rvCats.get()[0] || null, style: rvStyle.get(), reqLevel: +rvEl('#rvReq').value || null,
     lines: rvEl('#rvLines').value.split('\n').map(norm).filter(Boolean),
-    price: rvPE.get(), negotiable: rvPE.get().negotiable };
+    price: rvPE.get(), negotiable: rvPE.get().negotiable, qty: rvPE.getQty(), lot: rvPE.getLot() };
 }
 function rvPreview(){
   const a = rvCollect(); const pp = parseProps(a.lines);
@@ -3220,7 +3401,7 @@ rvEl('#rvCropBtn').onclick = ()=>{
 rvEl('#rvSaveAll').onclick = async()=>{
   stash();
   const n=pending.length; let learned=0;
-  for(const t of pending){ const a=t.edit||t.draft; learned += await saveItem(t, {name:a.name, base:a.base, quality:a.quality, categories:lcats(a), category:lcats(a)[0]||null, style:a.style||null, reqLevel:a.reqLevel, lines:a.lines, price:a.price||rvPE.get(), negotiable:(a.price||rvPE.get()).negotiable}); }
+  for(const t of pending){ const a=t.edit||t.draft; learned += await saveItem(t, {name:a.name, base:a.base, quality:a.quality, categories:lcats(a), category:lcats(a)[0]||null, style:a.style||null, reqLevel:a.reqLevel, lines:a.lines, price:a.price||rvPE.get(), negotiable:(a.price||rvPE.get()).negotiable, qty:a.qty||1, lot:!!a.lot}); }
   pending=[]; renderTray(); if(typeof renderLearn==='function') renderLearn();
   toast(`已儲存 ${n} 件${learned?`（學會 ${learned} 條修正）`:''}`); monStatus(`已儲存 ${n} 件`);
   showCurrent();
@@ -3295,7 +3476,7 @@ function showItem(t){
   $('#iListed').innerHTML = t.listed ? '<div class="ok" style="font-size:13px">✓ 已上架。這裡的修改不會改到已上架的刊登，要改請到「管理後台 → 刊登管理」。</div>' : '';
   $('#iName').value = d.name||''; $('#iBase').value = d.base||''; $('#iLinesEd').value = (d.lines||[]).join('\n');
   $('#iQual').value = d.quality||'normal'; iCats.set(lcats(d)); iStyle.set(d.style); $('#iReq').value = d.reqLevel||'';
-  iPE.set(d.price || null);
+  iPE.set(d.price || null); iPE.setQty(d.qty, d.lot);
   $('#iRaw').textContent = d._raw || '（無）'; $('#iSnap').innerHTML='';
   const chips = ()=>{ const pp=parseProps($('#iLinesEd').value.split('\n')); $('#iChips').innerHTML = Object.entries(pp.props).map(([k,v])=>`<span class="pchip">${esc(PROP_LABEL[k]||k)} ${v}${(k==='classSkills'||k==='treeSkills')&&pp.cls?' ('+esc(pp.cls)+')':''}</span>`).join('') || '<span class="muted">沒有可篩選的數值</span>'; };
   chips(); $('#iLinesEd').oninput = chips; autoForm($('#iLinesEd'), d.name, d.base);
@@ -3303,7 +3484,7 @@ function showItem(t){
     const pv = iPE.valid(); if(pv && andList){ toast(pv, true); return; }
     const after = {name:norm($('#iName').value), base:norm($('#iBase').value), lines:$('#iLinesEd').value.split('\n').map(norm).filter(Boolean)};
     const n = Learn.record(d._ocr || d, after);
-    Object.assign(d, after, {quality:$('#iQual').value, categories: iCats.get(), category: iCats.get()[0] || null, style: iStyle.get(), reqLevel: +$('#iReq').value || null, price: iPE.get(), negotiable: iPE.get().negotiable});
+    Object.assign(d, after, {quality:$('#iQual').value, categories: iCats.get(), category: iCats.get()[0] || null, style: iStyle.get(), reqLevel: +$('#iReq').value || null, price: iPE.get(), qty: iPE.getQty(), lot: iPE.getLot(), negotiable: iPE.get().negotiable});
     if(!pv) iPE.remember();
     await TrayDB.put(t); renderTray(); renderLearn();
     if(andList){ const e=publishCheck(d); if(e){ toast(e, true); return; } closeOv('ovItem'); publishTray([t], true); }
