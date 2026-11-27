@@ -2512,7 +2512,7 @@ function askAbout(l){
   setTimeout(()=>($('#askName').value?$('#askTime'):$('#askName')).focus(), 50);
 }
 function sendInquiry(l, name, time, msg){
-  copy(msg, '已把詢問訊息填進聊天視窗，按 Enter 或送出就會傳給賣家');
+  copy(msg, '詢問訊息已複製');
   if(!chatReady || !window.Tawk_API || !Tawk_API.maximize){ toast('聊天視窗還在載入，訊息已複製，請稍候貼上', true); return; }
   const T = window.Tawk_API;
   // shown to the seller next to the conversation (keys: letters / digits / dashes only)
@@ -2525,13 +2525,14 @@ function sendInquiry(l, name, time, msg){
     try{ T.setChatInputMessage('', ()=>{}); }catch(e){}
     try{ T.setChatInputMessage(msg, err=>{ if(!err) ok=true; }); }catch(e){} };
   T.maximize(); [150, 500, 1100, 2000].forEach(t=>setTimeout(fill, t));
-  setTimeout(()=>{ if(!ok && tok===askSeq) askFallback(msg); else hideAskFallback(); }, 3000);
+  // tawk.to can report success yet keep the old draft, so always show the paste helper
+  setTimeout(()=>{ if(tok===askSeq) askFallback(msg); }, 900);
 }
 let askSeq=0;
 function askFallback(msg){
   let b=$('#askFb');
   if(!b){ b=document.createElement('div'); b.id='askFb'; b.className='askfb'; document.body.appendChild(b); }
-  b.innerHTML=`<b>聊天框沒有自動換成這次的訊息？</b><div>訊息已複製。請把聊天框裡的文字<b>全部刪除</b>，再按 <b>Ctrl＋V</b> 貼上後送出。</div><pre></pre><div style="text-align:right;margin-top:6px"><button class="btn" id="askFbCopy">再複製一次</button> <button class="btn" id="askFbX">關閉</button></div>`;
+  b.innerHTML=`<b>✅ 詢問訊息已複製</b><div>請確認右下角聊天框裡是下面這段訊息，按 Enter 送出。<br>如果聊天框裡是<b>別的文字</b>：先把聊天框的文字全部刪除（Ctrl＋A → Delete），再按 <b>Ctrl＋V</b> 貼上送出。</div><pre></pre><div style="text-align:right;margin-top:6px"><button class="btn" id="askFbCopy">再複製一次</button> <button class="btn" id="askFbX">關閉</button></div>`;
   b.querySelector('pre').textContent=msg; b.classList.add('on');
   $('#askFbCopy').onclick=()=>copy(msg,'已複製，請到聊天框貼上');
   $('#askFbX').onclick=hideAskFallback;
