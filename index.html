@@ -338,6 +338,7 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 .achip .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;padding:0 4px}
 .achip .x:hover{color:var(--red,#e55)}
 .askchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.askchips .chip{padding:3px 10px;border-radius:12px;border:1px solid var(--line,#444);background:transparent;color:inherit;cursor:pointer;font-size:12px}.askchips .chip:hover{border-color:var(--gold,#c8a24a)}
+.askfb{display:none;position:fixed;left:16px;bottom:16px;z-index:2147483000;max-width:360px;background:#16120c;border:1px solid var(--gold,#c8a24a);border-radius:6px;padding:10px 12px;font-size:13px;line-height:1.6;box-shadow:0 6px 24px rgba(0,0,0,.6)}.askfb.on{display:block}.askfb pre{white-space:pre-wrap;max-height:140px;overflow:auto;background:#0c0a08;border:1px solid var(--line2,#333);padding:6px;margin:6px 0 0;font:inherit;font-size:12px}
 </style>
 </head>
 <body>
@@ -2494,6 +2495,7 @@ function syncChat(){
 }
 // step 1: a small form (name / trade time / item text), step 2: hand it to the chat
 function askAbout(l){
+  hideAskFallback();
   $('#askName').value = ls.get('d2r_buyer', {}).name || '';
   $('#askTime').value = '';
   $('#askItem').value = inquiryText(l);
@@ -2516,9 +2518,25 @@ function sendInquiry(l, name, time, msg){
   // shown to the seller next to the conversation (keys: letters / digits / dashes only)
   try{ T.setAttributes && T.setAttributes({name:name.slice(0,40), 'inquiry-item':String(l.name||'').slice(0,80), 'inquiry-price':fmtPzh(l.price).slice(0,120), 'inquiry-id':String(l.id).slice(0,40), 'trade-time':(time||'未填').slice(0,60)}, ()=>{}); }catch(e){}
   try{ T.addEvent && T.addEvent('item-inquiry', {item:String(l.name||'').slice(0,80), price:fmtPzh(l.price).slice(0,120), id:String(l.id).slice(0,40)}, ()=>{}); }catch(e){}
-  const fill = ()=>{ try{ T.setChatInputMessage && T.setChatInputMessage(msg); }catch(e){} };
-  T.maximize(); fill(); setTimeout(fill, 400); setTimeout(fill, 1200);
+  // tawk.to keeps an unsent draft in its input box and may refuse to overwrite it,
+  // so clear it first, retry a few times and fall back to "paste it yourself" if nothing confirms
+  let ok=false; const tok=(askSeq=(askSeq||0)+1);
+  const fill = ()=>{ if(ok||tok!==askSeq||!T.setChatInputMessage) return;
+    try{ T.setChatInputMessage('', ()=>{}); }catch(e){}
+    try{ T.setChatInputMessage(msg, err=>{ if(!err) ok=true; }); }catch(e){} };
+  T.maximize(); [150, 500, 1100, 2000].forEach(t=>setTimeout(fill, t));
+  setTimeout(()=>{ if(!ok && tok===askSeq) askFallback(msg); else hideAskFallback(); }, 3000);
 }
+let askSeq=0;
+function askFallback(msg){
+  let b=$('#askFb');
+  if(!b){ b=document.createElement('div'); b.id='askFb'; b.className='askfb'; document.body.appendChild(b); }
+  b.innerHTML=`<b>聊天框沒有自動換成這次的訊息？</b><div>訊息已複製。請把聊天框裡的文字<b>全部刪除</b>，再按 <b>Ctrl＋V</b> 貼上後送出。</div><pre></pre><div style="text-align:right;margin-top:6px"><button class="btn" id="askFbCopy">再複製一次</button> <button class="btn" id="askFbX">關閉</button></div>`;
+  b.querySelector('pre').textContent=msg; b.classList.add('on');
+  $('#askFbCopy').onclick=()=>copy(msg,'已複製，請到聊天框貼上');
+  $('#askFbX').onclick=hideAskFallback;
+}
+function hideAskFallback(){ const b=$('#askFb'); if(b) b.classList.remove('on'); }
 async function copy(text, msg){ try{ await navigator.clipboard.writeText(text); toast(msg); }catch(e){ toast('無法複製，請手動選取文字', true); } }
 // what the buyer sends from "💬 詢問這件"
 function inquiryText(l){
