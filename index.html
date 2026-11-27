@@ -339,6 +339,52 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 .achip .x:hover{color:var(--red,#e55)}
 .askchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.askchips .chip{padding:3px 10px;border-radius:12px;border:1px solid var(--line,#444);background:transparent;color:inherit;cursor:pointer;font-size:12px}.askchips .chip:hover{border-color:var(--gold,#c8a24a)}
 .askfb{display:none;position:fixed;left:16px;bottom:16px;z-index:2147483000;max-width:360px;background:#16120c;border:1px solid var(--gold,#c8a24a);border-radius:6px;padding:10px 12px;font-size:13px;line-height:1.6;box-shadow:0 6px 24px rgba(0,0,0,.6)}.askfb.on{display:block}.askfb pre{white-space:pre-wrap;max-height:140px;overflow:auto;background:#0c0a08;border:1px solid var(--line2,#333);padding:6px;margin:6px 0 0;font:inherit;font-size:12px}
+
+/* chat rooms */
+.askprev{padding:6px 9px;margin-bottom:8px;border:1px solid var(--line);background:#0c0a08;border-radius:3px;font-size:14px}
+.rtag{font-size:11px;padding:0 6px;border-radius:2px;border:1px solid;margin-left:6px;white-space:nowrap}
+.st-open{color:var(--gold2);border-color:var(--line2);background:#2a1e0c}.st-deal{color:#9fe0a9;border-color:#2a6a3a;background:#10301a}.st-closed{color:#bbb;border-color:#555;background:#2a2a2a}
+.cbadge{display:inline-block;min-width:18px;height:18px;line-height:18px;padding:0 5px;border-radius:9px;background:var(--red);color:#fff;font-size:11px;text-align:center;margin-left:6px;font-family:sans-serif;font-weight:600}
+.cdock{position:fixed;right:18px;bottom:18px;z-index:900}
+.cdock-btn{background:linear-gradient(#6b4a1c,#3e2a0f);border:1px solid var(--gold);color:#f5e2b3;padding:10px 16px;border-radius:22px;cursor:pointer;box-shadow:0 4px 18px #000a;font-size:15px}
+.cpanel{display:none;width:min(390px,calc(100vw - 24px));height:min(580px,calc(100vh - 90px));background:var(--panel);border:1px solid var(--gold);border-radius:8px;box-shadow:0 8px 32px #000c;flex-direction:column;overflow:hidden}
+.cpanel.on{display:flex}
+.cp-h{display:flex;align-items:center;gap:8px;padding:9px 10px;border-bottom:1px solid var(--line);background:linear-gradient(#21180f,#15100b)}
+.cp-h b{flex:1;color:var(--gold2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cph .btn{white-space:nowrap}
+.cph{display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--line);font-size:13px}
+.sp{flex:1}
+.cmsgs{flex:1;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:0}
+.cm{display:flex}.cm.me{justify-content:flex-end}
+.cw{max-width:82%;display:flex;flex-direction:column;gap:2px}.cm.me .cw{align-items:flex-end}
+.cwho{font-size:11.5px;color:var(--muted)}
+.cb{background:var(--panel2);border:1px solid var(--line);padding:7px 10px;border-radius:10px 10px 10px 2px;white-space:pre-wrap;word-break:break-word;line-height:1.5}
+.cm.me .cb{background:#3a2a12;border-color:#6b4a1c;border-radius:10px 10px 2px 10px}
+.cm i{font-size:10.5px;color:var(--muted);font-style:normal}
+.cm.sys{justify-content:center;align-items:center;gap:6px}.cm.sys span{font-size:12px;color:var(--muted);background:#0006;padding:2px 10px;border-radius:10px}
+.cinq{border:1px solid var(--gold);background:#120e09;border-radius:8px;padding:8px 10px;font-size:13px;min-width:220px}
+.ci-h{color:var(--gold2);font-size:12px;margin-bottom:3px}.ci-n{font-size:15px;font-weight:600}
+.ci-l{color:var(--stat);font-size:12.5px;margin:4px 0;line-height:1.5}
+.cinq dl{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;margin:6px 0 0}.cinq dt{color:var(--muted)}.cinq dd{margin:0}
+.ci-note{margin-top:6px;padding-top:6px;border-top:1px dashed var(--line2);white-space:pre-wrap}
+.ccomp{display:flex;gap:6px;padding:8px;border-top:1px solid var(--line);align-items:flex-end}.ccomp textarea{resize:none;flex:1}
+.demo-sim{margin:0 8px 8px;border-style:dashed}
+.crow{padding:8px 10px;border-bottom:1px solid #241d15;cursor:pointer}.crow:hover{background:#1b1510}.crow.on{background:#2a1e0c}
+.cr1,.cr2{display:flex;align-items:center;gap:4px}.cr1 i{font-size:11px;color:var(--muted);font-style:normal}
+.cr2 span{flex:1;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chats{display:grid;grid-template-columns:340px 1fr;gap:14px;height:calc(100vh - 200px);min-height:460px}
+.chats .apanel{display:flex;flex-direction:column;min-height:0;padding:12px}
+.clist{flex:1;overflow:auto;border:1px solid var(--line);border-radius:3px}
+.chroom{padding:0!important}
+.chh{padding:10px 12px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:5px}
+.chh1{font-size:16px}.chh1 .lnk{cursor:pointer;text-decoration:underline dotted}.chh2{font-size:13px}.chh3{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.chback{display:none;align-self:flex-start}
+.qr{display:flex;gap:5px;flex-wrap:wrap;padding:8px 8px 0}
+@media (max-width:820px){
+  .chats{grid-template-columns:1fr;height:88vh}
+  .chats .chroom{display:none}.chats.inroom .chlistp{display:none}.chats.inroom .chroom{display:flex}
+  .chback{display:inline-block}
+}
 </style>
 </head>
 <body>
@@ -451,6 +497,11 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
           <div class="fld"><label>買家聊天（tawk.to）· 貼上 tawk.to 的「直接聊天連結」或嵌入程式碼，留空 = 關閉</label>
             <div class="row" style="gap:6px"><input type="text" id="sTawk" placeholder="例如 https://tawk.to/chat/xxxxxxxx/yyyyyyy" autocomplete="off"><button class="btn sm pri" id="sTawkSave" style="flex:0 0 auto">儲存</button></div>
             <div class="muted" id="sTawkInfo" style="font-size:12px;margin-top:3px"></div></div>
+          <div class="fld"><label>買家聊天室（Firebase）· 開啟後「💬 詢問這件」會改成網站自己的聊天室（取代 tawk.to）。全部留空 = 關閉</label>
+            <textarea id="sFire" rows="5" style="width:100%" placeholder="貼上 Firebase 的 firebaseConfig，例如：&#10;const firebaseConfig = {&#10;  apiKey: &quot;AIza...&quot;,&#10;  authDomain: &quot;xxx.firebaseapp.com&quot;,&#10;  projectId: &quot;xxx&quot;, ...&#10;};"></textarea>
+            <div class="row" style="gap:6px;margin-top:6px"><input type="text" id="sFireAdmin" placeholder="站長的 Google 信箱（例如 you@gmail.com）" autocomplete="off"><button class="btn sm pri" id="sFireSave" style="flex:0 0 auto">儲存</button><button class="btn sm" id="sFireRules" style="flex:0 0 auto">產生安全規則</button></div>
+            <div class="muted" id="sFireInfo" style="font-size:12px;margin-top:3px"></div>
+            <textarea id="sFireRulesOut" rows="10" readonly style="width:100%;display:none;margin-top:6px;font-family:monospace;font-size:12px"></textarea></div>
           <div class="fld"><label>預設聯絡方式（新增物品時自動帶入）</label><input type="text" id="sContact" placeholder="例如 Player#1234"></div>
           <div class="row" style="margin-top:6px;justify-content:space-between;flex-wrap:wrap;gap:8px">
             <span class="muted" id="sRepo" style="flex:1"></span>
@@ -458,6 +509,22 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
             <button class="btn sm danger" id="sLogout" style="flex:0 0 auto">登出並清除此裝置的權杖</button>
           </div>
         </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="viewChats" style="display:none;padding:18px 0 60px">
+    <div id="chLogin" class="apanel" style="display:none">請先到「管理後台」登入。</div>
+    <div id="chMain" class="chats">
+      <div class="apanel chlistp">
+        <div class="row" style="margin-bottom:8px;gap:8px"><h3 style="margin:0;flex:0 0 auto">買家聊天室</h3><span class="sp"></span><button class="btn sm" id="chNotify" style="flex:0 0 auto"></button></div>
+        <div class="muted" id="chWho" style="font-size:12px;margin:-4px 0 6px"></div>
+        <div class="chips" id="chF" style="margin-bottom:8px"></div>
+        <input type="search" id="chQ" placeholder="搜尋物品、買家、訊息…" style="margin-bottom:8px">
+        <div id="chList" class="clist"></div>
+      </div>
+      <div class="apanel chroom" id="chRoom">
+        <div id="chHead"></div><div id="chMsgs" class="cmsgs"></div><div id="chFoot"></div>
       </div>
     </div>
   </section>
@@ -658,7 +725,9 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
     <div class="fld"><label>您的名稱（遊戲角色名或暱稱）<span style="color:#e06060"> *</span></label><input type="text" id="askName" maxlength="40" placeholder="例如：MyPaladin"></div>
     <div class="fld"><label>希望能交易的時間</label><input type="text" id="askTime" maxlength="60" placeholder="例如：今晚 9 點後、週六下午">
       <div class="askchips" id="askChips"></div></div>
-    <div class="fld"><label>物品訊息（可補充想說的話）</label><textarea id="askItem" rows="6"></textarea></div>
+    <div class="fld"><label>聯絡方式（選填，例如 Battle.net ID、Discord）</label><input type="text" id="askContact" maxlength="60" placeholder="例如：Player#1234"></div>
+    <div class="askprev" id="askPrev"></div>
+    <div class="fld"><label id="askItemLbl">物品訊息（可補充想說的話）</label><textarea id="askItem" rows="6"></textarea></div>
   </div>
   <div class="mf"><button class="btn" data-close>取消</button><button class="btn pri" id="askOk">確認，傳送至聊天室</button></div>
 </div></div>
@@ -670,6 +739,13 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
   <div class="mf"><button class="btn" id="cNo">取消</button><button class="btn pri" id="cYes">確定</button></div>
 </div></div>
 
+<div class="cdock" id="cdock" style="display:none">
+  <button class="cdock-btn" id="cdockBtn">💬 我的詢問<b class="cbadge" id="cdockN"></b></button>
+  <div class="cpanel" id="cpanel">
+    <div class="cp-h"><button class="x" id="cpBack" title="回到列表">←</button><b id="cpTitle">我的詢問</b><button class="x" id="cpClose" title="收起">✕</button></div>
+    <div id="cpHead"></div><div class="cmsgs" id="cpBody"></div><div id="cpFoot"></div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1862,7 +1938,9 @@ function parseData(text){
     Store.styleImgs = (j && j.styleImgs && typeof j.styleImgs==='object') ? Object.fromEntries(Object.entries(j.styleImgs).filter(([k,v])=>STYLE_BY_ID[k] && typeof v==='string' && /^(images\/|data:image\/)/.test(v))) : {};
     Store.runeValues = {}; if(j && j.runeValues && typeof j.runeValues==='object') for(const [k,v] of Object.entries(j.runeValues)){ const n=+k; if(n>=1 && n<=33 && typeof v==='number' && isFinite(v) && v>=0) Store.runeValues[n]=v; }
     Store.about = (j && typeof j.about==='string') ? j.about.slice(0,8000) : '';
-    Store.chat = (j && j.chat && typeof j.chat==='object' && parseTawk(j.chat.tawk)) ? {tawk:parseTawk(j.chat.tawk)} : null;
+    { const c=(j&&j.chat&&typeof j.chat==='object')?j.chat:{}, t=parseTawk(c.tawk), f=c.fire&&typeof c.fire==='object'?parseFireCfg(JSON.stringify(c.fire)):null;
+      if(f && typeof c.fire.admin==='string') f.admin=c.fire.admin.trim().slice(0,120);
+      Store.chat = (t||f) ? Object.assign({}, t?{tawk:t}:{}, f?{fire:f}:{}) : null; }
     return Array.isArray(j) ? j : (Array.isArray(j.listings)?j.listings:[]);
   }catch(e){ return []; }
 }
@@ -2089,13 +2167,14 @@ function rowHTML(l){
 let view='shop';
 function render(){
   renderTabs();
-  const nav = Store.admin ? [['shop','拍賣所'],['capture','截圖上架'],['admin','管理後台']] : (view!=='shop' ? [['shop','← 回到拍賣所']] : []);
+  const nav = Store.admin ? [['shop','拍賣所'],...(Chat.be?[['chat','💬 聊天']]:[]),['capture','截圖上架'],['admin','管理後台']] : (view!=='shop' ? [['shop','← 回到拍賣所']] : []);
   $('#navBtns').innerHTML = nav.map(([k,l])=>`<button class="btn ${view===k?'pri':''}" data-nav="${k}">${l}</button>`).join('');
   if(view==='admin') renderAdmin();
   else if(view==='capture'){ $('#capLogin').style.display = Store.admin?'none':''; $('#capBody').style.display = Store.admin?'':'none'; }
   else { renderSide(); renderGrid(); }
   if(openDetailId) renderDetail();
-  loadChat(); syncChat();
+  loadChat(); syncChat(); loadFire();
+  if(Chat.be){ renderBuyerChat(); renderSellerChat(); renderNavBadge(); chatNotifyBtn(); }
 }
 
 /* ================= shop events ================= */
@@ -2104,11 +2183,13 @@ $('#tabs').addEventListener('click', e=>{ const b=e.target.closest('[data-cat]')
 function fromHash(){
   const h=location.hash.slice(1);
   if(h==='admin') view='admin';
+  else if(h==='chat') view='chat';
   else if(h==='capture') view='capture';
   else { view='shop'; const c=getCats().find(x=>x.hash===h); F.cat = c?c.id:'all'; }
   $('#viewShop').style.display = view==='shop'?'':'none';
   $('#viewAdmin').style.display = view==='admin'?'':'none';
   $('#viewCapture').style.display = view==='capture'?'':'none';
+  $('#viewChats').style.display = view==='chat'?'':'none';
   render();
 }
 window.addEventListener('hashchange', fromHash);
@@ -2456,7 +2537,7 @@ function renderDetail(){
       ${sameItemHTML(l)}
       ${similar.length?`<div class="sec">近期同名成交</div><div class="atable">${similar.map(s=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #241d15"><span class="price" style="font-size:14px">${esc(fmtP(s.finalPrice||s.price))}</span><span class="muted">${esc((s.lines||[]).slice(0,2).join(' / '))}</span></div>`).join('')}</div>`:''}
     </div>`;
-  let f = `<button class="btn" id="dCopy">複製交易訊息</button>${Store.chat&&Store.chat.tawk&&st==='active'?'<button class="btn pri" id="dAsk">💬 詢問這件</button>':''}<span style="flex:1"></span>`;
+  let f = `<button class="btn" id="dCopy">複製交易訊息</button>${(Chat.be||(Store.chat&&Store.chat.tawk))&&st==='active'?'<button class="btn pri" id="dAsk">💬 詢問這件</button>':''}<span style="flex:1"></span>`;
   if(Store.admin){
     f += `<button class="btn" id="dEdit">編輯</button>`;
     if(st==='active') f += `<button class="btn" id="dSold">標記已售出</button>`;
@@ -2481,7 +2562,7 @@ function parseTawk(s){
 }
 let chatLoaded=false, chatReady=false;
 function loadChat(){
-  const t = Store.chat && Store.chat.tawk; if(!t || chatLoaded) return;
+  const t = Store.chat && Store.chat.tawk; if(!t || chatLoaded || Store.chat.fire) return;
   chatLoaded=true;
   window.Tawk_API = window.Tawk_API || {}; window.Tawk_LoadStart = new Date();
   window.Tawk_API.onLoad = ()=>{ chatReady=true; syncChat(); };
@@ -2496,17 +2577,30 @@ function syncChat(){
 // step 1: a small form (name / trade time / item text), step 2: hand it to the chat
 function askAbout(l){
   hideAskFallback();
-  $('#askName').value = ls.get('d2r_buyer', {}).name || '';
+  const useRooms = !!Chat.be;
+  if(useRooms){   // already asking about this one → just reopen that room
+    const ex = Chat.be.rooms(false).find(r=>r.listingId===l.id && r.status!=='closed');
+    if(ex){ closeOv('ovDetail'); buyerChatOpen(ex.id); toast('你已經詢問過這件，已打開原本的聊天室'); return; }
+  }
+  const me = ls.get('d2r_buyer', {});
+  $('#askName').value = me.name || ''; $('#askContact').value = me.contact || '';
   $('#askTime').value = '';
-  $('#askItem').value = inquiryText(l);
+  $('#askPrev').style.display = useRooms?'':'none';
+  $('#askPrev').innerHTML = useRooms ? `<b class="q-${esc(l.quality||'normal')}">${esc(l.name)}</b>${l.base&&l.base!==l.name?`<span class="muted">（${esc(l.base)}）</span>`:''}<span class="price" style="margin-left:8px">${esc(fmtPzh(l.price))}</span>${l.negotiable?'<span class="muted">（可議）</span>':''}` : '';
+  $('#askItemLbl').textContent = useRooms ? '想對賣家說的話（選填）' : '物品訊息（可補充想說的話）';
+  $('#askItem').value = useRooms ? '' : inquiryText(l);
+  $('#askItem').rows = useRooms ? 3 : 6;
+  $('#askItem').placeholder = useRooms ? '例如：可以用 #30 換嗎？' : '';
+  $('#askOk').textContent = useRooms ? '確認，開啟聊天室' : '確認，傳送至聊天室';
   $('#askChips').innerHTML = ['現在','今晚','明天晚上','週末','都可以'].map(t=>`<button type="button" class="chip">${t}</button>`).join('');
   $('#askChips').querySelectorAll('button').forEach(b=>b.onclick=()=>{ $('#askTime').value=b.textContent; });
   $('#askOk').onclick = ()=>{
-    const name=$('#askName').value.trim(), time=$('#askTime').value.trim(), item=$('#askItem').value.trim();
+    const name=$('#askName').value.trim(), time=$('#askTime').value.trim(), contact=$('#askContact').value.trim(), item=$('#askItem').value.trim();
     if(!name){ toast('請填寫您的名稱', true); $('#askName').focus(); return; }
-    ls.set('d2r_buyer', {name});
+    ls.set('d2r_buyer', {name, contact});
     closeOv('ovAsk');
-    sendInquiry(l, name, time, `買家：${name}\n希望交易時間：${time||'未填'}\n────────\n${item}`);
+    if(useRooms) startChatRoom(l, name, time||'未填', contact, item.slice(0,500));
+    else sendInquiry(l, name, time, `買家：${name}\n希望交易時間：${time||'未填'}${contact?'\n聯絡方式：'+contact:''}\n────────\n${item}`);
   };
   openOv('ovAsk');
   setTimeout(()=>($('#askName').value?$('#askTime'):$('#askName')).focus(), 50);
@@ -2547,6 +2641,400 @@ function tradeText(l){
   return `【出售】${l.name}${l.base&&l.base!==l.name?'（'+l.base+'）':''}\n${(l.lines||[]).join(' / ')}\n${l.hc==='hc'?'專家':'普通'} ${l.platform} ${REGION_LABEL[l.region]||''}\n價格：${fmtPzh(l.price)}${l.negotiable?'（可議）':''}\n聯絡：${l.contact||''}`;
 }
 
+/* ================= buyer ⇄ seller chat rooms ================= */
+// One room per (buyer, item). The backend is pluggable: the demo uses LocalChat (this browser's
+// localStorage, synced across tabs); the real site will plug in a hosted database later.
+const Chat = {
+  be:null, subs:[],
+  use(be){ this.be=be; be.listen(()=>this.emit()); this.emit(); },
+  on(fn){ this.subs.push(fn); },
+  emit(){ for(const f of this.subs){ try{ f(); }catch(e){ console.error(e); } } },
+};
+const LocalChat = {
+  KEY:'d2r_chat_db',
+  db(){ try{ const d=JSON.parse(localStorage.getItem(this.KEY)); if(d&&d.rooms) return d; }catch(e){} return {rooms:{}, msgs:{}}; },
+  save(d){ try{ localStorage.setItem(this.KEY, JSON.stringify(d)); }catch(e){ toast('瀏覽器儲存空間已滿', true); } this._cb&&this._cb(); },
+  uid(){ let u=ls.get('d2r_chat_uid', null); if(!u){ u='u'+newId(); ls.set('d2r_chat_uid', u); } return u; },
+  listen(cb){ this._cb=cb; window.addEventListener('storage', e=>{ if(e.key===this.KEY) cb(); }); },
+  rooms(all){ const d=this.db(), u=this.uid(); return Object.values(d.rooms).filter(r=>all||r.buyerUid===u).sort((a,b)=>b.updatedAt-a.updatedAt); },
+  room(id){ return this.db().rooms[id]||null; },
+  msgs(id){ return this.db().msgs[id]||[]; },
+  create(room, first){
+    const d=this.db(), id='r'+newId(), now=Date.now();
+    d.rooms[id]=Object.assign({id, buyerUid:this.uid(), createdAt:now, updatedAt:now, status:'open', unreadSeller:1, unreadBuyer:0, last:first.text, lastFrom:'buyer'}, room);
+    d.msgs[id]=[Object.assign({id:newId(), from:'buyer', at:now}, first)];
+    this.save(d); return id;
+  },
+  send(id, from, text){
+    const d=this.db(), r=d.rooms[id]; if(!r) return;
+    const now=Date.now(); (d.msgs[id]=d.msgs[id]||[]).push({id:newId(), from, text, at:now});
+    r.updatedAt=now; r.last=text; r.lastFrom=from;
+    if(from==='buyer') r.unreadSeller=(r.unreadSeller||0)+1; else r.unreadBuyer=(r.unreadBuyer||0)+1;
+    this.save(d);
+  },
+  read(id, who){ const d=this.db(), r=d.rooms[id], k=who==='seller'?'unreadSeller':'unreadBuyer'; if(!r||!r[k]) return; r[k]=0; this.save(d); },
+  setStatus(id, st){
+    const d=this.db(), r=d.rooms[id]; if(!r||r.status===st) return;
+    const now=Date.now(); r.status=st; r.updatedAt=now;
+    const text = {deal:'賣家把這筆交易標記為「已成交」，感謝購買！', closed:'賣家已結束這個聊天室', open:'賣家重新開啟了這個聊天室'}[st];
+    (d.msgs[id]=d.msgs[id]||[]).push({id:newId(), from:'sys', text, at:now});
+    r.unreadBuyer=(r.unreadBuyer||0)+1; this.save(d);
+  },
+  remove(id){ const d=this.db(); delete d.rooms[id]; delete d.msgs[id]; this.save(d); },
+};
+
+const ROOM_ST = {open:['進行中','st-open'], deal:['已成交','st-deal'], closed:['已結束','st-closed']};
+const roomTag = r => { const [t,c]=ROOM_ST[r.status]||ROOM_ST.open; return `<span class="rtag ${c}">${t}</span>`; };
+function fmtClock(t){
+  const d=new Date(t), n=new Date(), p=x=>String(x).padStart(2,'0'), hm=`${p(d.getHours())}:${p(d.getMinutes())}`;
+  if(d.toDateString()===n.toDateString()) return hm;
+  const y=new Date(n); y.setDate(n.getDate()-1); if(d.toDateString()===y.toDateString()) return '昨天 '+hm;
+  return `${d.getMonth()+1}/${d.getDate()} ${hm}`;
+}
+// one message bubble; `me` = which side is looking ('buyer' | 'seller')
+function msgHTML(m, me, r){
+  if(m.from==='sys') return `<div class="cm sys"><span>${esc(m.text)}</span><i>${fmtClock(m.at)}</i></div>`;
+  const mine = m.from===me;
+  const who = m.from==='seller' ? '賣家' : esc(r.buyer&&r.buyer.name||'買家');
+  if(m.kind==='inquiry'){
+    const it=r.item||{}, b=r.buyer||{}, note=(m.data&&m.data.note)||'';
+    return `<div class="cm ${mine?'me':''}"><div class="cw"><div class="cwho">${who}</div><div class="cinq">
+      <div class="ci-h">💬 詢問這件</div>
+      <div class="ci-n q-${esc(it.quality||'normal')}">${esc(it.name||'')}${it.base&&it.base!==it.name?`<span class="muted">（${esc(it.base)}）</span>`:''}</div>
+      ${(it.lines||[]).length?`<div class="ci-l">${(it.lines||[]).map(x=>`<div>${esc(x)}</div>`).join('')}</div>`:''}
+      <dl><dt>價格</dt><dd class="price">${esc(it.price||'')}</dd><dt>買家</dt><dd>${esc(b.name||'')}</dd><dt>交易時間</dt><dd>${esc(b.time||'未填')}</dd>${b.contact?`<dt>聯絡方式</dt><dd>${esc(b.contact)}</dd>`:''}<dt>物品編號</dt><dd>${esc(r.listingId||'')}</dd></dl>
+      ${note?`<div class="ci-note">${esc(note)}</div>`:''}
+    </div><i>${fmtClock(m.at)}</i></div></div>`;
+  }
+  return `<div class="cm ${mine?'me':''}"><div class="cw"><div class="cwho">${who}</div><div class="cb">${esc(m.text)}</div><i>${fmtClock(m.at)}</i></div></div>`;
+}
+function fillMsgs(box, id, me){
+  const r=Chat.be.room(id); if(!r) return;
+  const atEnd = box.scrollHeight-box.scrollTop-box.clientHeight < 60 || box.dataset.room!==id;
+  box.innerHTML = Chat.be.msgs(id).map(m=>msgHTML(m, me, r)).join('') || '<div class="muted" style="text-align:center;padding:20px">尚無訊息</div>';
+  box.dataset.room=id;
+  if(atEnd) box.scrollTop=box.scrollHeight;
+}
+// Enter = send, Shift+Enter = new line
+function wireComposer(ta, btn, send){
+  const go=()=>{ const t=ta.value.trim(); if(!t) return; send(t.slice(0,1000)); ta.value=''; ta.focus(); };
+  btn.onclick=go;
+  ta.onkeydown=e=>{ if(e.key==='Enter' && !e.shiftKey && !e.isComposing){ e.preventDefault(); go(); } };
+}
+// short "ding" without any sound file
+function chatBeep(){
+  try{ const A=window.AudioContext||window.webkitAudioContext; const c=chatBeep.c||(chatBeep.c=new A());
+    const o=c.createOscillator(), g=c.createGain(); o.type='sine'; o.frequency.setValueAtTime(880,c.currentTime); o.frequency.setValueAtTime(1320,c.currentTime+.09);
+    g.gain.setValueAtTime(.0001,c.currentTime); g.gain.exponentialRampToValueAtTime(.18,c.currentTime+.02); g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+.35);
+    o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+.4); }catch(e){}
+}
+
+/* ---------- buyer side: floating "我的詢問" panel ---------- */
+const BC = {open:false, room:null};
+function buyerChatOpen(id){ BC.open=true; BC.room=id||null; BC.wait=id?Date.now()+10000:0; renderBuyerChat(); }
+function renderBuyerChat(){
+  const dock=$('#cdock'); if(!dock) return;
+  if(!Chat.be || view!=='shop'){ dock.style.display='none'; return; }
+  const rooms=Chat.be.rooms(false), unread=rooms.reduce((a,r)=>a+(r.unreadBuyer||0),0);
+  dock.style.display = (rooms.length||BC.open) ? '' : 'none';
+  $('#cdockN').textContent = unread||''; $('#cdockN').style.display = unread?'':'none';
+  $('#cdockBtn').style.display = BC.open?'none':'';
+  const pn=$('#cpanel'); pn.classList.toggle('on', BC.open);
+  if(!BC.open) return;
+  const r = BC.room && Chat.be.room(BC.room);
+  if(!r && BC.room && Date.now()<BC.wait){   // just created: the live list hasn't caught up yet
+    $('#cpBack').style.visibility=''; $('#cpHead').innerHTML=''; $('#cpFoot').innerHTML=''; $('#cpFoot').dataset.room='';
+    $('#cpBody').innerHTML='<div class="muted" style="padding:24px;text-align:center">聊天室載入中…</div>'; $('#cpBody').dataset.room='';
+    clearTimeout(BC.t); BC.t=setTimeout(renderBuyerChat, 1500); return;
+  }
+  if(!r){
+    BC.room=null; $('#cpBack').style.visibility='hidden'; $('#cpTitle').textContent='我的詢問';
+    $('#cpHead').innerHTML=''; $('#cpFoot').innerHTML=''; $('#cpFoot').dataset.room='';
+    $('#cpBody').dataset.room='';
+    $('#cpBody').innerHTML = rooms.length ? rooms.map(x=>`<div class="crow" data-room="${x.id}">
+        <div class="cr1"><b class="q-${esc(x.item&&x.item.quality||'normal')}">${esc(x.item&&x.item.name||'')}</b>${roomTag(x)}<span class="sp"></span><i>${fmtClock(x.updatedAt)}</i></div>
+        <div class="cr2"><span>${x.lastFrom==='seller'?'賣家：':x.lastFrom==='buyer'?'你：':''}${esc(String(x.last||'').split('\n')[0])}</span>${x.unreadBuyer?`<b class="cbadge">${x.unreadBuyer}</b>`:''}</div></div>`).join('')
+      : '<div class="muted" style="padding:24px;text-align:center">還沒有詢問紀錄。<br>在物品頁按「💬 詢問這件」就會開一個聊天室。</div>';
+    $('#cpBody').querySelectorAll('[data-room]').forEach(el=>el.onclick=()=>buyerChatOpen(el.dataset.room));
+    return;
+  }
+  $('#cpBack').style.visibility=''; $('#cpTitle').textContent=r.item&&r.item.name||'聊天室';
+  const live = Store.listings.find(l=>l.id===r.listingId);
+  $('#cpHead').innerHTML = `<div class="cph"><span class="price">${esc(r.item&&r.item.price||'')}</span>${roomTag(r)}<span class="sp"></span>${live?`<button class="btn sm" id="cpItem">查看物品</button>`:''}</div>`;
+  if(live) $('#cpItem').onclick=()=>openDetail(live.id);
+  fillMsgs($('#cpBody'), r.id, 'buyer');
+  const foot=$('#cpFoot');
+  const fkey=r.id+':'+(r.status==='closed');
+  if(foot.dataset.room!==fkey){
+    foot.dataset.room=fkey;
+    foot.innerHTML = r.status==='closed'
+      ? '<div class="muted" style="padding:10px;text-align:center;font-size:13px">這個聊天室已結束。要再詢問，請到物品頁重新按「💬 詢問這件」。</div>'
+      : `<div class="ccomp"><textarea id="cpIn" rows="2" placeholder="輸入訊息，Enter 送出（Shift+Enter 換行）"></textarea><button class="btn pri" id="cpSend">送出</button></div>${window.CHAT_DEMO?'<button class="btn sm demo-sim" id="cpSim">🧪 模擬賣家回覆</button>':''}`;
+    if(r.status!=='closed') wireComposer($('#cpIn'), $('#cpSend'), t=>Chat.be.send(r.id,'buyer',t));
+    if($('#cpSim')) $('#cpSim').onclick=()=>Chat.be.send(r.id,'seller','（模擬）你好，這件還在喔！今晚 9 點可以交易嗎？');
+  }
+  if(r.unreadBuyer) Chat.be.read(r.id,'buyer');
+}
+
+/* ---------- seller side: 「聊天」page in the admin ---------- */
+const SC = {room:null, f:'open', q:''};
+function sellerUnread(){ return Chat.be ? Chat.be.rooms(true).reduce((a,r)=>a+(r.unreadSeller||0),0) : 0; }
+function renderSellerChat(){
+  if(view!=='chat' || !Chat.be) return;
+  const ok = Store.admin && Chat.be.isAdmin;
+  $('#chLogin').style.display = ok?'none':''; $('#chMain').style.display = ok?'':'none';
+  if(!ok){
+    $('#chLogin').innerHTML = !Store.admin ? '請先到「管理後台」登入。'
+      : `<h3 style="margin-top:0">登入聊天室</h3><p class="muted">為了只讓你看得到所有買家的聊天室，請用設定的站長 Google 帳號（<b>${esc(Store.chat&&Store.chat.fire&&Store.chat.fire.admin||'')}</b>）登入。</p>${Chat.be.user&&!Chat.be.user.isAnonymous?`<p class="muted">目前登入：${esc(Chat.be.user.email||'')}（不是站長信箱）</p>`:''}<button class="btn pri" id="chSignIn">用 Google 帳號登入</button>`;
+    if($('#chSignIn')) $('#chSignIn').onclick=()=>Chat.be.adminSignIn();
+    return;
+  }
+  $('#chWho').innerHTML = Chat.be.adminSignIn ? `${esc(Chat.be.user&&Chat.be.user.email||'')} · <a href="#" id="chOut">登出聊天室</a>` : '';
+  if($('#chOut')) $('#chOut').onclick=e=>{ e.preventDefault(); Chat.be.signOut(); };
+  const all=Chat.be.rooms(true), cnt={open:0,deal:0,closed:0};
+  for(const r of all) cnt[r.status||'open']++;
+  $('#chF').innerHTML = [['open','進行中'],['deal','已成交'],['closed','已結束'],['all','全部']]
+    .map(([k,t])=>`<span class="chip ${SC.f===k?'on':''}" data-chf="${k}">${t} ${k==='all'?all.length:cnt[k]}</span>`).join('');
+  $('#chF').querySelectorAll('[data-chf]').forEach(el=>el.onclick=()=>{ SC.f=el.dataset.chf; renderSellerChat(); });
+  const q=norm(SC.q).toLowerCase();
+  const list=all.filter(r=>(SC.f==='all'||(r.status||'open')===SC.f) && (!q || [r.item&&r.item.name, r.buyer&&r.buyer.name, r.listingId, r.last].join(' ').toLowerCase().includes(q)));
+  $('#chList').innerHTML = list.length ? list.map(r=>`<div class="crow ${SC.room===r.id?'on':''}" data-room="${r.id}">
+      <div class="cr1"><b class="q-${esc(r.item&&r.item.quality||'normal')}">${esc(r.item&&r.item.name||'')}</b>${roomTag(r)}<span class="sp"></span><i>${fmtClock(r.updatedAt)}</i></div>
+      <div class="cr2"><span>👤 ${esc(r.buyer&&r.buyer.name||'')}　${r.lastFrom==='seller'?'你：':''}${esc(String(r.last||'').split('\n')[0])}</span>${r.unreadSeller?`<b class="cbadge">${r.unreadSeller}</b>`:''}</div></div>`).join('')
+    : `<div class="muted" style="padding:24px;text-align:center">${all.length?'沒有符合的聊天室':'還沒有買家詢問'}</div>`;
+  $('#chList').querySelectorAll('[data-room]').forEach(el=>el.onclick=()=>{ SC.room=el.dataset.room; $('#chMain').classList.add('inroom'); renderSellerChat(); });
+  const r = SC.room && Chat.be.room(SC.room);
+  $('#chRoom').classList.toggle('empty', !r);
+  if(!r){ $('#chHead').innerHTML='<div class="muted" style="padding:40px;text-align:center">← 從左邊選一個聊天室</div>'; $('#chMsgs').innerHTML=''; $('#chFoot').innerHTML=''; $('#chFoot').dataset.room=''; $('#chMsgs').dataset.room=''; return; }
+  const l=Store.listings.find(x=>x.id===r.listingId), b=r.buyer||{}, it=r.item||{};
+  const lst = !l ? '<span class="rtag st-closed">物品已刪除</span>' : ({active:'<span class="rtag st-open">販售中</span>', sold:'<span class="rtag st-deal">已售出</span>', cancelled:'<span class="rtag st-closed">已下架</span>'}[status(l)]||'');
+  $('#chHead').innerHTML = `<div class="chh">
+    <button class="btn sm chback" id="chBack">← 列表</button>
+    <div class="chh1"><b class="q-${esc(it.quality||'normal')} ${l?'lnk':''}" id="chItem">${esc(it.name||'')}</b> ${lst} <span class="price">${esc(it.price||'')}</span> <span class="muted">#${esc(r.listingId||'')}</span></div>
+    <div class="chh2">👤 <b>${esc(b.name||'')}</b>　🕒 希望交易時間：<b>${esc(b.time||'未填')}</b>${b.contact?`　📇 ${esc(b.contact)}`:''}　<span class="muted">詢問於 ${fmtClock(r.createdAt)}</span></div>
+    <div class="chh3">${roomTag(r)}<span class="sp"></span>
+      ${r.status!=='deal'?'<button class="btn sm" data-st="deal">✔ 標記已成交</button>':''}
+      ${r.status!=='closed'?'<button class="btn sm" data-st="closed">結束聊天室</button>':'<button class="btn sm" data-st="open">重新開啟</button>'}
+      ${l&&status(l)==='active'?'<button class="btn sm pri" id="chSold">標記物品已售出</button>':''}
+      ${window.CHAT_DEMO?'<button class="btn sm demo-sim" id="chSim">🧪 模擬買家回覆</button>':''}
+      <button class="btn sm danger" id="chDel" title="刪除這個聊天室">🗑</button></div></div>`;
+  $('#chBack').onclick=()=>{ $('#chMain').classList.remove('inroom'); SC.room=null; renderSellerChat(); };
+  if(l) $('#chItem').onclick=()=>openDetail(l.id);
+  $('#chHead').querySelectorAll('[data-st]').forEach(el=>el.onclick=()=>Chat.be.setStatus(r.id, el.dataset.st));
+  if($('#chSold')) $('#chSold').onclick=()=>openSold(l);
+  if($('#chSim')) $('#chSim').onclick=()=>Chat.be.send(r.id,'buyer','（模擬）好的，那今晚 9 點遊戲裡見！');
+  $('#chDel').onclick=async()=>{ if(!await askConfirm(`刪除與「${b.name||'買家'}」關於「${it.name||''}」的聊天室？買家那邊也會一起消失。`)) return; Chat.be.remove(r.id); SC.room=null; $('#chMain').classList.remove('inroom'); };
+  fillMsgs($('#chMsgs'), r.id, 'seller');
+  const foot=$('#chFoot');
+  if(foot.dataset.room!==r.id){
+    foot.dataset.room=r.id;
+    foot.innerHTML=`<div class="qr" id="chQuick">${['你好，這件還在喔！','可以，就約這個時間','請問你的角色名稱？','已上線，請開遊戲找我','抱歉，這件已經售出了'].map(t=>`<button class="chip">${t}</button>`).join('')}</div><div class="ccomp"><textarea id="chIn" rows="2" placeholder="回覆買家，Enter 送出（Shift+Enter 換行）"></textarea><button class="btn pri" id="chSend">送出</button></div>`;
+    wireComposer($('#chIn'), $('#chSend'), t=>Chat.be.send(r.id,'seller',t));
+    $('#chQuick').querySelectorAll('button').forEach(bt=>bt.onclick=()=>{ const ta=$('#chIn'); ta.value = ta.value ? ta.value+' '+bt.textContent : bt.textContent; ta.focus(); });
+  }
+  if(r.unreadSeller) Chat.be.read(r.id,'seller');
+}
+function chatNotifyBtn(){
+  const b=$('#chNotify'); if(!b) return;
+  const p = typeof Notification==='undefined' ? 'na' : Notification.permission;
+  b.textContent = p==='granted' ? '🔔 桌面通知已開啟' : p==='denied' ? '🔕 通知被瀏覽器封鎖' : p==='na' ? '🔕 此瀏覽器不支援通知' : '🔔 開啟桌面通知';
+  b.disabled = p!=='default';
+}
+
+/* ---------- change handling: badges, sound, desktop notification ---------- */
+let chatSeen = null;   // per-side unread totals last time we looked
+Chat.on(()=>{
+  const buyer = Chat.be.rooms(false).reduce((a,r)=>a+(r.unreadBuyer||0),0);
+  const seller = Store.admin ? sellerUnread() : 0;
+  if(chatSeen){
+    if(buyer>chatSeen.buyer && !(BC.open && BC.room && document.hasFocus())) chatBeep();
+    if(seller>chatSeen.seller){
+      chatBeep();
+      if(document.hidden && typeof Notification!=='undefined' && Notification.permission==='granted'){
+        const r=Chat.be.rooms(true).find(x=>x.unreadSeller);
+        try{ const n=new Notification('D2R 拍賣所：新訊息', {body: r ? `${r.buyer&&r.buyer.name||'買家'}（${r.item&&r.item.name||''}）：${String(r.last||'').slice(0,60)}` : '有買家傳訊息給你', tag:'d2r-chat'}); n.onclick=()=>{ window.focus(); if(r){ SC.room=r.id; } location.hash='chat'; }; }catch(e){}
+      }
+    }
+  }
+  chatSeen={buyer, seller};
+  renderBuyerChat(); renderSellerChat(); renderNavBadge();
+});
+function renderNavBadge(){
+  const b=document.querySelector('[data-nav="chat"]'); if(!b) return;
+  const n=sellerUnread(); b.innerHTML = '💬 聊天' + (n?`<span class="cbadge">${n}</span>`:'');
+}
+// buyer pressed 「確認」 in the inquiry form
+async function startChatRoom(l, name, time, contact, note){
+  let id;
+  try{ id = await Chat.be.create({
+    listingId:l.id,
+    item:{name:l.name, base:l.base||'', quality:l.quality||'normal', price:fmtPzh(l.price)+(l.negotiable?'（可議）':''), lines:(l.lines||[]).slice(0,12)},
+    buyer:{name, time, contact},
+  }, {kind:'inquiry', text:`詢問：${l.name}`, data:{note}}); }
+  catch(e){ console.warn(e); toast('建立聊天室失敗：'+(e.message||e), true); return; }
+  closeOv('ovDetail');
+  buyerChatOpen(id);
+  toast('已建立聊天室，賣家上線後會在這裡回覆你');
+}
+$('#cdockBtn').onclick=()=>buyerChatOpen(null);
+$('#cpClose').onclick=()=>{ BC.open=false; renderBuyerChat(); };
+$('#cpBack').onclick=()=>{ BC.room=null; renderBuyerChat(); };
+$('#chQ').oninput=e=>{ SC.q=e.target.value; renderSellerChat(); };
+$('#chNotify').onclick=async()=>{ try{ await Notification.requestPermission(); }catch(e){} chatNotifyBtn(); };
+
+/* ---------- Firebase backend for the chat rooms (real site) ---------- */
+// Same read API as LocalChat (rooms / room / msgs are synchronous reads of a live cache),
+// writes go to Cloud Firestore. Buyers sign in anonymously, the seller with Google.
+const FB_VER = '13.4.0';
+const FireChat = {
+  user:null, isAdmin:false, cfg:null, _cb:null,
+  _mine:new Map(), _all:new Map(), _msgs:new Map(), _msgSubs:new Map(), _unsubs:[],
+  async init(cfg){
+    this.cfg = cfg;
+    const base = window.__FB_BASE || `https://www.gstatic.com/firebasejs/${FB_VER}/`;
+    const [A, Au, F] = await Promise.all(['firebase-app.js','firebase-auth.js','firebase-firestore.js'].map(f=>import(base+f)));
+    this.Au=Au; this.F=F;
+    this.app = A.initializeApp({apiKey:cfg.apiKey, authDomain:cfg.authDomain, projectId:cfg.projectId, appId:cfg.appId}, 'd2r-chat');
+    this.auth = Au.getAuth(this.app); this.db = F.getFirestore(this.app);
+    await new Promise(res=>{ let first=true; Au.onAuthStateChanged(this.auth, u=>{ this.setUser(u); if(first){ first=false; res(); } }); });
+  },
+  listen(cb){ this._cb=cb; },
+  changed(){ this._cb && this._cb(); },
+  conv(d){
+    const x = d.data({serverTimestamps:'estimate'}), ms = v => v && v.toMillis ? v.toMillis() : (typeof v==='number'?v:Date.now());
+    return Object.assign({}, x, {id:d.id, createdAt:ms(x.createdAt), updatedAt:ms(x.updatedAt), at:ms(x.at)});
+  },
+  setUser(u){
+    const F=this.F;
+    this._unsubs.forEach(f=>f()); this._unsubs=[];
+    for(const f of this._msgSubs.values()) f();
+    this._msgSubs.clear(); this._msgs.clear(); this._mine.clear(); this._all.clear();
+    this.user=u;
+    this.isAdmin = !!(u && !u.isAnonymous && u.email && this.cfg.admin && u.email.toLowerCase()===this.cfg.admin.toLowerCase());
+    const rooms = F.collection(this.db, 'rooms');
+    if(u) this._unsubs.push(F.onSnapshot(F.query(rooms, F.where('buyerUid','==',u.uid)),
+      s=>{ this._mine = new Map(s.docs.map(d=>[d.id, this.conv(d)])); this.changed(); }, e=>console.warn('chat (mine)', e)));
+    if(this.isAdmin) this._unsubs.push(F.onSnapshot(F.query(rooms, F.orderBy('updatedAt','desc'), F.limit(300)),
+      s=>{ this._all = new Map(s.docs.map(d=>[d.id, this.conv(d)])); this.changed(); }, e=>{ console.warn('chat (all)', e); toast('讀不到聊天室：請確認 Firestore 安全規則已更新', true); }));
+    this.changed();
+  },
+  uid(){ return this.user && this.user.uid; },
+  rooms(all){ return [...(all?this._all:this._mine).values()].sort((a,b)=>b.updatedAt-a.updatedAt); },
+  room(id){ return this._all.get(id) || this._mine.get(id) || null; },
+  // messages are only streamed for the rooms someone is looking at (at most 4 at a time)
+  msgs(id){
+    if(!this._msgSubs.has(id)){
+      if(this._msgSubs.size>=4){ const [k,f]=this._msgSubs.entries().next().value; f(); this._msgSubs.delete(k); this._msgs.delete(k); }
+      const F=this.F;
+      this._msgSubs.set(id, F.onSnapshot(F.query(F.collection(this.db,'rooms',id,'msgs'), F.orderBy('at')),
+        s=>{ this._msgs.set(id, s.docs.map(d=>this.conv(d))); this.changed(); }, e=>console.warn('chat (msgs)', e)));
+    }
+    return this._msgs.get(id) || [];
+  },
+  async ensureUser(){ if(!this.user){ await this.Au.signInAnonymously(this.auth); } return this.user; },
+  async create(room, first){
+    const F=this.F, u=await this.ensureUser(), ts=F.serverTimestamp();
+    const ref = F.doc(F.collection(this.db,'rooms'));
+    const b = F.writeBatch(this.db);
+    b.set(ref, Object.assign({}, room, {buyerUid:u.uid, status:'open', createdAt:ts, updatedAt:ts, unreadSeller:1, unreadBuyer:0, last:String(first.text).slice(0,200), lastFrom:'buyer'}));
+    b.set(F.doc(F.collection(this.db,'rooms',ref.id,'msgs')), Object.assign({}, first, {from:'buyer', at:ts}));
+    await b.commit();
+    return ref.id;
+  },
+  async send(id, from, text){
+    const F=this.F, ts=F.serverTimestamp(), ref=F.doc(this.db,'rooms',id), b=F.writeBatch(this.db);
+    b.set(F.doc(F.collection(this.db,'rooms',id,'msgs')), {from, text, at:ts});
+    b.update(ref, {updatedAt:ts, last:text.slice(0,200), lastFrom:from, [from==='buyer'?'unreadSeller':'unreadBuyer']:F.increment(1)});
+    try{ await b.commit(); }catch(e){ console.warn(e); toast('訊息沒送出：'+(/permission/i.test(e.code||e.message)?'這個聊天室已結束或沒有權限':(e.message||e)), true); }
+  },
+  async read(id, who){
+    const r=this.room(id), k=who==='seller'?'unreadSeller':'unreadBuyer'; if(!r||!r[k]) return;
+    r[k]=0;   // optimistic, avoids repeated writes while the snapshot catches up
+    try{ await this.F.updateDoc(this.F.doc(this.db,'rooms',id), {[k]:0}); }catch(e){ console.warn(e); }
+  },
+  async setStatus(id, st){
+    const F=this.F, ts=F.serverTimestamp(), b=F.writeBatch(this.db);
+    const text = {deal:'賣家把這筆交易標記為「已成交」，感謝購買！', closed:'賣家已結束這個聊天室', open:'賣家重新開啟了這個聊天室'}[st];
+    b.update(F.doc(this.db,'rooms',id), {status:st, updatedAt:ts, unreadBuyer:F.increment(1)});
+    b.set(F.doc(F.collection(this.db,'rooms',id,'msgs')), {from:'sys', text, at:ts});
+    try{ await b.commit(); }catch(e){ toast('更新失敗：'+(e.message||e), true); }
+  },
+  async remove(id){
+    const F=this.F;
+    try{
+      const s = await F.getDocs(F.collection(this.db,'rooms',id,'msgs'));
+      const b = F.writeBatch(this.db); s.docs.forEach(d=>b.delete(d.ref)); b.delete(F.doc(this.db,'rooms',id)); await b.commit();
+      toast('已刪除聊天室');
+    }catch(e){ toast('刪除失敗：'+(e.message||e), true); }
+  },
+  async adminSignIn(){
+    try{ await this.Au.signInWithPopup(this.auth, new this.Au.GoogleAuthProvider()); }
+    catch(e){ toast('登入失敗：'+(/unauthorized-domain/.test(e.code)?'請在 Firebase 的 Authentication → 設定 → 已授權網域 加入你的網站網址':(e.code||e.message||e)), true); return; }
+    if(!this.isAdmin) toast(`這個 Google 帳號（${this.user&&this.user.email}）不是設定的站長信箱`, true);
+  },
+  async signOut(){ try{ await this.Au.signOut(this.auth); }catch(e){} },
+};
+LocalChat.isAdmin = true;
+
+// firebaseConfig pasted from the Firebase console (JS object or JSON)
+function parseFireCfg(text){
+  const s=String(text||''), g=k=>{ const m=s.match(new RegExp('["\']?'+k+'["\']?\\s*:\\s*["\']([^"\']+)["\']')); return m?m[1].trim():''; };
+  const c={apiKey:g('apiKey'), authDomain:g('authDomain'), projectId:g('projectId'), appId:g('appId')};
+  return (c.apiKey && c.projectId && c.appId) ? Object.assign(c, {authDomain:c.authDomain||c.projectId+'.firebaseapp.com'}) : null;
+}
+function fireRules(email){
+  return `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() && request.auth.token.email == '${String(email||'').toLowerCase().replace(/'/g,'')}'
+        && request.auth.token.email_verified == true;
+    }
+    match /rooms/{roomId} {
+      allow read: if isAdmin() || (signedIn() && resource.data.buyerUid == request.auth.uid);
+      allow create: if signedIn()
+        && request.resource.data.buyerUid == request.auth.uid
+        && request.resource.data.keys().hasOnly(['buyerUid','listingId','item','buyer','status','createdAt','updatedAt','unreadSeller','unreadBuyer','last','lastFrom'])
+        && request.resource.data.status == 'open'
+        && request.resource.data.unreadSeller == 1 && request.resource.data.unreadBuyer == 0
+        && request.resource.data.createdAt == request.time && request.resource.data.updatedAt == request.time
+        && request.resource.data.listingId is string && request.resource.data.listingId.size() <= 40
+        && request.resource.data.buyer.name is string && request.resource.data.buyer.name.size() <= 40
+        && request.resource.data.last is string && request.resource.data.last.size() <= 200;
+      allow update: if isAdmin() || (signedIn() && resource.data.buyerUid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['unreadSeller','unreadBuyer','updatedAt','last','lastFrom'])
+        && request.resource.data.unreadSeller <= resource.data.unreadSeller + 1
+        && request.resource.data.unreadBuyer in [0, resource.data.unreadBuyer]
+        && request.resource.data.last is string && request.resource.data.last.size() <= 200);
+      allow delete: if isAdmin();
+
+      match /msgs/{msgId} {
+        function room() { return getAfter(/databases/$(database)/documents/rooms/$(roomId)).data; }
+        allow read: if isAdmin() || (signedIn() && get(/databases/$(database)/documents/rooms/$(roomId)).data.buyerUid == request.auth.uid);
+        allow create: if request.resource.data.at == request.time
+          && request.resource.data.keys().hasOnly(['from','text','at','kind','data'])
+          && request.resource.data.text is string && request.resource.data.text.size() <= 1000
+          && (!('data' in request.resource.data) || (request.resource.data.data.note is string && request.resource.data.data.note.size() <= 500))
+          && ((isAdmin() && request.resource.data.from in ['seller','sys'])
+            || (signedIn() && room().buyerUid == request.auth.uid && room().status != 'closed'
+                && request.resource.data.from == 'buyer'));
+        allow delete: if isAdmin();
+      }
+    }
+  }
+}`;
+}
+let fireStarted=false;
+function loadFire(){
+  const c = Store.chat && Store.chat.fire;
+  if(fireStarted || Chat.be || !c) return;
+  fireStarted=true;
+  if(location.protocol==='file:'){ console.warn('Firebase chat needs the site to be served over https'); return; }
+  FireChat.init(c).then(()=>{ Chat.use(FireChat); render(); })
+    .catch(e=>{ console.warn('chat init', e); if(Store.admin) toast('聊天室連線失敗：'+(e.message||e), true); });
+}
+
 /* ================= admin ================= */
 // all items on sale as a plain text file (UTF-8 with BOM + CRLF so Windows Notepad shows it correctly)
 function exportListings(){
@@ -2582,6 +3070,7 @@ function sumRunes(list){
 }
 function renderAdmin(){
   if(typeof tawkInfo==='function' && document.activeElement!==$('#sTawk')) tawkInfo();
+  if(typeof fireInfo==='function') fireInfo();
   renderStyleSettings(); renderRuneSettings();
   if(document.activeElement!==$('#sAbout')) $('#sAbout').value = Store.about || ABOUT_DEFAULT;
   $('#adminSetup').style.display = Store.admin ? 'none':'';
@@ -2724,11 +3213,36 @@ $('#sStyles').addEventListener('click', async e=>{
   const m={...(Store.styleImgs||{})}; delete m[id]; Store.styleImgs=m;
   try{ await Store.commit('Reset style picture '+id); if(old) Store.delImage(old); toast('已還原預設圖'); render(); renderStyleSettings(); }catch(err){ toast('儲存失敗：'+(err.message||err), true); }
 });
+function fireInfo(){
+  const f=Store.chat&&Store.chat.fire;
+  if(document.activeElement!==$('#sFire')) $('#sFire').value = f ? JSON.stringify({apiKey:f.apiKey, authDomain:f.authDomain, projectId:f.projectId, appId:f.appId}, null, 1) : '';
+  if(document.activeElement!==$('#sFireAdmin')) $('#sFireAdmin').value = f ? (f.admin||'') : '';
+  $('#sFireInfo').textContent = window.CHAT_DEMO ? '單機測試版的聊天室存在這個瀏覽器裡；這裡的設定要在正式網站才會連上 Firebase。'
+    : f ? `已開啟：專案 ${f.projectId}，站長 ${f.admin}。${Chat.be===FireChat?'已連線。':'重新整理後連線。'}改了站長信箱要重新「產生安全規則」貼到 Firebase。`
+    : '尚未設定。照 README 的「買家聊天室（Firebase）」步驟建立專案後，把 firebaseConfig 貼到這裡。';
+}
+$('#sFireSave').onclick = async()=>{
+  const raw=$('#sFire').value.trim(), email=$('#sFireAdmin').value.trim();
+  let f=null;
+  if(raw){ f=parseFireCfg(raw); if(!f){ toast('看不懂這段設定，請整段貼上 firebaseConfig（要有 apiKey、projectId、appId）', true); return; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast('請填寫站長的 Google 信箱', true); $('#sFireAdmin').focus(); return; }
+    f.admin=email.toLowerCase(); }
+  const t=Store.chat&&Store.chat.tawk;
+  Store.chat = (t||f) ? Object.assign({}, t?{tawk:t}:{}, f?{fire:f}:{}) : null;
+  try{ await Store.commit(f?'Enable chat rooms':'Disable chat rooms'); toast(f?'已儲存，重新整理後生效':'已關閉網站聊天室'); }catch(e){ toast('儲存失敗：'+(e.message||e), true); }
+  fireInfo();
+};
+$('#sFireRules').onclick = ()=>{
+  const email=$('#sFireAdmin').value.trim();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast('先填站長的 Google 信箱', true); $('#sFireAdmin').focus(); return; }
+  const o=$('#sFireRulesOut'); o.value=fireRules(email); o.style.display='';
+  copy(o.value, '安全規則已複製，貼到 Firebase → Firestore → 規則，再按「發布」');
+};
 function tawkInfo(){ const t=Store.chat&&Store.chat.tawk; $('#sTawk').value = t ? 'https://tawk.to/chat/'+t : ''; $('#sTawkInfo').textContent = t ? '已開啟：拍賣所右下角會出現聊天視窗，物品詳細頁有「💬 詢問這件」。用 tawk.to 的手機 app 回覆買家。' : '尚未設定。到 tawk.to 免費註冊 → 管理後台 Administration → Chat Widget，複製 Direct Chat Link 貼到這裡。'; }
 $('#sTawkSave').onclick = async()=>{
   const v=$('#sTawk').value.trim(), t=parseTawk(v);
   if(v && !t){ toast('看不懂這個連結，請貼 tawk.to 的 Direct Chat Link 或嵌入程式碼', true); return; }
-  Store.chat = t ? {tawk:t} : null;
+  { const f=Store.chat&&Store.chat.fire; Store.chat = (t||f) ? Object.assign({}, t?{tawk:t}:{}, f?{fire:f}:{}) : null; }
   try{ await Store.commit(t?'Enable buyer chat':'Disable buyer chat'); toast(t?'已開啟買家聊天，重新整理後生效':'已關閉買家聊天'); }catch(e){ toast('儲存失敗：'+(e.message||e), true); }
   tawkInfo();
 };
