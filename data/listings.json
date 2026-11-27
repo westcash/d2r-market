@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795788089466,
+ "updatedAt": 1795823544083,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -59,6 +59,8 @@
   "33": 1.5
  },
  "about": "",
+ "seller": "",
+ "sellerAvatar": "images/avatar-mwzmyxl9.jpg",
  "listings": [
   {
    "id": "mwwai2yscdcex",
