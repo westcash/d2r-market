@@ -385,6 +385,13 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
   .chats .chroom{display:none}.chats.inroom .chlistp{display:none}.chats.inroom .chroom{display:flex}
   .chback{display:inline-block}
 }
+.selltag{font-size:10px;margin-left:5px;padding:0 4px;border:1px solid var(--gold);color:var(--gold2);border-radius:2px}
+.cm{gap:7px;align-items:flex-start}.cm.me{flex-direction:row-reverse;justify-content:flex-start}.cm.sys{align-items:center}
+.cav{flex:0 0 32px;width:32px;height:32px;border-radius:50%;object-fit:cover;display:inline-flex;align-items:center;justify-content:center;background:#2b2520;color:var(--text);font-size:14px;border:1px solid var(--line2);margin-top:16px}
+.cav-s{background:linear-gradient(#6b4a1c,#3e2a0f);color:#f5e2b3;border-color:var(--gold)}
+img.cav{border-color:var(--gold)}
+.cavbig .cav{width:56px;height:56px;flex-basis:56px;font-size:24px;margin:0}
+.cavsm .cav{width:20px;height:20px;flex-basis:20px;font-size:11px;margin:0 5px 0 0;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -502,6 +509,12 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
             <div class="row" style="gap:6px;margin-top:6px"><input type="text" id="sFireAdmin" placeholder="站長的 Google 信箱（例如 you@gmail.com）" autocomplete="off"><button class="btn sm pri" id="sFireSave" style="flex:0 0 auto">儲存</button><button class="btn sm" id="sFireRules" style="flex:0 0 auto">產生安全規則</button></div>
             <div class="muted" id="sFireInfo" style="font-size:12px;margin-top:3px"></div>
             <textarea id="sFireRulesOut" rows="10" readonly style="width:100%;display:none;margin-top:6px;font-family:monospace;font-size:12px"></textarea></div>
+          <div class="fld"><label>聊天室顯示的賣家名稱（買家看到你回覆時顯示的名字，留空 = 「賣家」）</label>
+            <div class="row" style="gap:6px"><input type="text" id="sSeller" maxlength="20" placeholder="例如：拍賣所站長"><button class="btn sm pri" id="sSellerSave" style="flex:0 0 auto">儲存</button></div>
+            <div class="row" style="gap:10px;margin-top:8px;justify-content:flex-start"><span id="sAvatarPrev" style="flex:0 0 auto"></span>
+              <label class="btn sm" style="flex:0 0 auto">上傳頭像<input type="file" id="sAvatar" accept="image/*" hidden></label>
+              <button class="btn sm" id="sAvatarDel" style="flex:0 0 auto">移除頭像</button>
+              <span class="muted" style="font-size:12px">會自動裁成正方形，建議用臉或角色在中間的圖</span></div></div>
           <div class="fld"><label>預設聯絡方式（新增物品時自動帶入）</label><input type="text" id="sContact" placeholder="例如 Player#1234"></div>
           <div class="row" style="margin-top:6px;justify-content:space-between;flex-wrap:wrap;gap:8px">
             <span class="muted" id="sRepo" style="flex:1"></span>
@@ -1898,7 +1911,7 @@ const Store = {
     const job = this.q.then(async()=>{
       setSync('儲存中…');
       const used = new Set(this.listings.flatMap(lcats));
-      const body = JSON.stringify({version:2, updatedAt:Date.now(), categories:customCats.filter(c=>used.has(c.id)), rangeFix:this.rangeFix, labelFix:this.labelFix, chat:this.chat||null, styleImgs:this.styleImgs||{}, runeValues:this.runeValues||{}, about:this.about||'', listings:this.listings}, null, 1);
+      const body = JSON.stringify({version:2, updatedAt:Date.now(), categories:customCats.filter(c=>used.has(c.id)), rangeFix:this.rangeFix, labelFix:this.labelFix, chat:this.chat||null, styleImgs:this.styleImgs||{}, runeValues:this.runeValues||{}, about:this.about||'', seller:this.seller||'', sellerAvatar:this.sellerAvatar||'', listings:this.listings}, null, 1);
       for(let attempt=0; attempt<2; attempt++){
         const r = await this.api(DATA_PATH, {method:'PUT', body:{message:msg, content:b64encUtf8(body), branch:GH.branch, ...(this.sha?{sha:this.sha}:{})}});
         if(r.ok){ const j=await r.json(); this.sha=j.content.sha; setSync('已儲存 · 網站約 1 分鐘後更新'); setTimeout(()=>setSync(''),6000); return; }
@@ -1938,6 +1951,8 @@ function parseData(text){
     Store.styleImgs = (j && j.styleImgs && typeof j.styleImgs==='object') ? Object.fromEntries(Object.entries(j.styleImgs).filter(([k,v])=>STYLE_BY_ID[k] && typeof v==='string' && /^(images\/|data:image\/)/.test(v))) : {};
     Store.runeValues = {}; if(j && j.runeValues && typeof j.runeValues==='object') for(const [k,v] of Object.entries(j.runeValues)){ const n=+k; if(n>=1 && n<=33 && typeof v==='number' && isFinite(v) && v>=0) Store.runeValues[n]=v; }
     Store.about = (j && typeof j.about==='string') ? j.about.slice(0,8000) : '';
+    Store.seller = (j && typeof j.seller==='string') ? j.seller.trim().slice(0,20) : '';
+    Store.sellerAvatar = (j && typeof j.sellerAvatar==='string' && /^(images\/|data:image\/)/.test(j.sellerAvatar)) ? j.sellerAvatar : '';
     { const c=(j&&j.chat&&typeof j.chat==='object')?j.chat:{}, t=parseTawk(c.tawk), f=c.fire&&typeof c.fire==='object'?parseFireCfg(JSON.stringify(c.fire)):null;
       if(f && typeof c.fire.admin==='string') f.admin=c.fire.admin.trim().slice(0,120);
       Store.chat = (t||f) ? Object.assign({}, t?{tawk:t}:{}, f?{fire:f}:{}) : null; }
@@ -2683,6 +2698,13 @@ const LocalChat = {
   remove(id){ const d=this.db(); delete d.rooms[id]; delete d.msgs[id]; this.save(d); },
 };
 
+const sellerName = () => Store.seller || '賣家';
+// round avatar: the seller's uploaded picture, otherwise the first character of the name
+function avatarHTML(from, r){
+  if(from==='seller' && Store.sellerAvatar) return `<img class="cav" src="${esc(imgSrc(Store.sellerAvatar))}" alt="">`;
+  const name = from==='seller' ? sellerName() : (r.buyer&&r.buyer.name||'買家');
+  return `<span class="cav ${from==='seller'?'cav-s':''}">${esc([...name][0]||'?')}</span>`;
+}
 const ROOM_ST = {open:['進行中','st-open'], deal:['已成交','st-deal'], closed:['已結束','st-closed']};
 const roomTag = r => { const [t,c]=ROOM_ST[r.status]||ROOM_ST.open; return `<span class="rtag ${c}">${t}</span>`; };
 function fmtClock(t){
@@ -2695,10 +2717,10 @@ function fmtClock(t){
 function msgHTML(m, me, r){
   if(m.from==='sys') return `<div class="cm sys"><span>${esc(m.text)}</span><i>${fmtClock(m.at)}</i></div>`;
   const mine = m.from===me;
-  const who = m.from==='seller' ? '賣家' : esc(r.buyer&&r.buyer.name||'買家');
+  const who = m.from==='seller' ? `${esc(sellerName())}<span class="selltag">賣家</span>` : esc(r.buyer&&r.buyer.name||'買家');
   if(m.kind==='inquiry'){
     const it=r.item||{}, b=r.buyer||{}, note=(m.data&&m.data.note)||'';
-    return `<div class="cm ${mine?'me':''}"><div class="cw"><div class="cwho">${who}</div><div class="cinq">
+    return `<div class="cm ${mine?'me':''}">${avatarHTML(m.from, r)}<div class="cw"><div class="cwho">${who}</div><div class="cinq">
       <div class="ci-h">💬 詢問這件</div>
       <div class="ci-n q-${esc(it.quality||'normal')}">${esc(it.name||'')}${it.base&&it.base!==it.name?`<span class="muted">（${esc(it.base)}）</span>`:''}</div>
       ${(it.lines||[]).length?`<div class="ci-l">${(it.lines||[]).map(x=>`<div>${esc(x)}</div>`).join('')}</div>`:''}
@@ -2706,7 +2728,7 @@ function msgHTML(m, me, r){
       ${note?`<div class="ci-note">${esc(note)}</div>`:''}
     </div><i>${fmtClock(m.at)}</i></div></div>`;
   }
-  return `<div class="cm ${mine?'me':''}"><div class="cw"><div class="cwho">${who}</div><div class="cb">${esc(m.text)}</div><i>${fmtClock(m.at)}</i></div></div>`;
+  return `<div class="cm ${mine?'me':''}">${avatarHTML(m.from, r)}<div class="cw"><div class="cwho">${who}</div><div class="cb">${esc(m.text)}</div><i>${fmtClock(m.at)}</i></div></div>`;
 }
 function fillMsgs(box, id, me){
   const r=Chat.be.room(id); if(!r) return;
@@ -2753,7 +2775,7 @@ function renderBuyerChat(){
     $('#cpBody').dataset.room='';
     $('#cpBody').innerHTML = rooms.length ? rooms.map(x=>`<div class="crow" data-room="${x.id}">
         <div class="cr1"><b class="q-${esc(x.item&&x.item.quality||'normal')}">${esc(x.item&&x.item.name||'')}</b>${roomTag(x)}<span class="sp"></span><i>${fmtClock(x.updatedAt)}</i></div>
-        <div class="cr2"><span>${x.lastFrom==='seller'?'賣家：':x.lastFrom==='buyer'?'你：':''}${esc(String(x.last||'').split('\n')[0])}</span>${x.unreadBuyer?`<b class="cbadge">${x.unreadBuyer}</b>`:''}</div></div>`).join('')
+        <div class="cr2"><span>${x.lastFrom==='seller'?esc(sellerName())+'：':x.lastFrom==='buyer'?'你：':''}${esc(String(x.last||'').split('\n')[0])}</span>${x.unreadBuyer?`<b class="cbadge">${x.unreadBuyer}</b>`:''}</div></div>`).join('')
       : '<div class="muted" style="padding:24px;text-align:center">還沒有詢問紀錄。<br>在物品頁按「💬 詢問這件」就會開一個聊天室。</div>';
     $('#cpBody').querySelectorAll('[data-room]').forEach(el=>el.onclick=()=>buyerChatOpen(el.dataset.room));
     return;
@@ -2789,7 +2811,8 @@ function renderSellerChat(){
     if($('#chSignIn')) $('#chSignIn').onclick=()=>Chat.be.adminSignIn();
     return;
   }
-  $('#chWho').innerHTML = Chat.be.adminSignIn ? `${esc(Chat.be.user&&Chat.be.user.email||'')} · <a href="#" id="chOut">登出聊天室</a>` : '';
+  $('#chWho').innerHTML = `<span class="cavsm">${avatarHTML('seller',{})}</span>買家看到的名字：<b>${esc(sellerName())}</b> · <a href="#" id="chRename">修改名稱 / 頭像</a>` + (Chat.be.adminSignIn ? `<br>${esc(Chat.be.user&&Chat.be.user.email||'')} · <a href="#" id="chOut">登出聊天室</a>` : '');
+  $('#chRename').onclick=e=>{ e.preventDefault(); location.hash='admin'; setTimeout(()=>{ const d=document.querySelector('details.cfg'); if(d) d.open=true; $('#sSeller').scrollIntoView({block:'center'}); }, 80); };
   if($('#chOut')) $('#chOut').onclick=e=>{ e.preventDefault(); Chat.be.signOut(); };
   const all=Chat.be.rooms(true), cnt={open:0,deal:0,closed:0};
   for(const r of all) cnt[r.status||'open']++;
@@ -3071,6 +3094,8 @@ function sumRunes(list){
 function renderAdmin(){
   if(typeof tawkInfo==='function' && document.activeElement!==$('#sTawk')) tawkInfo();
   if(typeof fireInfo==='function') fireInfo();
+  if(document.activeElement!==$('#sSeller')) $('#sSeller').value = Store.seller || '';
+  avatarPrev();
   renderStyleSettings(); renderRuneSettings();
   if(document.activeElement!==$('#sAbout')) $('#sAbout').value = Store.about || ABOUT_DEFAULT;
   $('#adminSetup').style.display = Store.admin ? 'none':'';
@@ -3237,6 +3262,41 @@ $('#sFireRules').onclick = ()=>{
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast('先填站長的 Google 信箱', true); $('#sFireAdmin').focus(); return; }
   const o=$('#sFireRulesOut'); o.value=fireRules(email); o.style.display='';
   copy(o.value, '安全規則已複製，貼到 Firebase → Firestore → 規則，再按「發布」');
+};
+function avatarPrev(){
+  $('#sAvatarPrev').innerHTML = `<span class="cavbig">${avatarHTML('seller', {})}</span>`;
+  $('#sAvatarDel').style.display = Store.sellerAvatar ? '' : 'none';
+}
+// center-crop to a 192px square
+function squareAvatar(file){
+  return new Promise((ok, no)=>{
+    const r=new FileReader(); r.onerror=no;
+    r.onload=()=>{ const im=new Image(); im.onerror=()=>no(new Error('讀不到這張圖片'));
+      im.onload=()=>{ const S=192, m=Math.min(im.naturalWidth, im.naturalHeight), c=document.createElement('canvas'); c.width=c.height=S;
+        const g=c.getContext('2d'); g.fillStyle='#14110e'; g.fillRect(0,0,S,S);
+        g.drawImage(im, (im.naturalWidth-m)/2, (im.naturalHeight-m)/2, m, m, 0, 0, S, S); ok(c.toDataURL('image/jpeg', 0.88)); };
+      im.src=r.result; };
+    r.readAsDataURL(file);
+  });
+}
+$('#sAvatar').onchange = async e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f) return;
+  if(f.size>8e6){ toast('圖片太大，請小於 8MB', true); return; }
+  try{
+    const url=await squareAvatar(f), old=Store.sellerAvatar;
+    const path=await Store.putImage('avatar-'+Date.now().toString(36), url);
+    Store.sellerAvatar=path; await Store.commit('Update seller avatar');
+    if(old && old!==path) Store.delImage(old);
+    toast('已更換頭像'); avatarPrev(); render();
+  }catch(err){ toast('上傳失敗：'+(err.message||err), true); }
+};
+$('#sAvatarDel').onclick = async()=>{
+  const old=Store.sellerAvatar; Store.sellerAvatar='';
+  try{ await Store.commit('Remove seller avatar'); if(old) Store.delImage(old); toast('已移除頭像'); avatarPrev(); render(); }catch(err){ toast('儲存失敗：'+(err.message||err), true); }
+};
+$('#sSellerSave').onclick = async()=>{
+  Store.seller = $('#sSeller').value.trim().slice(0,20);
+  try{ await Store.commit('Set seller name'); toast(Store.seller?`已儲存，買家會看到「${Store.seller}」`:'已改回顯示「賣家」'); render(); }catch(e){ toast('儲存失敗：'+(e.message||e), true); }
 };
 function tawkInfo(){ const t=Store.chat&&Store.chat.tawk; $('#sTawk').value = t ? 'https://tawk.to/chat/'+t : ''; $('#sTawkInfo').textContent = t ? '已開啟：拍賣所右下角會出現聊天視窗，物品詳細頁有「💬 詢問這件」。用 tawk.to 的手機 app 回覆買家。' : '尚未設定。到 tawk.to 免費註冊 → 管理後台 Administration → Chat Widget，複製 Direct Chat Link 貼到這裡。'; }
 $('#sTawkSave').onclick = async()=>{
