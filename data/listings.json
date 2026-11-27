@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795823558065,
+ "updatedAt": 1795823581106,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -439,9 +439,37 @@
    "contact": "GoldenPika#3811",
    "note": "",
    "createdAt": 1795620098641,
-   "status": "active",
+   "status": "sold",
    "image": "images/mww9ufddaywlz.jpg",
-   "updatedAt": 1795620641952
+   "updatedAt": 1795620641952,
+   "qty": 0,
+   "sales": [
+    {
+     "at": 1795823581100,
+     "price": {
+      "type": "rune",
+      "runes": [
+       {
+        "n": 31,
+        "qty": 3
+       }
+      ],
+      "negotiable": false
+     },
+     "n": 1
+    }
+   ],
+   "soldAt": 1795823581100,
+   "finalPrice": {
+    "type": "rune",
+    "runes": [
+     {
+      "n": 31,
+      "qty": 3
+     }
+    ],
+    "negotiable": false
+   }
   },
   {
    "id": "mww9okwh2m93l",
