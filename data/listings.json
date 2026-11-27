@@ -1,6 +1,6 @@
 {
  "version": 2,
- "updatedAt": 1795707377065,
+ "updatedAt": 1795788089466,
  "categories": [
   {
    "id": "cmww9nm94",
@@ -14,7 +14,14 @@
  "rangeFix": {},
  "labelFix": {},
  "chat": {
-  "tawk": "6b06cfff2181993ca7c9b34a/1k899ovlu"
+  "tawk": "6b06cfff2181993ca7c9b34a/1k899ovlu",
+  "fire": {
+   "apiKey": "AIzaSyBhfJnZRZAram31sC2OKs0r5vxzGHJPqu0",
+   "authDomain": "d2r-salewebsite.firebaseapp.com",
+   "projectId": "d2r-salewebsite",
+   "appId": "1:971622129480:web:7e05174102af46e7199d7d",
+   "admin": "o78821@gmail.com"
+  }
  },
  "styleImgs": {},
  "runeValues": {
