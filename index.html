@@ -337,6 +337,7 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 .achip input{width:58px;padding:2px 5px;font-size:12.5px;height:24px}
 .achip .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:14px;padding:0 4px}
 .achip .x:hover{color:var(--red,#e55)}
+.askchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.askchips .chip{padding:3px 10px;border-radius:12px;border:1px solid var(--line,#444);background:transparent;color:inherit;cursor:pointer;font-size:12px}.askchips .chip:hover{border-color:var(--gold,#c8a24a)}
 </style>
 </head>
 <body>
@@ -649,6 +650,18 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
   </div>
 </div></div>
 
+<!-- Ask (buyer inquiry) -->
+<div class="ov" id="ovAsk"><div class="modal sm">
+  <div class="mh"><h2>💬 詢問這件</h2><button class="x" data-close>✕</button></div>
+  <div class="mb">
+    <div class="fld"><label>您的名稱（遊戲角色名或暱稱）<span style="color:#e06060"> *</span></label><input type="text" id="askName" maxlength="40" placeholder="例如：MyPaladin"></div>
+    <div class="fld"><label>希望能交易的時間</label><input type="text" id="askTime" maxlength="60" placeholder="例如：今晚 9 點後、週六下午">
+      <div class="askchips" id="askChips"></div></div>
+    <div class="fld"><label>物品訊息（可補充想說的話）</label><textarea id="askItem" rows="6"></textarea></div>
+  </div>
+  <div class="mf"><button class="btn" data-close>取消</button><button class="btn pri" id="askOk">確認，傳送至聊天室</button></div>
+</div></div>
+
 <!-- Confirm -->
 <div class="ov" id="ovConfirm"><div class="modal sm">
   <div class="mh"><h2>請確認</h2></div>
@@ -746,9 +759,9 @@ function aboutHTML(t){
 }
 function showAbout(){ $('#aboutBody').innerHTML = aboutHTML(Store.about || ABOUT_DEFAULT); openOv('ovAbout'); }
 function showRunes(){
-  const rows = RUNES.slice().reverse().map(({n,zh})=>{ const v=runeWorth(n);
+  const rows = RUNES.slice().reverse().filter(({n})=>runeWorth(n)>0).map(({n,zh})=>{ const v=runeWorth(n);
     return `<tr class="${n===RUNE_BASE?'base':''}"><td>#${n}</td><td>${esc(zh)}</td><td class="num">${fmtWorth(v)}</td><td class="muted">${v>0&&n!==RUNE_BASE ? (v>=1 ? `1 個 = ${fmtWorth(v)} 個 ${esc(RUNES[RUNE_BASE-1].zh)}` : `約 ${fmtWorth(1/v)} 個 = 1 個 ${esc(RUNES[RUNE_BASE-1].zh)}`) : n===RUNE_BASE?'基準':''}</td></tr>`; }).join('');
-  $('#runesBody').innerHTML = `<p class="muted" style="margin-top:0">以 #${RUNE_BASE} ${esc(RUNES[RUNE_BASE-1].zh)} = 1 為基準的參考比值，由站長設定，僅供參考，實際交易可以再討論。拍賣所的「價格」排序也是依這個比值換算。</p>
+  $('#runesBody').innerHTML = `<p class="muted" style="margin-top:0">以 #${RUNE_BASE} ${esc(RUNES[RUNE_BASE-1].zh)} = 1 為基準的參考比值，由站長設定，僅供參考，實際交易可以再討論。拍賣所的「價格」排序也是依這個比值換算。<br>未列在表中的符文不具符文價值（換算時算 0）。</p>
     <table class="rtable runetab"><tr><th>編號</th><th>符文</th><th>比值</th><th>換算</th></tr>${rows}</table>`;
   openOv('ovRunes');
 }
@@ -2430,7 +2443,7 @@ function renderDetail(){
       <dl class="info">
         ${stockOf(l)>1||soldUnits(l)?`<dt>庫存</dt><dd>${st==='active'?stockOf(l)+' 件'+(stockOf(l)>1?(isLot(l)?'（整批出售，售價是全部的價格）':'（一件一件賣，售價是每件）'):''):'—'}${soldUnits(l)?` <span class="muted">（已賣出 ${soldUnits(l)} 件）</span>`:''}</dd>`:''}
         <dt>狀態</dt><dd>${{active:'販售中',sold:'已售出',cancelled:'已下架'}[st]}</dd>
-        <dt>${st==='sold'?'成交價':'售價'}</dt><dd class="price" style="font-size:14px">${esc(fmtPzh(st==='sold'&&l.finalPrice?l.finalPrice:l.price))}${l.negotiable&&st==='active'?' <span class="muted">可議價</span>':''}${(()=>{ const w=priceWorth(st==='sold'&&l.finalPrice?l.finalPrice:l.price); return w!=null&&w>0 ? ` <span class="muted" title="依「符文價值參考」換算">≈ ${fmtWorth(w)} 個 #${RUNE_BASE} ${esc(RUNES[RUNE_BASE-1].zh)}</span>` : ''; })()}</dd>
+        <dt>${st==='sold'?'成交價':'售價'}</dt><dd class="price" style="font-size:14px">${esc(fmtPzh(st==='sold'&&l.finalPrice?l.finalPrice:l.price))}${l.negotiable&&st==='active'?' <span class="muted">可議價</span>':''}</dd>
         <dt>伺服器</dt><dd>${l.hc==='hc'?'專家':'普通'} · ${esc(l.platform)} · ${esc(REGION_LABEL[l.region]||l.region)}</dd>
         <dt>聯絡</dt><dd>${esc(l.contact||'—')} ${l.contact?'<button class="btn sm" id="cpContact">複製</button>':''}</dd>
         ${l.note?`<dt>備註</dt><dd>${esc(l.note)}</dd>`:''}
@@ -2479,15 +2492,30 @@ function syncChat(){
   if(!chatReady || !window.Tawk_API) return;
   try{ if(view==='shop') Tawk_API.showWidget(); else Tawk_API.hideWidget(); }catch(e){}
 }
+// step 1: a small form (name / trade time / item text), step 2: hand it to the chat
 function askAbout(l){
-  const msg = inquiryText(l);
-  copy(msg, '已把詢問訊息填進聊天視窗，按送出就會傳給賣家');
-  if(!chatReady || !window.Tawk_API || !Tawk_API.maximize){ toast('聊天視窗還在載入，請稍候再試', true); return; }
+  $('#askName').value = ls.get('d2r_buyer', {}).name || '';
+  $('#askTime').value = '';
+  $('#askItem').value = inquiryText(l);
+  $('#askChips').innerHTML = ['現在','今晚','明天晚上','週末','都可以'].map(t=>`<button type="button" class="chip">${t}</button>`).join('');
+  $('#askChips').querySelectorAll('button').forEach(b=>b.onclick=()=>{ $('#askTime').value=b.textContent; });
+  $('#askOk').onclick = ()=>{
+    const name=$('#askName').value.trim(), time=$('#askTime').value.trim(), item=$('#askItem').value.trim();
+    if(!name){ toast('請填寫您的名稱', true); $('#askName').focus(); return; }
+    ls.set('d2r_buyer', {name});
+    closeOv('ovAsk');
+    sendInquiry(l, name, time, `買家：${name}\n希望交易時間：${time||'未填'}\n────────\n${item}`);
+  };
+  openOv('ovAsk');
+  setTimeout(()=>($('#askName').value?$('#askTime'):$('#askName')).focus(), 50);
+}
+function sendInquiry(l, name, time, msg){
+  copy(msg, '已把詢問訊息填進聊天視窗，按 Enter 或送出就會傳給賣家');
+  if(!chatReady || !window.Tawk_API || !Tawk_API.maximize){ toast('聊天視窗還在載入，訊息已複製，請稍候貼上', true); return; }
   const T = window.Tawk_API;
   // shown to the seller next to the conversation (keys: letters / digits / dashes only)
-  try{ T.setAttributes && T.setAttributes({'inquiry-item':String(l.name||'').slice(0,80), 'inquiry-price':fmtPzh(l.price).slice(0,120), 'inquiry-id':String(l.id).slice(0,40)}, ()=>{}); }catch(e){}
+  try{ T.setAttributes && T.setAttributes({name:name.slice(0,40), 'inquiry-item':String(l.name||'').slice(0,80), 'inquiry-price':fmtPzh(l.price).slice(0,120), 'inquiry-id':String(l.id).slice(0,40), 'trade-time':(time||'未填').slice(0,60)}, ()=>{}); }catch(e){}
   try{ T.addEvent && T.addEvent('item-inquiry', {item:String(l.name||'').slice(0,80), price:fmtPzh(l.price).slice(0,120), id:String(l.id).slice(0,40)}, ()=>{}); }catch(e){}
-  // open the chat with the trade message already typed in; the buyer only presses send
   const fill = ()=>{ try{ T.setChatInputMessage && T.setChatInputMessage(msg); }catch(e){} };
   T.maximize(); fill(); setTimeout(fill, 400); setTimeout(fill, 1200);
 }
