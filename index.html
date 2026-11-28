@@ -392,6 +392,13 @@ body.pip{margin:0;background:var(--panel);overflow:auto}
 img.cav{border-color:var(--gold)}
 .cavbig .cav{width:56px;height:56px;flex-basis:56px;font-size:24px;margin:0}
 .cavsm .cav{width:20px;height:20px;flex-basis:20px;font-size:11px;margin:0 5px 0 0;vertical-align:middle}
+.dprice{border:1px solid var(--gold);background:linear-gradient(#2a1e0c,#160f07);border-radius:6px;padding:10px 14px 9px;margin-bottom:10px;box-shadow:inset 0 0 18px #c8a24a22}
+.dprice .dp-l{font-size:13px;color:var(--gold2);letter-spacing:1px}
+.dprice .dp-v{font-family:Cinzel,serif;color:#ffd77a;font-size:26px;line-height:1.35;font-weight:700;text-shadow:0 0 10px #c8a24a55;word-break:break-word}
+.dprice .dp-s{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:2px;font-size:13px}.dprice .dp-s .worth{font-size:14px}
+.dp-neg{border:1px solid #2a6a3a;background:#10301a;color:#9fe0a9;border-radius:3px;padding:0 7px;font-size:12px}.dp-neg.sold{border-color:#6a2a2a;background:#301010;color:#e0a0a0}
+.dprice.sold,.dprice.cancelled{border-color:var(--line2);box-shadow:none}.dprice.sold .dp-v,.dprice.cancelled .dp-v{color:var(--gold2);text-shadow:none}
+@media (max-width:820px){.dprice .dp-v{font-size:22px}}
 </style>
 </head>
 <body>
@@ -1911,7 +1918,7 @@ const Store = {
     const job = this.q.then(async()=>{
       setSync('儲存中…');
       const used = new Set(this.listings.flatMap(lcats));
-      const body = JSON.stringify({version:2, updatedAt:Date.now(), categories:customCats.filter(c=>used.has(c.id)), rangeFix:this.rangeFix, labelFix:this.labelFix, chat:this.chat||null, styleImgs:this.styleImgs||{}, runeValues:this.runeValues||{}, about:this.about||'', seller:this.seller||'', sellerAvatar:this.sellerAvatar||'', listings:this.listings}, null, 1);
+      const body = JSON.stringify({version:2, updatedAt:Date.now(), categories:customCats.filter(c=>used.has(c.id)), rangeFix:this.rangeFix, labelFix:this.labelFix, chat:publicChat(this.chat), styleImgs:this.styleImgs||{}, runeValues:this.runeValues||{}, about:this.about||'', seller:this.seller||'', sellerAvatar:this.sellerAvatar||'', listings:this.listings}, null, 1);
       for(let attempt=0; attempt<2; attempt++){
         const r = await this.api(DATA_PATH, {method:'PUT', body:{message:msg, content:b64encUtf8(body), branch:GH.branch, ...(this.sha?{sha:this.sha}:{})}});
         if(r.ok){ const j=await r.json(); this.sha=j.content.sha; setSync('已儲存 · 網站約 1 分鐘後更新'); setTimeout(()=>setSync(''),6000); return; }
@@ -1954,7 +1961,8 @@ function parseData(text){
     Store.seller = (j && typeof j.seller==='string') ? j.seller.trim().slice(0,20) : '';
     Store.sellerAvatar = (j && typeof j.sellerAvatar==='string' && /^(images\/|data:image\/)/.test(j.sellerAvatar)) ? j.sellerAvatar : '';
     { const c=(j&&j.chat&&typeof j.chat==='object')?j.chat:{}, t=parseTawk(c.tawk), f=c.fire&&typeof c.fire==='object'?parseFireCfg(JSON.stringify(c.fire)):null;
-      if(f && typeof c.fire.admin==='string') f.admin=c.fire.admin.trim().slice(0,120);
+      if(f && typeof c.fire.adminHash==='string' && /^[0-9a-f]{64}$/.test(c.fire.adminHash)) f.adminHash=c.fire.adminHash;
+      else if(f && typeof c.fire.admin==='string' && c.fire.admin.trim()){ f.adminHash=''; sha256hex(c.fire.admin).then(h=>{ f.adminHash=h; if(FireChat.cfg===f && FireChat.user) FireChat.setUser(FireChat.user); }).catch(()=>{}); }
       Store.chat = (t||f) ? Object.assign({}, t?{tawk:t}:{}, f?{fire:f}:{}) : null; }
     return Array.isArray(j) ? j : (Array.isArray(j.listings)?j.listings:[]);
   }catch(e){ return []; }
@@ -2537,10 +2545,15 @@ function renderDetail(){
       ${l.image?`<button class="btn sm" id="dShot" style="margin-top:8px">${detailShot?'🙈 隱藏截圖':'📷 顯示截圖'}</button>${detailShot?`<img class="shot" src="${esc(imgSrc(l.image))}" alt="物品截圖">`:''}`:''}
     </div>
     <div>
+      ${(()=>{ const pp=st==='sold'&&l.finalPrice?l.finalPrice:l.price;
+        return `<div class="dprice ${st}">
+          <div class="dp-l">${st==='sold'?'成交價':st==='cancelled'?'售價（已下架）':'售價'}${st==='active'&&stockOf(l)>1?`<span class="muted">　${isLot(l)?`整批 ${stockOf(l)} 件的價格`:`每件・庫存 ${stockOf(l)} 件`}</span>`:''}</div>
+          <div class="dp-v">${esc(fmtPzh(pp))}</div>
+          <div class="dp-s">${worthTag(pp)?`<span class="muted">符文價值</span>${worthTag(pp)}`:''}${l.negotiable&&st==='active'?'<span class="dp-neg">可議價</span>':''}${st==='sold'?'<span class="dp-neg sold">已售出</span>':''}</div>
+        </div>`; })()}
       <dl class="info">
         ${stockOf(l)>1||soldUnits(l)?`<dt>庫存</dt><dd>${st==='active'?stockOf(l)+' 件'+(stockOf(l)>1?(isLot(l)?'（整批出售，售價是全部的價格）':'（一件一件賣，售價是每件）'):''):'—'}${soldUnits(l)?` <span class="muted">（已賣出 ${soldUnits(l)} 件）</span>`:''}</dd>`:''}
         <dt>狀態</dt><dd>${{active:'販售中',sold:'已售出',cancelled:'已下架'}[st]}</dd>
-        <dt>${st==='sold'?'成交價':'售價'}</dt><dd class="price" style="font-size:14px">${esc(fmtPzh(st==='sold'&&l.finalPrice?l.finalPrice:l.price))}${l.negotiable&&st==='active'?' <span class="muted">可議價</span>':''}</dd>
         <dt>伺服器</dt><dd>${l.hc==='hc'?'專家':'普通'} · ${esc(l.platform)} · ${esc(REGION_LABEL[l.region]||l.region)}</dd>
         <dt>聯絡</dt><dd>${esc(l.contact||'—')} ${l.contact?'<button class="btn sm" id="cpContact">複製</button>':''}</dd>
         ${l.note?`<dt>備註</dt><dd>${esc(l.note)}</dd>`:''}
@@ -2807,7 +2820,7 @@ function renderSellerChat(){
   $('#chLogin').style.display = ok?'none':''; $('#chMain').style.display = ok?'':'none';
   if(!ok){
     $('#chLogin').innerHTML = !Store.admin ? '請先到「管理後台」登入。'
-      : `<h3 style="margin-top:0">登入聊天室</h3><p class="muted">為了只讓你看得到所有買家的聊天室，請用設定的站長 Google 帳號（<b>${esc(Store.chat&&Store.chat.fire&&Store.chat.fire.admin||'')}</b>）登入。</p>${Chat.be.user&&!Chat.be.user.isAnonymous?`<p class="muted">目前登入：${esc(Chat.be.user.email||'')}（不是站長信箱）</p>`:''}<button class="btn pri" id="chSignIn">用 Google 帳號登入</button>`;
+      : `<h3 style="margin-top:0">登入聊天室</h3><p class="muted">為了只讓你看得到所有買家的聊天室，請用設定的站長 Google 帳號登入。</p>${Chat.be.user&&!Chat.be.user.isAnonymous?`<p class="muted">目前登入：${esc(Chat.be.user.email||'')}（不是站長信箱）</p>`:''}<button class="btn pri" id="chSignIn">用 Google 帳號登入</button>`;
     if($('#chSignIn')) $('#chSignIn').onclick=()=>Chat.be.adminSignIn();
     return;
   }
@@ -2909,6 +2922,10 @@ $('#chNotify').onclick=async()=>{ try{ await Notification.requestPermission(); }
 // Same read API as LocalChat (rooms / room / msgs are synchronous reads of a live cache),
 // writes go to Cloud Firestore. Buyers sign in anonymously, the seller with Google.
 const FB_VER = '13.4.0';
+async function sha256hex(t){
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(t).trim().toLowerCase()));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
 const FireChat = {
   user:null, isAdmin:false, cfg:null, _cb:null,
   _mine:new Map(), _all:new Map(), _msgs:new Map(), _msgSubs:new Map(), _unsubs:[],
@@ -2932,13 +2949,18 @@ const FireChat = {
     this._unsubs.forEach(f=>f()); this._unsubs=[];
     for(const f of this._msgSubs.values()) f();
     this._msgSubs.clear(); this._msgs.clear(); this._mine.clear(); this._all.clear();
-    this.user=u;
-    this.isAdmin = !!(u && !u.isAnonymous && u.email && this.cfg.admin && u.email.toLowerCase()===this.cfg.admin.toLowerCase());
+    this.user=u; this.isAdmin=false;
     const rooms = F.collection(this.db, 'rooms');
     if(u) this._unsubs.push(F.onSnapshot(F.query(rooms, F.where('buyerUid','==',u.uid)),
       s=>{ this._mine = new Map(s.docs.map(d=>[d.id, this.conv(d)])); this.changed(); }, e=>console.warn('chat (mine)', e)));
-    if(this.isAdmin) this._unsubs.push(F.onSnapshot(F.query(rooms, F.orderBy('updatedAt','desc'), F.limit(300)),
-      s=>{ this._all = new Map(s.docs.map(d=>[d.id, this.conv(d)])); this.changed(); }, e=>{ console.warn('chat (all)', e); toast('讀不到聊天室：請確認 Firestore 安全規則已更新', true); }));
+    // the published site only knows a hash of the seller's e-mail, never the address itself
+    this._adminCheck = (u && !u.isAnonymous && u.email && this.cfg.adminHash) ? sha256hex(u.email).then(h=>{
+      if(this.user!==u || h!==this.cfg.adminHash) return;
+      this.isAdmin=true;
+      this._unsubs.push(F.onSnapshot(F.query(rooms, F.orderBy('updatedAt','desc'), F.limit(300)),
+        s=>{ this._all = new Map(s.docs.map(d=>[d.id, this.conv(d)])); this.changed(); }, e=>{ console.warn('chat (all)', e); toast('讀不到聊天室：請確認 Firestore 安全規則已更新', true); }));
+      this.changed();
+    }).catch(e=>console.warn(e)) : Promise.resolve();
     this.changed();
   },
   uid(){ return this.user && this.user.uid; },
@@ -2993,6 +3015,7 @@ const FireChat = {
   async adminSignIn(){
     try{ await this.Au.signInWithPopup(this.auth, new this.Au.GoogleAuthProvider()); }
     catch(e){ toast('登入失敗：'+(/unauthorized-domain/.test(e.code)?'請在 Firebase 的 Authentication → 設定 → 已授權網域 加入你的網站網址':(e.code||e.message||e)), true); return; }
+    await this._adminCheck;
     if(!this.isAdmin) toast(`這個 Google 帳號（${this.user&&this.user.email}）不是設定的站長信箱`, true);
   },
   async signOut(){ try{ await this.Au.signOut(this.auth); }catch(e){} },
@@ -3000,6 +3023,12 @@ const FireChat = {
 LocalChat.isAdmin = true;
 
 // firebaseConfig pasted from the Firebase console (JS object or JSON)
+function publicChat(c){
+  if(!c) return null;
+  const o = Object.assign({}, c);
+  if(c.fire){ const f=c.fire; o.fire={apiKey:f.apiKey, authDomain:f.authDomain, projectId:f.projectId, appId:f.appId, adminHash:f.adminHash||''}; }
+  return o;
+}
 function parseFireCfg(text){
   const s=String(text||''), g=k=>{ const m=s.match(new RegExp('["\']?'+k+'["\']?\\s*:\\s*["\']([^"\']+)["\']')); return m?m[1].trim():''; };
   const c={apiKey:g('apiKey'), authDomain:g('authDomain'), projectId:g('projectId'), appId:g('appId')};
@@ -3241,17 +3270,19 @@ $('#sStyles').addEventListener('click', async e=>{
 function fireInfo(){
   const f=Store.chat&&Store.chat.fire;
   if(document.activeElement!==$('#sFire')) $('#sFire').value = f ? JSON.stringify({apiKey:f.apiKey, authDomain:f.authDomain, projectId:f.projectId, appId:f.appId}, null, 1) : '';
-  if(document.activeElement!==$('#sFireAdmin')) $('#sFireAdmin').value = f ? (f.admin||'') : '';
+  if(document.activeElement!==$('#sFireAdmin')){ $('#sFireAdmin').value=''; $('#sFireAdmin').placeholder = f&&f.adminHash ? '站長信箱已設定（不公開，不會顯示）；要換才重新填' : '站長的 Google 信箱（例如 you@gmail.com）'; }
   $('#sFireInfo').textContent = window.CHAT_DEMO ? '單機測試版的聊天室存在這個瀏覽器裡；這裡的設定要在正式網站才會連上 Firebase。'
-    : f ? `已開啟：專案 ${f.projectId}，站長 ${f.admin}。${Chat.be===FireChat?'已連線。':'重新整理後連線。'}改了站長信箱要重新「產生安全規則」貼到 Firebase。`
+    : f ? `已開啟：專案 ${f.projectId}，站長信箱已設定（網站上只存加密後的代碼，別人看不到信箱）。${Chat.be===FireChat?'已連線。':'重新整理後連線。'}換了站長信箱要重新「產生安全規則」貼到 Firebase。`
     : '尚未設定。照 README 的「買家聊天室（Firebase）」步驟建立專案後，把 firebaseConfig 貼到這裡。';
 }
 $('#sFireSave').onclick = async()=>{
   const raw=$('#sFire').value.trim(), email=$('#sFireAdmin').value.trim();
   let f=null;
   if(raw){ f=parseFireCfg(raw); if(!f){ toast('看不懂這段設定，請整段貼上 firebaseConfig（要有 apiKey、projectId、appId）', true); return; }
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast('請填寫站長的 Google 信箱', true); $('#sFireAdmin').focus(); return; }
-    f.admin=email.toLowerCase(); }
+    const old=Store.chat&&Store.chat.fire&&Store.chat.fire.adminHash;
+    if(email){ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ toast('信箱格式不對', true); $('#sFireAdmin').focus(); return; } f.adminHash=await sha256hex(email); }
+    else if(old) f.adminHash=old;
+    else { toast('請填寫站長的 Google 信箱', true); $('#sFireAdmin').focus(); return; } }
   const t=Store.chat&&Store.chat.tawk;
   Store.chat = (t||f) ? Object.assign({}, t?{tawk:t}:{}, f?{fire:f}:{}) : null;
   try{ await Store.commit(f?'Enable chat rooms':'Disable chat rooms'); toast(f?'已儲存，重新整理後生效':'已關閉網站聊天室'); }catch(e){ toast('儲存失敗：'+(e.message||e), true); }
